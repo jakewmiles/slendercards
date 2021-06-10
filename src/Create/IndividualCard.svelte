@@ -1,11 +1,26 @@
 <script>
-  import { transition_out } from 'svelte/internal';
-import { fade, fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
   export let index;
   export let example;
   export let srcEmoji;
+	export let srcLang;
   export let targEmoji;
+	export let targLang;
   let visible = true;
+
+	const postSentence = async () => {
+		return await fetch('http://localhost:3000/flashcards', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				srcLang,
+				targLang,
+				srcSentence: example.from,
+				targSentence: example.to
+			})
+		})
+	}
+
 </script>
 
 {#if visible}
@@ -18,6 +33,7 @@ import { fade, fly } from 'svelte/transition';
       <p class="sentence">{targEmoji} {example.to}</p>
       <button class="card-selector" on:click={() => {
         visible = false;
+				postSentence();
       }}>✅</button>
     </div>
   </div>
@@ -62,7 +78,6 @@ import { fade, fly } from 'svelte/transition';
     background-color: transparent;
     border: none;
     text-align: center;
-    text-decoration: none;
     font-size: 30px;
   }
 </style>

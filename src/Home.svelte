@@ -2,7 +2,7 @@
   <div class="container">
 	  <h1>Welcome to <img src='animated-logo.svg' alt='slendercards'></h1>
     <a href='/#/choose-languages' class="nav-button">CREATE</a>
-    <a href='/#/' class="nav-button">REVIEW</a>
+    <a href='/#/review-dashboard' class="nav-button">REVIEW</a>
   </div>
 </main>
 

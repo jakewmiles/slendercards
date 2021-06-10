@@ -65,6 +65,7 @@ import ContextCards from "./ContextCards.svelte";
     srcLang = !srcLang
     targLang = !targLang
   }}>Go back!</button>
+  <a href='/#/review-dashboard'>REVIEW FLASHCARDS</a>
   {/if}
 
 </main>

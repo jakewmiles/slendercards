@@ -11,8 +11,7 @@
 	const fetchSentences = async () => {
 		searched = true;
 		newSearch = phraseQuery;
-		console.log(srcLang, targLang, phraseQuery);
-		const response = await fetch('http://localhost:3000/request', {
+		const response = await fetch('http://localhost:3000/scrape', {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -24,13 +23,12 @@
 		phraseQuery = '';
     return response.json();
 	};
-
 	
 </script>
 
 <main>
-	<h2>Search for a {srcEmoji} word, phrase or sentence</h2>
-	<h2>See {targEmoji} translations!</h2>
+	<h2>1. Search for a {srcEmoji} word, phrase or sentence</h2>
+	<h2>2. See {targEmoji} translations!</h2>
 	<h3>Click the ✅ next to any sentence pair to create a flashcard!</h3>
 	<input bind:value={phraseQuery}/>
 	<button type="button" on:click={fetchSentences}>
@@ -42,7 +40,7 @@
 				<p>Getting sentence..</p>
 			{:then data}
 				{#each data.examples.slice(0, 5) as example, i (i)}
-					<IndividualCard index={i} {example} {srcEmoji}{targEmoji}/>
+					<IndividualCard index={i} {example} {srcEmoji} {srcLang} {targEmoji} {targLang}/>
 				{/each}
 			{:catch error}
 				<p>An error occurred! {error}</p>
@@ -61,5 +59,7 @@
 
 	h2 {
 		margin: 0 auto;
+		text-align: left;
+		padding-left: 100px;
 	}
 </style>

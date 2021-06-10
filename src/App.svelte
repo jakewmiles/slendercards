@@ -2,6 +2,7 @@
 	import Router from 'svelte-spa-router';
 	import Home from './Home.svelte';
 	import ChooseLanguages from './Create/ChooseLanguages.svelte';
+	import ReviewDashboard from './Review/ReviewDashboard.svelte';
 
 </script>
 
@@ -14,6 +15,7 @@
 <Router routes = {{
 	'/' : Home,
 	'/choose-languages' : ChooseLanguages,
+	'/review-dashboard' : ReviewDashboard
 }}/>
 
 <style>
