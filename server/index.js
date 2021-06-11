@@ -6,6 +6,7 @@ const reverso = new Reverso();
 const app = express();
 const port = 3000;
 
+
 app.use(cors());
 app.use(express.json())
 
@@ -18,6 +19,7 @@ const getSentences = (phrase, srcLang, targLang) => {
 				console.log(err);
 			})
 };
+
 
 app.post('/scrape', async (req, res) => {
   try {

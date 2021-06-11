@@ -31,7 +31,12 @@ const flashcardSchema = new Schema({
   timesSeen: {
     required: true,
     type: Number,
-    default: 0
+    default: 0,
+  },
+  grade: {
+    required: true,
+    type: Number,
+    default: 0,
   }
 });
 
