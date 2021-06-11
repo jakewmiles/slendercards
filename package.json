@@ -19,6 +19,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "google-translate-tts": "*",
+    "google-tts-api": "^2.0.2",
     "mongoose": "^5.12.13",
     "reverso-api": "^2.16.2",
     "sirv-cli": "^1.0.0",

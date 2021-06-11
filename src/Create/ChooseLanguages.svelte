@@ -21,7 +21,7 @@
 
 <main>
   {#if !languagesChosen || !srcLang || !targLang}
-  <h1>Choose languages</h1>
+  <!-- <h1>Choose languages</h1> -->
     <div class="lang-container">
       <div class="src-lang-list">
         <h3>Source:</h3>

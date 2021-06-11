@@ -1,7 +1,6 @@
 <script>
   export let promisedData;
   let cardIndex = 0;
-  console.log(promisedData);
   let frontSide = true;
 
   const updateFlashcardScore = async (id, value) => {
@@ -13,49 +12,67 @@
       })
     });
   }
+
+  const flip = ({delay = 0, duration = 500}) => {
+    return {
+      delay,
+      duration,
+      css: (u) => `transform: rotateY(${1 - (u * 180)}deg);
+                  opacity: ${1 - u};`
+    };
+  }
+
 </script>
 
 <main>
   {#await promisedData}
   <p>awaiting data...</p>
   {:then data}
-    {#if cardIndex < 5}
-      {#key cardIndex}
-        {#if frontSide}
-          <div class='flashcard-body-front' on:click={() => {
-            frontSide = !frontSide;
-          }}>
-            <h1>Card {cardIndex+1}/5</h1>
-            <h3>Source: {data[cardIndex].srcLang}</h3>
-            <h4>{data[cardIndex].srcSentence}</h4>
+    {#if !data.length}
+      <p>No cards to display! Create some cards fast!</p>
+    {/if}
+    {#if data.length}
+      {#if cardIndex < 5}
+        {#key cardIndex}
+        <div class='flashcard-container' on:click={() => frontSide = !frontSide}>
+          <div class='flashcard'>
+            {#if frontSide}
+            <div transition:flip class='side'>
+              <h1>Card {cardIndex+1}/5</h1>
+              <h3>Source: {data[cardIndex].srcLang}</h3>
+              <h4>{data[cardIndex].srcSentence}</h4>
+            </div>
+            {:else}
+            <div transition:flip class='side back'>
+              <h1>Card {cardIndex+1}/5</h1>
+              <h3>Target: {data[cardIndex].targLang}</h3>
+              <h4>{data[cardIndex].targSentence}</h4>
+            </div>
+            {/if}
           </div>
-        {:else}
-          <div class='flashcard-body-back' on:click={() => {
-            frontSide = !frontSide;
-          }}>
-            <h1>Card {cardIndex+1}/5</h1>
-            <h3>Target: {data[cardIndex].targLang}</h3>
-            <h4>{data[cardIndex].targSentence}</h4>
-          </div>
-        {/if}
-      {/key}
-      <div class='flashcard-reaction-buttons'>
-        <button on:click={() => {
-          updateFlashcardScore(data[cardIndex]._id, 1)
-          cardIndex++;
-          frontSide = true;
-        }}>😭</button>
-    <button on:click={() => {
-      updateFlashcardScore(data[cardIndex]._id, 2)
-      cardIndex++;
-      frontSide = true;
-    }}>😐</button>
-    <button on:click={() => {
-      updateFlashcardScore(data[cardIndex]._id, 3)
-      cardIndex++;
-      frontSide = true;
-    }}>😄</button>
-  </div>
+        </div>
+        {/key}
+        <div class='flashcard-reaction-buttons'>
+          <button on:click={() => {
+            updateFlashcardScore(data[cardIndex]._id, 1)
+            cardIndex++;
+            frontSide = true;
+          }}>😭</button>
+      <button on:click={() => {
+        updateFlashcardScore(data[cardIndex]._id, 2)
+        cardIndex++;
+        frontSide = true;
+      }}>😐</button>
+      <button on:click={() => {
+        updateFlashcardScore(data[cardIndex]._id, 3)
+        cardIndex++;
+        frontSide = true;
+      }}>😄</button>
+    </div>
+    {/if}
+  {/if}
+  {#if cardIndex > 4}
+    <h1>Round of cards finished!</h1>
   {/if}
   {:catch error}
   <p>Error!</p>
@@ -65,6 +82,8 @@
 <style>
   main {
     display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 1em;
     max-width: 800px;
@@ -73,32 +92,43 @@
 
   .flashcard-reaction-buttons {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-end;
     font-size: 50px;
   }
 
-  .flashcard-body-front {
-		margin: 10px;
-  	width: 400px;
+  .flashcard-container {
+    position: relative;
+		margin: 50px;
+  	width: 600px;
 		height: 400px;
-		overflow: scroll;
-  	box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
-    						0 5px 15px 0 rgba(0,0,0,0.08);
-  	background-color: #ffffff;
-  	border-radius: 0.5rem;
-		border-left: 0.5rem solid #ff6600;
+    perspective: 600;
+  }
+
+  .flashcard {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    perspective: 600;
+  }
+
+  .side {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  	background-color: #d2661e;
+    color: #000000;
+    border-radius: 0.5rem;
+		border-left: 0.4rem solid #000000;
 	}
 
-  .flashcard-body-back {
-		margin: 10px;
-  	width: 400px;
-		height: 400px;
-		overflow: scroll;
-  	box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
-    						0 5px 15px 0 rgba(0,0,0,0.08);
-  	background-color: #ffffff;
-  	border-radius: 0.5rem;
-		border-right: 0.5rem solid #ff6600;
+  .back {
+  	background-color: #000000;
+    color: #d2661e;
+		border-right: 0.4rem solid #d2661e;
 	}
 </style>

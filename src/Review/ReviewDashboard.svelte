@@ -1,6 +1,5 @@
 <script>
   import { fade } from 'svelte/transition';
-import App from '../App.svelte';
   import PracticeFlashcard from './PracticeFlashcard.svelte';
 
   const fetchAllFlashcards = async () => {
@@ -22,19 +21,29 @@ import App from '../App.svelte';
 
 <main>
   {#if !reviewMode}
-    <h1>CHOOSE A MODE</h1>
-    <button on:click={() => {
-      reviewMode = 'overview';
-    }}>CARD OVERVIEW</button>
+  <h1>CHOOSE A MODE</h1>
+  <button on:click={() => {
+    reviewMode = 'overview';
+  }}>CARD OVERVIEW</button>
     <button on:click={() => {
       reviewMode = 'practice';
     }}>PRACTICE</button>
   {/if}
-
+  
+  {#if reviewMode}
+    <button on:click={() => {
+      reviewMode = '';
+    }}>Go back!</button>
+  {/if}
+  
   {#if reviewMode === 'overview'}
     {#await fetchAllFlashcards()}
       <p>Fetching all flashcards...</p>
     {:then data}
+      {#if !data.length}
+        <p>No flashcards in the database! Create some flashcards first...</p>
+      {/if}
+      {#if data.length}
       <table>
         <tr>
           <th>srcLang</th>
@@ -42,43 +51,39 @@ import App from '../App.svelte';
           <th>targLang</th>
           <th>targSentence</th>
           <th>dateCreated</th>
-          <th>dateToBeReviewed</th>
           <th>timesSeen</th>
           <th>overallScore</th>
+          <th>grade</th>
         </tr>
         <!-- {#if visible} -->
-          {#each data as sentence, i} 
-              <tr transition:fade>
-                <td>{sentence.srcLang}</td>
-                <td>{sentence.srcSentence}</td>
-                <td>{sentence.targLang}</td>
-                <td>{sentence.targSentence}</td>
-                <td>{sentence.dateCreated}</td>
-                <td>{sentence.dateToBeReviewed}</td>
-                <td>{sentence.timesSeen}</td>
-                <td>{sentence.overallScore}</td>
-                <td><button class="delete-button" on:click={() => {
-                  // visible = false;
-                  removeFlashcard(sentence._id);
-                }}>❌</button></td>
+        {#each data as sentence, i} 
+        <tr transition:fade>
+          <td>{sentence.srcLang}</td>
+          <td>{sentence.srcSentence}</td>
+          <td>{sentence.targLang}</td>
+          <td>{sentence.targSentence}</td>
+          <td>{sentence.dateCreated}</td>
+          <td>{sentence.timesSeen}</td>
+          <td>{sentence.overallScore}</td>
+          <td>{sentence.grade}</td>
+          <td><button class="delete-button" on:click={() => {
+            // visible = false;
+            removeFlashcard(sentence._id);
+          }}>❌</button></td>
               </tr>
-            {/each}
-          <!-- {/if} -->
-      </table>
-    {:catch error}
-      <p>An error occurred! {error}</p>
-    {/await}
-  {/if}
-
+              {/each}
+              <!-- {/if} -->
+            </table>
+            {/if}
+            {:catch error}
+            <p>An error occurred! {error}</p>
+            {/await}
+            {/if}
+            
   {#if reviewMode === 'practice'}
     <PracticeFlashcard promisedData={fetchAllFlashcards()}/>
   {/if}
 
-  {#if reviewMode}
-    <button on:click={() => {
-      reviewMode = '';
-    }}>Go back!</button>
-  {/if}
 
 </main>
 

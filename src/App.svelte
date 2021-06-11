@@ -26,6 +26,11 @@
 		margin: 0 0 0 5px;
 		font-size: 40px;
 	}
+
+	a {
+		color: #d2661e;
+	}
+
 	.nav-button {
 		padding-right: 50px;
 	}
