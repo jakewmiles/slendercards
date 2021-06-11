@@ -25,7 +25,7 @@ exports.postNewFlashcard = async (req, res) => {
 
 exports.getAllFlashcards = async (req, res) => {
   try {
-    const flashcards = await Flashcard.find();
+    const flashcards = await Flashcard.find({}).sort({overallScore: 1});
     res.status(200).send(flashcards);
   } catch (err) {
     res.status(400);
@@ -40,5 +40,21 @@ exports.deleteFlashcard = async (req, res) => {
   } catch (err) {
     res.status(400);
     console.error(err);
+  }
+}
+
+exports.updateFlashcardScore = async (req, res) => {
+  console.log('IN HERE');
+  const { incValue } = req.body;
+  const id = req.params.id;
+  console.log(incValue, id);
+    try {
+      await Flashcard.findByIdAndUpdate(
+        id, 
+        {$inc: {timesSeen: 1, overallScore: incValue}}, 
+        {new: true});
+      await Flashcard.find().sort({"overallScore": 1}).exec();
+    } catch (err) {
+    console.log(err);
   }
 }

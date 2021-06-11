@@ -1,25 +1,21 @@
 <script>
-import ContextCards from "./ContextCards.svelte";
-
+  import ContextCards from './ContextCards.svelte';
+  import { fade, fly } from 'svelte/transition';
   const languages = {
     'English':'🇬🇧', 'Russian':'🇷🇺', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱'
   }
-
   let srcLang = '';
   let targLang = '';
   let srcEmoji = '';
   let targEmoji = '';
-
   const srcLangHandler = (language, emoji) => {
     srcLang = language;
     srcEmoji = emoji;
   }
-
   const targLangHandler = (language, emoji) => {
     targLang = language;
     targEmoji = emoji;
   }
-
   let languagesChosen = false;
 </script>
 
@@ -28,15 +24,15 @@ import ContextCards from "./ContextCards.svelte";
   <h1>Choose languages</h1>
     <div class="lang-container">
       <div class="src-lang-list">
-        <h3>Source language</h3>
+        <h3>Source:</h3>
         {#each Object.entries(languages) as [language, emoji]}
-          <button on:click={() => srcLangHandler(language, emoji)}>{emoji}{language}</button>
+          <button in:fly={{x: -100, duration: 1000}} on:click={() => srcLangHandler(language, emoji)}>{emoji}{language}</button>
         {/each}
       </div>
       <div class="targ-lang-list">
-        <h3>Target language</h3>
+        <h3>Target:</h3>
         {#each Object.entries(languages) as [language, emoji]}
-        <button on:click={() => targLangHandler(language, emoji)}>{emoji}{language}</button>
+        <button in:fly={{x: 100, duration: 1000}} on:click={() => targLangHandler(language, emoji)}>{emoji}{language}</button>
         {/each}
       </div>
     </div>
@@ -44,14 +40,13 @@ import ContextCards from "./ContextCards.svelte";
   {#if !srcLang}
     <p>No L1 selected</p>
     {:else}
-    <p>{srcLang}</p>
+    <p>Source: {srcLang}</p>
   {/if}
   {#if !targLang}
     <p>No L2 selected</p>
     {:else}
-    <p>{targLang}</p>
+    <p>Target: {targLang}</p>
   {/if}
-  <a href='/#/'>GO BACK</a>
   <button on:click={() => {
     if (srcLang && targLang) languagesChosen = true
     if (srcLang === targLang) languagesChosen = false
@@ -65,7 +60,6 @@ import ContextCards from "./ContextCards.svelte";
     srcLang = !srcLang
     targLang = !targLang
   }}>Go back!</button>
-  <a href='/#/review-dashboard'>REVIEW FLASHCARDS</a>
   {/if}
 
 </main>
@@ -84,16 +78,20 @@ import ContextCards from "./ContextCards.svelte";
 
   .lang-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
   }
 
   .src-lang-list {
     display: flex;
     flex-direction: column;
+    margin: 5px;
+    padding: 10px;
   }
 
   .targ-lang-list {
     display: flex;
     flex-direction: column;
+    margin: 5px;
+    padding: 10px;
   }
 </style>

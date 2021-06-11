@@ -23,9 +23,10 @@ const flashcardSchema = new Schema({
     required: true,
     type: Date,
   },
-  dateToBeReviewed: {
-    required: true,
-    type: Date,
+  overallScore: {
+    require: true,
+    type: Number,
+    default: 0,
   },
   timesSeen: {
     required: true,

@@ -1,6 +1,7 @@
 <script>
   import { fade } from 'svelte/transition';
-  import PracticeCard from './PracticeCard.svelte';
+import App from '../App.svelte';
+  import PracticeFlashcard from './PracticeFlashcard.svelte';
 
   const fetchAllFlashcards = async () => {
     const response = await fetch('http://localhost:3000/flashcards')
@@ -43,6 +44,7 @@
           <th>dateCreated</th>
           <th>dateToBeReviewed</th>
           <th>timesSeen</th>
+          <th>overallScore</th>
         </tr>
         <!-- {#if visible} -->
           {#each data as sentence, i} 
@@ -54,6 +56,7 @@
                 <td>{sentence.dateCreated}</td>
                 <td>{sentence.dateToBeReviewed}</td>
                 <td>{sentence.timesSeen}</td>
+                <td>{sentence.overallScore}</td>
                 <td><button class="delete-button" on:click={() => {
                   // visible = false;
                   removeFlashcard(sentence._id);
@@ -68,8 +71,15 @@
   {/if}
 
   {#if reviewMode === 'practice'}
-    <PracticeCard />
+    <PracticeFlashcard promisedData={fetchAllFlashcards()}/>
   {/if}
+
+  {#if reviewMode}
+    <button on:click={() => {
+      reviewMode = '';
+    }}>Go back!</button>
+  {/if}
+
 </main>
 
 <style>

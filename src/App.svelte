@@ -3,12 +3,15 @@
 	import Home from './Home.svelte';
 	import ChooseLanguages from './Create/ChooseLanguages.svelte';
 	import ReviewDashboard from './Review/ReviewDashboard.svelte';
+	let reviewMode;
 
 </script>
 
 <nav>
 	<h1>
-		<a href='/#/'>🏠</a>
+		<a class='nav-button' href='/#/'>🏠</a>
+		<a class='nav-button' href='/#/choose-languages'>CREATE</a>
+		<a class='nav-button' href='/#/review-dashboard'>REVIEW</a>
 	</h1>
 </nav>
 
@@ -23,5 +26,9 @@
 		margin: 0 0 0 5px;
 		font-size: 40px;
 	}
+	.nav-button {
+		padding-right: 50px;
+	}
+
 </style>
 
