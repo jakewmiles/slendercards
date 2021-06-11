@@ -9,32 +9,41 @@
       opacity: ${1 - u};`
     };
   }
-
+  const languages = {'English':'🇬🇧', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱', 'Russian':'🇷🇺'}
 </script>
 
 <div class='flashcard-container' on:click={() => frontSide = !frontSide}>
   <div class='flashcard'>
     {#if frontSide}
     <div transition:flip class='side'>
-      <h1>Card {cardIndex+1}/5</h1>
-      <h3>Source: {data[cardIndex].srcLang}</h3>
-      <h4>{data[cardIndex].srcSentence}</h4>
+      <h1>{languages[data[cardIndex].srcLang]}</h1>
+      <h2>{data[cardIndex].srcSentence}</h2>
     </div>
     {:else}
     <div transition:flip class='side back'>
-      <h1>Card {cardIndex+1}/5</h1>
-      <h3>Target: {data[cardIndex].targLang}</h3>
-      <h4>{data[cardIndex].targSentence}</h4>
+      <h1>{languages[data[cardIndex].targLang]}</h1>
+      <h2>{data[cardIndex].targSentence}</h2>
     </div>
     {/if}
   </div>
 </div>
 
 <style>
+  h1 {
+    font-size: 60px;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 30px;
+    margin: 0;
+  }
+
   .flashcard-container {
     position: relative;
     margin: 50px;
-    width: 600px;
+    min-width: 300px;
+    max-width: 300px;
     height: 400px;
     perspective: 600;
   }
@@ -48,11 +57,12 @@
 
   .side {
     position: absolute;
+    padding: 0 10px 0 10px;
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     background-color: #d2661e;
     color: #000000;

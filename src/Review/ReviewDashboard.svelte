@@ -40,6 +40,7 @@
         <p>No flashcards in the database! Create some flashcards first...</p>
       {/if}
       {#if data.length}
+      <div class='database-table'>
         <table>
           <thead>
             <tr>
@@ -57,7 +58,7 @@
               <td>{sentence.srcSentence}</td>
               <td>{sentence.targLang}</td>
               <td>{sentence.targSentence}</td>
-              <td><button class="delete-button" on:click={() => {
+              <td><button class='delete-button' on:click={() => {
                 // visible = false;
                 removeFlashcard(sentence._id);
               }}>❌</button></td>
@@ -66,6 +67,7 @@
         {/each}
         <!-- {/if} -->
         </table>
+      </div>
     {/if}
     {:catch error}
       <p>An error occurred! {error}</p>
@@ -84,6 +86,7 @@
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
+    overflow-y: scroll;
   }
 
   .delete-button {
@@ -93,16 +96,12 @@
     font-size: 30px;
   }
 
-  table {
+  .database-table {
+    overflow-y: auto;
+  }
+
+  table, tr {
     width: 50%;
-    border-collapse: collapse;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border: 1px solid white;
   }
-
-  th, td {
-	  padding: 15px;
-    text-align: left;
-  }
-
 </style>

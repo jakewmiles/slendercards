@@ -2040,7 +2040,7 @@ var app = (function () {
     	let main;
     	let div;
     	let h1;
-    	let t;
+    	let t1;
     	let img;
     	let img_src_value;
 
@@ -2049,16 +2049,17 @@ var app = (function () {
     			main = element("main");
     			div = element("div");
     			h1 = element("h1");
-    			t = text("Welcome to ");
+    			h1.textContent = "Welcome to";
+    			t1 = space();
     			img = element("img");
+    			attr_dev(h1, "class", "svelte-sfwlar");
+    			add_location(h1, file$9, 2, 3, 36);
     			if (img.src !== (img_src_value = "animated-logo.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "slendercards");
-    			add_location(img, file$9, 2, 18, 51);
-    			attr_dev(h1, "class", "svelte-1iijg61");
-    			add_location(h1, file$9, 2, 3, 36);
-    			attr_dev(div, "class", "container svelte-1iijg61");
+    			attr_dev(img, "class", "svelte-sfwlar");
+    			add_location(img, file$9, 3, 4, 61);
+    			attr_dev(div, "class", "container svelte-sfwlar");
     			add_location(div, file$9, 1, 2, 9);
-    			attr_dev(main, "class", "svelte-1iijg61");
     			add_location(main, file$9, 0, 0, 0);
     		},
     		l: function claim(nodes) {
@@ -2068,8 +2069,8 @@ var app = (function () {
     			insert_dev(target, main, anchor);
     			append_dev(main, div);
     			append_dev(div, h1);
-    			append_dev(h1, t);
-    			append_dev(h1, img);
+    			append_dev(div, t1);
+    			append_dev(div, img);
     		},
     		p: noop,
     		i: noop,
@@ -2186,6 +2187,7 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(t1_value);
     			t2 = space();
+    			attr_dev(button, "class", "animated-button language-choice svelte-1no6lfb");
     			add_location(button, file$8, 12, 8, 445);
     		},
     		m: function mount(target, anchor) {
@@ -2251,7 +2253,8 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(t1_value);
     			t2 = space();
-    			add_location(button, file$8, 21, 6, 755);
+    			attr_dev(button, "class", "animated-button language-choice svelte-1no6lfb");
+    			add_location(button, file$8, 21, 6, 795);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -2296,27 +2299,35 @@ var app = (function () {
 
     // (33:2) {:else}
     function create_else_block_1(ctx) {
-    	let p;
+    	let h3;
     	let t0;
+    	let t1_value = /*languages*/ ctx[5][/*srcLang*/ ctx[1]] + "";
     	let t1;
+    	let t2;
+    	let t3;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
+    			h3 = element("h3");
     			t0 = text("Source: ");
-    			t1 = text(/*srcLang*/ ctx[1]);
-    			add_location(p, file$8, 33, 4, 1032);
+    			t1 = text(t1_value);
+    			t2 = space();
+    			t3 = text(/*srcLang*/ ctx[1]);
+    			add_location(h3, file$8, 33, 4, 1114);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, t0);
-    			append_dev(p, t1);
+    			insert_dev(target, h3, anchor);
+    			append_dev(h3, t0);
+    			append_dev(h3, t1);
+    			append_dev(h3, t2);
+    			append_dev(h3, t3);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*srcLang*/ 2) set_data_dev(t1, /*srcLang*/ ctx[1]);
+    			if (dirty & /*srcLang*/ 2 && t1_value !== (t1_value = /*languages*/ ctx[5][/*srcLang*/ ctx[1]] + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*srcLang*/ 2) set_data_dev(t3, /*srcLang*/ ctx[1]);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(h3);
     		}
     	};
 
@@ -2333,20 +2344,20 @@ var app = (function () {
 
     // (31:2) {#if !srcLang}
     function create_if_block_1$3(ctx) {
-    	let p;
+    	let h3;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
-    			p.textContent = "No L1 selected";
-    			add_location(p, file$8, 31, 4, 996);
+    			h3 = element("h3");
+    			h3.textContent = "No L1 selected";
+    			add_location(h3, file$8, 31, 4, 1076);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, h3, anchor);
     		},
     		p: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(h3);
     		}
     	};
 
@@ -2363,27 +2374,35 @@ var app = (function () {
 
     // (38:2) {:else}
     function create_else_block$1(ctx) {
-    	let p;
+    	let h3;
     	let t0;
+    	let t1_value = /*languages*/ ctx[5][/*targLang*/ ctx[3]] + "";
     	let t1;
+    	let t2;
+    	let t3;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
+    			h3 = element("h3");
     			t0 = text("Target: ");
-    			t1 = text(/*targLang*/ ctx[3]);
-    			add_location(p, file$8, 38, 4, 1123);
+    			t1 = text(t1_value);
+    			t2 = space();
+    			t3 = text(/*targLang*/ ctx[3]);
+    			add_location(h3, file$8, 38, 4, 1230);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    			append_dev(p, t0);
-    			append_dev(p, t1);
+    			insert_dev(target, h3, anchor);
+    			append_dev(h3, t0);
+    			append_dev(h3, t1);
+    			append_dev(h3, t2);
+    			append_dev(h3, t3);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*targLang*/ 8) set_data_dev(t1, /*targLang*/ ctx[3]);
+    			if (dirty & /*targLang*/ 8 && t1_value !== (t1_value = /*languages*/ ctx[5][/*targLang*/ ctx[3]] + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*targLang*/ 8) set_data_dev(t3, /*targLang*/ ctx[3]);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(h3);
     		}
     	};
 
@@ -2400,20 +2419,20 @@ var app = (function () {
 
     // (36:2) {#if !targLang}
     function create_if_block$6(ctx) {
-    	let p;
+    	let h3;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
-    			p.textContent = "No L2 selected";
-    			add_location(p, file$8, 36, 4, 1087);
+    			h3 = element("h3");
+    			h3.textContent = "No L2 selected";
+    			add_location(h3, file$8, 36, 4, 1192);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, h3, anchor);
     		},
     		p: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(h3);
     		}
     	};
 
@@ -2512,13 +2531,14 @@ var app = (function () {
     			add_location(h30, file$8, 10, 6, 359);
     			attr_dev(div0, "class", "src-lang-list");
     			add_location(div0, file$8, 9, 4, 325);
-    			add_location(h31, file$8, 19, 6, 671);
+    			add_location(h31, file$8, 19, 6, 711);
     			attr_dev(div1, "class", "targ-lang-list");
-    			add_location(div1, file$8, 18, 4, 636);
+    			add_location(div1, file$8, 18, 4, 676);
     			attr_dev(div2, "class", "lang-container");
     			add_location(div2, file$8, 8, 2, 292);
-    			add_location(h1, file$8, 29, 2, 948);
-    			add_location(button, file$8, 41, 2, 1160);
+    			add_location(h1, file$8, 29, 2, 1028);
+    			attr_dev(button, "class", "svelte-1no6lfb");
+    			add_location(button, file$8, 41, 2, 1291);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2886,17 +2906,17 @@ var app = (function () {
     			button.textContent = "✅";
     			attr_dev(h1, "class", "example-number");
     			add_location(h1, file$7, 23, 6, 576);
-    			attr_dev(p0, "class", "sentence svelte-1p64fec");
+    			attr_dev(p0, "class", "sentence svelte-2727go");
     			add_location(p0, file$7, 24, 6, 624);
-    			attr_dev(div0, "class", "left svelte-1p64fec");
+    			attr_dev(div0, "class", "left svelte-2727go");
     			add_location(div0, file$7, 22, 4, 515);
-    			attr_dev(p1, "class", "sentence svelte-1p64fec");
+    			attr_dev(p1, "class", "sentence svelte-2727go");
     			add_location(p1, file$7, 27, 6, 749);
-    			attr_dev(button, "class", "card-selector svelte-1p64fec");
+    			attr_dev(button, "class", "card-selector svelte-2727go");
     			add_location(button, file$7, 28, 6, 804);
-    			attr_dev(div1, "class", "right svelte-1p64fec");
+    			attr_dev(div1, "class", "right svelte-2727go");
     			add_location(div1, file$7, 26, 4, 689);
-    			attr_dev(div2, "class", "example-card svelte-1p64fec");
+    			attr_dev(div2, "class", "example-card svelte-2727go");
     			add_location(div2, file$7, 21, 2, 468);
     		},
     		m: function mount(target, anchor) {
@@ -3320,7 +3340,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text("An error occurred! ");
     			t1 = text(t1_value);
-    			add_location(p, file$6, 46, 4, 1295);
+    			add_location(p, file$6, 46, 4, 1257);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -3499,7 +3519,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Getting sentence..";
-    			add_location(p, file$6, 40, 4, 1076);
+    			add_location(p, file$6, 40, 4, 1038);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -3595,13 +3615,13 @@ var app = (function () {
     	let t0;
     	let t1;
     	let t2;
-    	let h20_intro;
+    	let h20_transition;
     	let t3;
     	let h21;
     	let t4;
     	let t5;
     	let t6;
-    	let h21_intro;
+    	let h21_transition;
     	let t7;
     	let h3;
     	let h3_transition;
@@ -3641,11 +3661,11 @@ var app = (function () {
     			attr_dev(h20, "class", "svelte-cbti99");
     			add_location(h20, file$6, 30, 1, 641);
     			attr_dev(h21, "class", "svelte-cbti99");
-    			add_location(h21, file$6, 31, 1, 738);
-    			add_location(h3, file$6, 32, 1, 816);
-    			add_location(input, file$6, 33, 1, 903);
+    			add_location(h21, file$6, 31, 1, 719);
+    			add_location(h3, file$6, 32, 1, 778);
+    			add_location(input, file$6, 33, 1, 865);
     			attr_dev(button, "type", "button");
-    			add_location(button, file$6, 34, 1, 938);
+    			add_location(button, file$6, 34, 1, 900);
     			attr_dev(main, "class", "svelte-cbti99");
     			add_location(main, file$6, 29, 0, 633);
     		},
@@ -3706,19 +3726,15 @@ var app = (function () {
     		i: function intro(local) {
     			if (current) return;
 
-    			if (!h20_intro) {
-    				add_render_callback(() => {
-    					h20_intro = create_in_transition(h20, fly, { x: -200, duration: 1000 });
-    					h20_intro.start();
-    				});
-    			}
+    			add_render_callback(() => {
+    				if (!h20_transition) h20_transition = create_bidirectional_transition(h20, fade, {}, true);
+    				h20_transition.run(1);
+    			});
 
-    			if (!h21_intro) {
-    				add_render_callback(() => {
-    					h21_intro = create_in_transition(h21, fly, { x: -200, duration: 1000 });
-    					h21_intro.start();
-    				});
-    			}
+    			add_render_callback(() => {
+    				if (!h21_transition) h21_transition = create_bidirectional_transition(h21, fade, {}, true);
+    				h21_transition.run(1);
+    			});
 
     			add_render_callback(() => {
     				if (!h3_transition) h3_transition = create_bidirectional_transition(h3, fade, {}, true);
@@ -3729,6 +3745,10 @@ var app = (function () {
     			current = true;
     		},
     		o: function outro(local) {
+    			if (!h20_transition) h20_transition = create_bidirectional_transition(h20, fade, {}, false);
+    			h20_transition.run(0);
+    			if (!h21_transition) h21_transition = create_bidirectional_transition(h21, fade, {}, false);
+    			h21_transition.run(0);
     			if (!h3_transition) h3_transition = create_bidirectional_transition(h3, fade, {}, false);
     			h3_transition.run(0);
     			transition_out(key_block);
@@ -3736,6 +3756,8 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(main);
+    			if (detaching && h20_transition) h20_transition.end();
+    			if (detaching && h21_transition) h21_transition.end();
     			if (detaching && h3_transition) h3_transition.end();
     			key_block.d(detaching);
     			mounted = false;
@@ -4102,7 +4124,7 @@ var app = (function () {
     			if (if_block0) if_block0.c();
     			t = space();
     			if (if_block1) if_block1.c();
-    			attr_dev(main, "class", "svelte-1hnu5jn");
+    			attr_dev(main, "class", "svelte-1nmr3zb");
     			add_location(main, file$5, 21, 0, 449);
     		},
     		l: function claim(nodes) {
@@ -4295,23 +4317,16 @@ var app = (function () {
 
     const file$4 = "src/Review/Flashcard.svelte";
 
-    // (23:4) {:else}
+    // (22:4) {:else}
     function create_else_block(ctx) {
     	let div;
     	let h1;
+    	let t0_value = /*languages*/ ctx[4][/*data*/ ctx[1][/*cardIndex*/ ctx[0]].targLang] + "";
     	let t0;
-    	let t1_value = /*cardIndex*/ ctx[0] + 1 + "";
     	let t1;
+    	let h2;
+    	let t2_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targSentence + "";
     	let t2;
-    	let t3;
-    	let h3;
-    	let t4;
-    	let t5_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targLang + "";
-    	let t5;
-    	let t6;
-    	let h4;
-    	let t7_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targSentence + "";
-    	let t7;
     	let div_transition;
     	let current;
 
@@ -4319,41 +4334,29 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			h1 = element("h1");
-    			t0 = text("Card ");
-    			t1 = text(t1_value);
-    			t2 = text("/5");
-    			t3 = space();
-    			h3 = element("h3");
-    			t4 = text("Target: ");
-    			t5 = text(t5_value);
-    			t6 = space();
-    			h4 = element("h4");
-    			t7 = text(t7_value);
-    			add_location(h1, file$4, 24, 6, 626);
-    			add_location(h3, file$4, 25, 6, 662);
-    			add_location(h4, file$4, 26, 6, 712);
-    			attr_dev(div, "class", "side back svelte-1qcy7yd");
-    			add_location(div, file$4, 23, 4, 580);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			h2 = element("h2");
+    			t2 = text(t2_value);
+    			attr_dev(h1, "class", "svelte-xpcxkp");
+    			add_location(h1, file$4, 23, 6, 735);
+    			attr_dev(h2, "class", "svelte-xpcxkp");
+    			add_location(h2, file$4, 24, 6, 788);
+    			attr_dev(div, "class", "side back svelte-xpcxkp");
+    			add_location(div, file$4, 22, 4, 689);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, h1);
     			append_dev(h1, t0);
-    			append_dev(h1, t1);
-    			append_dev(h1, t2);
-    			append_dev(div, t3);
-    			append_dev(div, h3);
-    			append_dev(h3, t4);
-    			append_dev(h3, t5);
-    			append_dev(div, t6);
-    			append_dev(div, h4);
-    			append_dev(h4, t7);
+    			append_dev(div, t1);
+    			append_dev(div, h2);
+    			append_dev(h2, t2);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*cardIndex*/ 1) && t1_value !== (t1_value = /*cardIndex*/ ctx[0] + 1 + "")) set_data_dev(t1, t1_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 3) && t5_value !== (t5_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targLang + "")) set_data_dev(t5, t5_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 3) && t7_value !== (t7_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targSentence + "")) set_data_dev(t7, t7_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 3) && t0_value !== (t0_value = /*languages*/ ctx[4][/*data*/ ctx[1][/*cardIndex*/ ctx[0]].targLang] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 3) && t2_value !== (t2_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].targSentence + "")) set_data_dev(t2, t2_value);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -4380,7 +4383,7 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(23:4) {:else}",
+    		source: "(22:4) {:else}",
     		ctx
     	});
 
@@ -4391,19 +4394,12 @@ var app = (function () {
     function create_if_block$2(ctx) {
     	let div;
     	let h1;
+    	let t0_value = /*languages*/ ctx[4][/*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcLang] + "";
     	let t0;
-    	let t1_value = /*cardIndex*/ ctx[0] + 1 + "";
     	let t1;
+    	let h2;
+    	let t2_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcSentence + "";
     	let t2;
-    	let t3;
-    	let h3;
-    	let t4;
-    	let t5_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcLang + "";
-    	let t5;
-    	let t6;
-    	let h4;
-    	let t7_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcSentence + "";
-    	let t7;
     	let div_transition;
     	let current;
 
@@ -4411,41 +4407,29 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			h1 = element("h1");
-    			t0 = text("Card ");
-    			t1 = text(t1_value);
-    			t2 = text("/5");
-    			t3 = space();
-    			h3 = element("h3");
-    			t4 = text("Source: ");
-    			t5 = text(t5_value);
-    			t6 = space();
-    			h4 = element("h4");
-    			t7 = text(t7_value);
-    			add_location(h1, file$4, 18, 6, 429);
-    			add_location(h3, file$4, 19, 6, 465);
-    			add_location(h4, file$4, 20, 6, 514);
-    			attr_dev(div, "class", "side svelte-1qcy7yd");
-    			add_location(div, file$4, 17, 4, 388);
+    			t0 = text(t0_value);
+    			t1 = space();
+    			h2 = element("h2");
+    			t2 = text(t2_value);
+    			attr_dev(h1, "class", "svelte-xpcxkp");
+    			add_location(h1, file$4, 18, 6, 571);
+    			attr_dev(h2, "class", "svelte-xpcxkp");
+    			add_location(h2, file$4, 19, 6, 623);
+    			attr_dev(div, "class", "side svelte-xpcxkp");
+    			add_location(div, file$4, 17, 4, 530);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, h1);
     			append_dev(h1, t0);
-    			append_dev(h1, t1);
-    			append_dev(h1, t2);
-    			append_dev(div, t3);
-    			append_dev(div, h3);
-    			append_dev(h3, t4);
-    			append_dev(h3, t5);
-    			append_dev(div, t6);
-    			append_dev(div, h4);
-    			append_dev(h4, t7);
+    			append_dev(div, t1);
+    			append_dev(div, h2);
+    			append_dev(h2, t2);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*cardIndex*/ 1) && t1_value !== (t1_value = /*cardIndex*/ ctx[0] + 1 + "")) set_data_dev(t1, t1_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 3) && t5_value !== (t5_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcLang + "")) set_data_dev(t5, t5_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 3) && t7_value !== (t7_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcSentence + "")) set_data_dev(t7, t7_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 3) && t0_value !== (t0_value = /*languages*/ ctx[4][/*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcLang] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 3) && t2_value !== (t2_value = /*data*/ ctx[1][/*cardIndex*/ ctx[0]].srcSentence + "")) set_data_dev(t2, t2_value);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -4503,10 +4487,10 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			if_block.c();
-    			attr_dev(div0, "class", "flashcard svelte-1qcy7yd");
-    			add_location(div0, file$4, 15, 2, 340);
-    			attr_dev(div1, "class", "flashcard-container svelte-1qcy7yd");
-    			add_location(div1, file$4, 14, 0, 264);
+    			attr_dev(div0, "class", "flashcard svelte-xpcxkp");
+    			add_location(div0, file$4, 15, 2, 482);
+    			attr_dev(div1, "class", "flashcard-container svelte-xpcxkp");
+    			add_location(div1, file$4, 14, 0, 406);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4518,7 +4502,7 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(div1, "click", /*click_handler*/ ctx[4], false, false, false);
+    				dispose = listen_dev(div1, "click", /*click_handler*/ ctx[5], false, false, false);
     				mounted = true;
     			}
     		},
@@ -4592,6 +4576,16 @@ var app = (function () {
     		};
     	};
 
+    	const languages = {
+    		"English": "🇬🇧",
+    		"German": "🇩🇪",
+    		"Spanish": "🇪🇸",
+    		"French": "🇫🇷",
+    		"Italian": "🇮🇹",
+    		"Polish": "🇵🇱",
+    		"Russian": "🇷🇺"
+    	};
+
     	const writable_props = ["cardIndex", "data"];
 
     	Object.keys($$props).forEach(key => {
@@ -4605,7 +4599,13 @@ var app = (function () {
     		if ("data" in $$props) $$invalidate(1, data = $$props.data);
     	};
 
-    	$$self.$capture_state = () => ({ cardIndex, data, frontSide, flip });
+    	$$self.$capture_state = () => ({
+    		cardIndex,
+    		data,
+    		frontSide,
+    		flip,
+    		languages
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ("cardIndex" in $$props) $$invalidate(0, cardIndex = $$props.cardIndex);
@@ -4617,7 +4617,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [cardIndex, data, frontSide, flip, click_handler];
+    	return [cardIndex, data, frontSide, flip, languages, click_handler];
     }
 
     class Flashcard extends SvelteComponentDev {
@@ -4689,7 +4689,7 @@ var app = (function () {
     			add_location(button0, file$3, 15, 2, 368);
     			add_location(button1, file$3, 20, 2, 501);
     			add_location(button2, file$3, 25, 2, 634);
-    			attr_dev(div, "class", "flashcard-reaction-buttons svelte-1xm7zgm");
+    			attr_dev(div, "class", "flashcard-reaction-buttons svelte-8k09h4");
     			add_location(div, file$3, 14, 0, 325);
     		},
     		l: function claim(nodes) {
@@ -4861,7 +4861,7 @@ var app = (function () {
     /* src/Review/PracticeFlashcard.svelte generated by Svelte v3.38.2 */
     const file$2 = "src/Review/PracticeFlashcard.svelte";
 
-    // (27:2) {:catch error}
+    // (28:2) {:catch error}
     function create_catch_block$1(ctx) {
     	let p;
 
@@ -4869,7 +4869,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Error!";
-    			add_location(p, file$2, 27, 2, 684);
+    			add_location(p, file$2, 28, 2, 722);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -4886,7 +4886,7 @@ var app = (function () {
     		block,
     		id: create_catch_block$1.name,
     		type: "catch",
-    		source: "(27:2) {:catch error}",
+    		source: "(28:2) {:catch error}",
     		ctx
     	});
 
@@ -5201,6 +5201,12 @@ var app = (function () {
 
     // (18:8) {#key cardIndex}
     function create_key_block(ctx) {
+    	let h2;
+    	let t0;
+    	let t1_value = /*cardIndex*/ ctx[1] + 1 + "";
+    	let t1;
+    	let t2;
+    	let t3;
     	let flashcard;
     	let current;
 
@@ -5214,13 +5220,25 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			h2 = element("h2");
+    			t0 = text("Card ");
+    			t1 = text(t1_value);
+    			t2 = text("/5");
+    			t3 = space();
     			create_component(flashcard.$$.fragment);
+    			add_location(h2, file$2, 18, 8, 440);
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, h2, anchor);
+    			append_dev(h2, t0);
+    			append_dev(h2, t1);
+    			append_dev(h2, t2);
+    			insert_dev(target, t3, anchor);
     			mount_component(flashcard, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
+    			if ((!current || dirty & /*cardIndex*/ 2) && t1_value !== (t1_value = /*cardIndex*/ ctx[1] + 1 + "")) set_data_dev(t1, t1_value);
     			const flashcard_changes = {};
     			if (dirty & /*promisedData*/ 1) flashcard_changes.data = /*data*/ ctx[5];
     			if (dirty & /*cardIndex*/ 2) flashcard_changes.cardIndex = /*cardIndex*/ ctx[1];
@@ -5236,6 +5254,8 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h2);
+    			if (detaching) detach_dev(t3);
     			destroy_component(flashcard, detaching);
     		}
     	};
@@ -5251,7 +5271,7 @@ var app = (function () {
     	return block;
     }
 
-    // (24:2) {#if cardIndex > 4}
+    // (25:2) {#if cardIndex > 4}
     function create_if_block$1(ctx) {
     	let h1;
 
@@ -5259,7 +5279,7 @@ var app = (function () {
     		c: function create() {
     			h1 = element("h1");
     			h1.textContent = "Round of cards finished!";
-    			add_location(h1, file$2, 24, 4, 623);
+    			add_location(h1, file$2, 25, 4, 661);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -5273,7 +5293,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(24:2) {#if cardIndex > 4}",
+    		source: "(25:2) {#if cardIndex > 4}",
     		ctx
     	});
 
@@ -5336,7 +5356,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			info.block.c();
-    			attr_dev(main, "class", "svelte-tq8cg0");
+    			attr_dev(main, "class", "svelte-14gyc4t");
     			add_location(main, file$2, 8, 0, 196);
     		},
     		l: function claim(nodes) {
@@ -5626,7 +5646,7 @@ var app = (function () {
     	return block;
     }
 
-    // (70:4) {:catch error}
+    // (72:4) {:catch error}
     function create_catch_block(ctx) {
     	let p;
     	let t0;
@@ -5638,7 +5658,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text("An error occurred! ");
     			t1 = text(t1_value);
-    			add_location(p, file$1, 70, 6, 1827);
+    			add_location(p, file$1, 72, 6, 1875);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -5657,7 +5677,7 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(70:4) {:catch error}",
+    		source: "(72:4) {:catch error}",
     		ctx
     	});
 
@@ -5748,6 +5768,7 @@ var app = (function () {
 
     // (42:6) {#if data.length}
     function create_if_block_2(ctx) {
+    	let div;
     	let table;
     	let thead;
     	let tr;
@@ -5774,6 +5795,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			table = element("table");
     			thead = element("thead");
     			tr = element("tr");
@@ -5794,21 +5816,21 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(th0, "class", "svelte-1tu8tbr");
-    			add_location(th0, file$1, 45, 14, 1066);
-    			attr_dev(th1, "class", "svelte-1tu8tbr");
-    			add_location(th1, file$1, 46, 14, 1097);
-    			attr_dev(th2, "class", "svelte-1tu8tbr");
-    			add_location(th2, file$1, 47, 14, 1132);
-    			attr_dev(th3, "class", "svelte-1tu8tbr");
-    			add_location(th3, file$1, 48, 14, 1164);
-    			add_location(tr, file$1, 44, 12, 1047);
-    			add_location(thead, file$1, 43, 10, 1027);
-    			attr_dev(table, "class", "svelte-1tu8tbr");
-    			add_location(table, file$1, 42, 8, 1009);
+    			add_location(th0, file$1, 46, 14, 1101);
+    			add_location(th1, file$1, 47, 14, 1132);
+    			add_location(th2, file$1, 48, 14, 1167);
+    			add_location(th3, file$1, 49, 14, 1199);
+    			attr_dev(tr, "class", "svelte-1wgcbe1");
+    			add_location(tr, file$1, 45, 12, 1082);
+    			add_location(thead, file$1, 44, 10, 1062);
+    			attr_dev(table, "class", "svelte-1wgcbe1");
+    			add_location(table, file$1, 43, 8, 1044);
+    			attr_dev(div, "class", "database-table svelte-1wgcbe1");
+    			add_location(div, file$1, 42, 6, 1007);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, table, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, table);
     			append_dev(table, thead);
     			append_dev(thead, tr);
     			append_dev(tr, th0);
@@ -5874,7 +5896,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(table);
+    			if (detaching) detach_dev(div);
     			destroy_each(each_blocks, detaching);
     		}
     	};
@@ -5890,7 +5912,7 @@ var app = (function () {
     	return block;
     }
 
-    // (53:8) {#each data as sentence}
+    // (54:8) {#each data as sentence}
     function create_each_block(ctx) {
     	let tbody;
     	let tr;
@@ -5942,20 +5964,16 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "❌";
     			t9 = space();
-    			attr_dev(td0, "class", "svelte-1tu8tbr");
-    			add_location(td0, file$1, 55, 14, 1353);
-    			attr_dev(td1, "class", "svelte-1tu8tbr");
-    			add_location(td1, file$1, 56, 14, 1395);
-    			attr_dev(td2, "class", "svelte-1tu8tbr");
-    			add_location(td2, file$1, 57, 14, 1441);
-    			attr_dev(td3, "class", "svelte-1tu8tbr");
-    			add_location(td3, file$1, 58, 14, 1484);
-    			attr_dev(button, "class", "delete-button svelte-1tu8tbr");
-    			add_location(button, file$1, 59, 18, 1535);
-    			attr_dev(td4, "class", "svelte-1tu8tbr");
-    			add_location(td4, file$1, 59, 14, 1531);
-    			add_location(tr, file$1, 54, 12, 1318);
-    			add_location(tbody, file$1, 53, 10, 1298);
+    			add_location(td0, file$1, 56, 14, 1388);
+    			add_location(td1, file$1, 57, 14, 1430);
+    			add_location(td2, file$1, 58, 14, 1476);
+    			add_location(td3, file$1, 59, 14, 1519);
+    			attr_dev(button, "class", "delete-button svelte-1wgcbe1");
+    			add_location(button, file$1, 60, 18, 1570);
+    			add_location(td4, file$1, 60, 14, 1566);
+    			attr_dev(tr, "class", "svelte-1wgcbe1");
+    			add_location(tr, file$1, 55, 12, 1353);
+    			add_location(tbody, file$1, 54, 10, 1333);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tbody, anchor);
@@ -6012,7 +6030,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(53:8) {#each data as sentence}",
+    		source: "(54:8) {#each data as sentence}",
     		ctx
     	});
 
@@ -6051,7 +6069,7 @@ var app = (function () {
     	return block;
     }
 
-    // (75:2) {#if practiceMode}
+    // (77:2) {#if practiceMode}
     function create_if_block(ctx) {
     	let practiceflashcard;
     	let current;
@@ -6090,7 +6108,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(75:2) {#if practiceMode}",
+    		source: "(77:2) {#if practiceMode}",
     		ctx
     	});
 
@@ -6118,7 +6136,7 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			t2 = space();
     			if (if_block3) if_block3.c();
-    			attr_dev(main, "class", "svelte-1tu8tbr");
+    			attr_dev(main, "class", "svelte-1wgcbe1");
     			add_location(main, file$1, 20, 0, 494);
     		},
     		l: function claim(nodes) {
@@ -6317,6 +6335,7 @@ var app = (function () {
     const file = "src/App.svelte";
 
     function create_fragment(ctx) {
+    	let body;
     	let nav;
     	let h1;
     	let a0;
@@ -6341,6 +6360,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			body = element("body");
     			nav = element("nav");
     			h1 = element("h1");
     			a0 = element("a");
@@ -6353,32 +6373,35 @@ var app = (function () {
     			a2.textContent = "REVIEW";
     			t5 = space();
     			create_component(router.$$.fragment);
-    			attr_dev(a0, "class", "nav-button svelte-1m9jepm");
+    			attr_dev(a0, "class", "nav-button svelte-se4tzg");
     			attr_dev(a0, "href", "/#/");
-    			add_location(a0, file, 11, 2, 256);
-    			attr_dev(a1, "class", "nav-button svelte-1m9jepm");
+    			add_location(a0, file, 11, 3, 265);
+    			attr_dev(a1, "class", "nav-button svelte-se4tzg");
     			attr_dev(a1, "href", "/#/create-dashboard");
-    			add_location(a1, file, 12, 2, 298);
-    			attr_dev(a2, "class", "nav-button svelte-1m9jepm");
+    			add_location(a1, file, 12, 3, 308);
+    			attr_dev(a2, "class", "nav-button svelte-se4tzg");
     			attr_dev(a2, "href", "/#/review-dashboard");
-    			add_location(a2, file, 13, 2, 360);
-    			attr_dev(h1, "class", "svelte-1m9jepm");
-    			add_location(h1, file, 10, 1, 249);
-    			add_location(nav, file, 9, 0, 242);
+    			add_location(a2, file, 13, 3, 371);
+    			attr_dev(h1, "class", "svelte-se4tzg");
+    			add_location(h1, file, 10, 2, 257);
+    			add_location(nav, file, 9, 1, 249);
+    			attr_dev(body, "class", "svelte-se4tzg");
+    			add_location(body, file, 8, 0, 241);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, nav, anchor);
+    			insert_dev(target, body, anchor);
+    			append_dev(body, nav);
     			append_dev(nav, h1);
     			append_dev(h1, a0);
     			append_dev(h1, t1);
     			append_dev(h1, a1);
     			append_dev(h1, t3);
     			append_dev(h1, a2);
-    			insert_dev(target, t5, anchor);
-    			mount_component(router, target, anchor);
+    			append_dev(body, t5);
+    			mount_component(router, body, null);
     			current = true;
     		},
     		p: noop,
@@ -6392,9 +6415,8 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(nav);
-    			if (detaching) detach_dev(t5);
-    			destroy_component(router, detaching);
+    			if (detaching) detach_dev(body);
+    			destroy_component(router);
     		}
     	};
 

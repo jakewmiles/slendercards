@@ -16,6 +16,7 @@
     {#if data.length}
       {#if cardIndex < 5}
         {#key cardIndex}
+        <h2>Card {cardIndex+1}/5</h2>
         <Flashcard {data} {cardIndex}/>
         {/key}
         <ReactionButtons {data} bind:cardIndex={cardIndex} bind:frontSide={frontSide}/>
@@ -36,7 +37,7 @@
     align-items: center;
     text-align: center;
     padding: 1em;
-    max-width: 800px;
+    max-width: 500px;
     margin: 0 auto;
   }
 </style>

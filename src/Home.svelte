@@ -1,29 +1,26 @@
 <main>
   <div class="container">
-	  <h1>Welcome to <img src='animated-logo.svg' alt='slendercards'></h1>
+	  <h1>Welcome to </h1>
+    <img src='animated-logo.svg' alt='slendercards'>
   </div>
 </main>
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
   .container {
+    text-align: center;
     display: flex;
     flex-direction: column;
+    color: white;
+    padding-top: 150px;
+    align-items: center;
   }
 
   h1 {
-    padding-top: 150px;
     display: flex;
     flex-direction: column;
   }
 
-  /* .nav-button {
-    font-size: 72px;
-  } */
+  img {
+    width: 70%;
+  }
 </style>

@@ -36,29 +36,31 @@
 
 <style>
   .example-card {
+		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: fit-content;
 		padding: 0;
 	}
 
 	.left {
+		width: 50%;
 		display: flex;
 	}
 
 	.right {
+		width: 50%;
 		display: flex;
 	}
 
 	.sentence {
 		margin: 10px;
-  	width: 400px;
-		height: 60px;
+		width: 100%;
+		height: 100%;
+		padding: 5px;
 		overflow: scroll;
-  	box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
-    						0 5px 15px 0 rgba(0,0,0,0.08);
-  	background-color: #ffffff;
+  	box-shadow: 0 15px 30px 0 rgba(109, 109, 109, 0.208);
+  	background-color: rgb(30, 30, 30);
   	border-radius: 0.5rem;
 		border-left: 0 solid #ff6600;
 		transition: border-left 150ms ease-in-out, padding-left 150ms ease-in-out;

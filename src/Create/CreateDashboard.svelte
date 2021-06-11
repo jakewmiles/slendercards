@@ -42,27 +42,4 @@
     max-width: 800px;
     margin: 0 auto;
   }
-
-  h1 {
-    margin: 0;
-  }
-
-  .lang-container {
-    display: flex;
-    justify-content: center;
-  }
-
-  .src-lang-list {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    padding: 10px;
-  }
-
-  .targ-lang-list {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
-    padding: 10px;
-  }
 </style>

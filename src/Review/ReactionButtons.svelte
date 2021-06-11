@@ -33,8 +33,9 @@
 <style>
   .flashcard-reaction-buttons {
     display: flex;
+    flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-    font-size: 50px;
+    font-size: 200%;
   }
 </style>
