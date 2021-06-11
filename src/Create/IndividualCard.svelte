@@ -1,11 +1,6 @@
 <script>
 	import { fade, fly } from 'svelte/transition';
-  export let index;
-  export let example;
-  export let srcEmoji;
-	export let srcLang;
-  export let targEmoji;
-	export let targLang;
+  export let index, example, srcEmoji, srcLang, targEmoji, targLang;
   let visible = true;
 
 	const postSentence = async () => {

@@ -32,11 +32,6 @@ const flashcardSchema = new Schema({
     required: true,
     type: Number,
     default: 0,
-  },
-  grade: {
-    required: true,
-    type: Number,
-    default: 0,
   }
 });
 

@@ -1,5 +1,6 @@
 <script>
 	import IndividualCard from './IndividualCard.svelte';
+  import { fly, fade } from 'svelte/transition';
 	export let srcLang;
 	export let targLang;
 	export let srcEmoji;
@@ -27,9 +28,9 @@
 </script>
 
 <main>
-	<h2>1. Search for a {srcEmoji} word, phrase or sentence</h2>
-	<h2>2. See {targEmoji} translations!</h2>
-	<h3>Click the ✅ next to any sentence pair to create a flashcard!</h3>
+	<h2 in:fly={{x: -200, duration: 1000}}>1. Search for a {srcEmoji} word, phrase or sentence</h2>
+	<h2 in:fly={{x: -200, duration: 1000}}>2. See {targEmoji} translations!</h2>
+	<h3 transition:fade>Click the ✅ next to any sentence pair to create a flashcard!</h3>
 	<input bind:value={phraseQuery}/>
 	<button type="button" on:click={fetchSentences}>
 		Submit

@@ -1,7 +1,7 @@
 <script>
 	import Router from 'svelte-spa-router';
 	import Home from './Home.svelte';
-	import ChooseLanguages from './Create/ChooseLanguages.svelte';
+	import CreateDashboard from './Create/CreateDashboard.svelte';
 	import ReviewDashboard from './Review/ReviewDashboard.svelte';
 	let reviewMode;
 
@@ -10,14 +10,14 @@
 <nav>
 	<h1>
 		<a class='nav-button' href='/#/'>🏠</a>
-		<a class='nav-button' href='/#/choose-languages'>CREATE</a>
+		<a class='nav-button' href='/#/create-dashboard'>CREATE</a>
 		<a class='nav-button' href='/#/review-dashboard'>REVIEW</a>
 	</h1>
 </nav>
 
 <Router routes = {{
 	'/' : Home,
-	'/choose-languages' : ChooseLanguages,
+	'/create-dashboard' : CreateDashboard,
 	'/review-dashboard' : ReviewDashboard
 }}/>
 
