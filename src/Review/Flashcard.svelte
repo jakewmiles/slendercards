@@ -12,24 +12,23 @@
   const languages = {'English':'🇬🇧', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱', 'Russian':'🇷🇺'}
 </script>
 
-<div class='flashcard-container' on:click={() => {
+  <div class='flashcard' on:click={() => {
     frontSide = !frontSide
     flipped = true;
   }}>
-  <div class='flashcard'>
     {#if frontSide}
     <div transition:flip class='side'>
-      <h1>{languages[data[cardIndex].srcLang]}</h1>
-      <h2>{data[cardIndex].srcSentence}</h2>
+      <h1 class='lang'>{languages[data[cardIndex].srcLang]}</h1>
+      <h2 class='sentence'>{data[cardIndex].srcSentence}</h2>
     </div>
     {:else}
     <div transition:flip class='side back'>
-      <h1>{languages[data[cardIndex].targLang]}</h1>
-      <h2>{data[cardIndex].targSentence}</h2>
+      <h1 class='lang'>{languages[data[cardIndex].targLang]}</h1>
+      <h2 class='sentence'>{data[cardIndex].targSentence}</h2>
     </div>
     {/if}
   </div>
-</div>
+
 
 <style>
   h1 {
@@ -38,11 +37,13 @@
   }
 
   h2 {
-    font-size: 30px;
+    font-size: 24px;
     margin: 0;
   }
 
-  .flashcard-container {
+  .flashcard {
+    display: grid;
+    grid-template-rows: 0.1fr 0.9fr;
     position: relative;
     margin: 50px;
     min-width: 300px;
@@ -51,11 +52,12 @@
     perspective: 600;
   }
 
-  .flashcard {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    perspective: 600;
+  .lang {
+    grid-row: 1;
+  }
+
+  .sentence {
+    grid-row: 2;
   }
 
   .side {

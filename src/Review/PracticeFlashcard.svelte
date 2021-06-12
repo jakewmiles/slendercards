@@ -22,7 +22,7 @@
           <Flashcard {data} {cardIndex} bind:flipped={flipped}/>
         {/key}
         {#if flipped}
-          <ReactionButtons {data} bind:cardIndex={cardIndex} bind:frontSide={frontSide}/>
+          <ReactionButtons {data} bind:cardIndex={cardIndex} bind:frontSide={frontSide} bind:flipped={flipped}/>
         {/if}
       {/if}
     {/if}

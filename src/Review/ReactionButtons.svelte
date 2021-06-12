@@ -1,5 +1,5 @@
 <script>
-  export let data, cardIndex, frontSide;
+  export let data, cardIndex, frontSide, flipped;
 
   const updateFlashcardScore = async (id, value) => {
     await fetch(`http://localhost:3000/flashcards/${id}`, {
@@ -14,19 +14,22 @@
 
 <div class='flashcard-reaction-buttons'>
   <button on:click={() => {
+    updateFlashcardScore(data[cardIndex]._id, 0)
+    cardIndex++;
+    frontSide = true;
+    flipped = false;
+  }}>😭</button>
+  <button on:click={() => {
     updateFlashcardScore(data[cardIndex]._id, 1)
     cardIndex++;
     frontSide = true;
-  }}>😭</button>
-  <button on:click={() => {
-    updateFlashcardScore(data[cardIndex]._id, 2)
-    cardIndex++;
-    frontSide = true;
+    flipped = false;
   }}>😐</button>
   <button on:click={() => {
     updateFlashcardScore(data[cardIndex]._id, 3)
     cardIndex++;
     frontSide = true;
+    flipped = false;
   }}>😄</button>
 </div>
 
