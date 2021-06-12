@@ -1,11 +1,12 @@
 <script>
   import Flashcard from "./Flashcard.svelte";
   import ReactionButtons from "./ReactionButtons.svelte";
-  import { fade } from 'svelte/transition';
   export let promisedData, numberOfCards;
   let cardIndex = 0;
   let frontSide = true;
   let flipped = false;
+  
+
 </script>
 
 <main>
