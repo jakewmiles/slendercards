@@ -1,5 +1,5 @@
 <script>
-  export let cardIndex, data;
+  export let cardIndex, data, flipped;
   let frontSide = true;
   const flip = ({delay = 0, duration = 500}) => {
     return {
@@ -12,7 +12,10 @@
   const languages = {'English':'🇬🇧', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱', 'Russian':'🇷🇺'}
 </script>
 
-<div class='flashcard-container' on:click={() => frontSide = !frontSide}>
+<div class='flashcard-container' on:click={() => {
+    frontSide = !frontSide
+    flipped = true;
+  }}>
   <div class='flashcard'>
     {#if frontSide}
     <div transition:flip class='side'>

@@ -8,11 +8,9 @@
 </script>
 <body>
 	<nav>
-		<h1>
 			<a class='nav-button' href='/#/'>🏠</a>
 			<a class='nav-button' href='/#/create-dashboard'>CREATE</a>
 			<a class='nav-button' href='/#/review-dashboard'>REVIEW</a>
-		</h1>
 	</nav>
 
 	<Router routes = {{
@@ -31,19 +29,22 @@
 		min-width: 600px;
 	}
 
-	h1 {
+	nav {
+		display: flex;
 		text-align: center;
-		margin-bottom: 10px;
-		font-size: 200%;
+		overflow-x: scroll;
 	}
 
 	a {
 		color: #d2661e;
+		font-size: 200%;
 	}
 
 	.nav-button {
-		padding-left: 50px;
-		padding-right: 50px;
+		padding-top: 10px;
+		padding-left: 75px;
+		padding-right: 75px;
+		width: 33%;
 	}
 
 </style>

@@ -78,8 +78,8 @@
     color: #000;
   }
   .language-choice:hover:after {
-    -webkit-transform: scale(2) rotate(180deg);
-    transform: scale(2) rotate(180deg);
+    -webkit-transform: scale(1) rotate(180deg);
+    transform: scale(1) rotate(180deg);
     background: #FFF;
   }
 </style>

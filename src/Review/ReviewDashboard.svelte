@@ -15,31 +15,39 @@
   }
 
   let practiceMode = false;
-  // let visible = true;
+  let numberOfCards = 1;
+  let numberOfRounds = 1;
 </script>
 
-<main>
-
-  {#if !practiceMode}
-    <button on:click={() => {
-      practiceMode = !practiceMode;
-    }}>PRACTICE</button>
-  {/if}
-  
-  {#if practiceMode}
-    <button on:click={() => {
-      practiceMode = !practiceMode;
-    }}>Go back!</button>
-  {/if}
+<main>  
   
   {#if !practiceMode}
-    {#await fetchAllFlashcards()}
-      <p>Fetching all flashcards...</p>
-    {:then data}
-      {#if !data.length}
-        <p>No flashcards in the database! Create some flashcards first...</p>
-      {/if}
-      {#if data.length}
+  {#await fetchAllFlashcards()}
+  <p>Fetching all flashcards...</p>
+  {:then data}
+  {#if !data.length}
+  <p>No flashcards saved! Create some flashcards first...</p>
+  {/if}
+  {#if data.length}
+  <div id='practice-session-selector'>
+    <div id='card-quantity-selector'>
+      <label for='number-of-cards'>How many cards would you like to review? (1-10)</label>
+      <input type='number' id='number-of-cards' name='number-of-cards' min='1' max='10' bind:value={numberOfCards}>
+    </div>
+    <button id='review-start' on:click={() => {
+      practiceMode = !practiceMode;
+    }}>➡️</button> 
+        <div id='session-preview'>
+          <p>Review session of {numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'} </p>
+          {#if numberOfCards * numberOfRounds > data.length}
+          <p style='color: red'>Note that you will only be shown {data.length} cards</p>
+          {/if}
+        </div>
+      </div>
+      
+      <div id='database-length'>
+        <p>{data.length} cards currently saved</p>
+      </div>
       <div class='database-table'>
         <table>
           <thead>
@@ -50,8 +58,8 @@
               <th>targSentence</th>
             </tr>
           </thead>
-        <!-- {#if visible} -->
-        {#each data as sentence} 
+          <!-- {#if visible} -->
+          {#each data as sentence} 
           <tbody>
             <tr transition:fade>
               <td>{sentence.srcLang}</td>
@@ -64,21 +72,24 @@
               }}>❌</button></td>
             </tr>
           </tbody>
-        {/each}
-        <!-- {/if} -->
+          {/each}
+          <!-- {/if} -->
         </table>
       </div>
-    {/if}
-    {:catch error}
+      {/if}
+      {:catch error}
       <p>An error occurred! {error}</p>
-    {/await}
-  {/if}
-            
-  {#if practiceMode}
-    <PracticeFlashcard promisedData={fetchAllFlashcards()}/>
-  {/if}
-
-</main>
+      {/await}
+      {/if}
+      
+      {#if practiceMode}
+        <PracticeFlashcard promisedData={fetchAllFlashcards()} {numberOfCards}/>
+        <button on:click={() => {
+          practiceMode = !practiceMode;
+        }}>Go back!</button>
+      {/if}
+      
+    </main>
 
 <style>
   main {
@@ -96,12 +107,43 @@
     font-size: 30px;
   }
 
+  #review-start {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-size: 30px;
+  }
+
   .database-table {
     overflow-y: auto;
   }
 
   table, tr {
-    width: 50%;
+    width: 100%;
     border: 1px solid white;
+  }
+
+  #practice-session-selector {
+    display: grid;
+    height: 80px;
+    grid-template-columns: 0.5fr 0.5fr 2fr;
+  }
+
+  #database-length {
+    padding: 10px;
+  }
+
+  #card-quantity-selector {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #session-preview > p {
+    margin: 0;
+    text-align: left;
+    font-size: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
   }
 </style>
