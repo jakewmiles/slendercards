@@ -2,7 +2,17 @@
   import { fly } from 'svelte/transition';
   export let languagesChosen, srcLang, srcLangHandler, targLang, targLangHandler;
 
-  const languages = {'English':'🇬🇧', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱', 'Russian':'🇷🇺'}
+  const languages = {
+    'English':'🇬🇧',
+    'German':'🇩🇪',
+    'Spanish':'🇪🇸',
+    'French':'🇫🇷',
+    'Italian':'🇮🇹',
+    'Polish':'🇵🇱',
+    'Russian':'🇷🇺',
+    'Portuguese':'🇵🇹',
+    'Japanese':'🇯🇵'
+  }
 
 </script>
 

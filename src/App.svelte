@@ -33,6 +33,7 @@
 		display: flex;
 		text-align: center;
 		overflow-x: scroll;
+		z-index: 3;
 	}
 
 	a {
@@ -47,5 +48,6 @@
 		width: 33%;
 	}
 
+	
 </style>
 

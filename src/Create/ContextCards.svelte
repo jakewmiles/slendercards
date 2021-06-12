@@ -1,6 +1,6 @@
 <script>
 	import IndividualCard from './IndividualCard.svelte';
-  import { fly, fade } from 'svelte/transition';
+  import { fade } from 'svelte/transition';
 	export let srcLang;
 	export let targLang;
 	export let srcEmoji;

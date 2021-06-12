@@ -19,9 +19,11 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "cpx": "^1.5.0",
     "google-translate-tts": "*",
     "google-tts-api": "^2.0.2",
     "mongoose": "^5.12.13",
+    "play-sound": "^1.1.3",
     "reverso-api": "^2.16.2",
     "sirv-cli": "^1.0.0",
     "svelte-spa-router": "^3.1.0"

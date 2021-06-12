@@ -1,4 +1,6 @@
 <script>
+  import TtsAudioPlayer from './TtsAudioPlayer.svelte';
+
   export let cardIndex, data, flipped;
   let frontSide = true;
   const flip = ({delay = 0, duration = 500}) => {
@@ -9,7 +11,16 @@
       opacity: ${1 - u};`
     };
   }
-  const languages = {'English':'🇬🇧', 'German':'🇩🇪','Spanish':'🇪🇸', 'French':'🇫🇷', 'Italian':'🇮🇹', 'Polish':'🇵🇱', 'Russian':'🇷🇺'}
+  const languages = {'English':'🇬🇧',
+                     'German':'🇩🇪',
+                     'Spanish':'🇪🇸',
+                     'French':'🇫🇷',
+                     'Italian':'🇮🇹',
+                     'Polish':'🇵🇱',
+                     'Russian':'🇷🇺',
+                     'Portuguese':'🇵🇹',
+                     'Japanese':'🇯🇵'}
+  
 </script>
 
   <div class='flashcard' on:click={() => {
@@ -20,11 +31,13 @@
     <div transition:flip class='side'>
       <h1 class='lang'>{languages[data[cardIndex].srcLang]}</h1>
       <h2 class='sentence'>{data[cardIndex].srcSentence}</h2>
+      <TtsAudioPlayer src={data[cardIndex].srcTTS}/>
     </div>
     {:else}
     <div transition:flip class='side back'>
       <h1 class='lang'>{languages[data[cardIndex].targLang]}</h1>
       <h2 class='sentence'>{data[cardIndex].targSentence}</h2>
+      <TtsAudioPlayer src={data[cardIndex].targTTS}/>
     </div>
     {/if}
   </div>

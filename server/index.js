@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const tts = require('google-translate-tts');
 const router = require('./router');
 const Reverso = require('reverso-api');
 const reverso = new Reverso();
@@ -19,7 +20,6 @@ const getSentences = (phrase, srcLang, targLang) => {
 				console.log(err);
 			})
 };
-
 
 app.post('/scrape', async (req, res) => {
   try {

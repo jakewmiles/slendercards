@@ -19,6 +19,14 @@ const flashcardSchema = new Schema({
     required: true,
     type: String,
   },
+  srcTTS: {
+    required: true,
+    type: String,
+  },
+  targTTS: {
+    required: true,
+    type: String,
+  },
   dateCreated: {
     required: true,
     type: Date,
