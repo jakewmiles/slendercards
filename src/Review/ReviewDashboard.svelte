@@ -16,7 +16,6 @@
 
   let practiceMode = false;
   let numberOfCards = 1;
-  let numberOfRounds = 1;
 </script>
 
 <main>  
@@ -39,7 +38,7 @@
     }}>➡️</button> 
         <div id='session-preview'>
           <p>Review session of {numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'} </p>
-          {#if numberOfCards * numberOfRounds > data.length}
+          {#if numberOfCards > data.length}
           <p style='color: red'>Note that you will only be shown {data.length} cards</p>
           {/if}
         </div>
