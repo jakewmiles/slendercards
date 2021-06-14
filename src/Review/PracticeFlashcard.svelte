@@ -2,12 +2,9 @@
   import Flashcard from "./Flashcard.svelte";
   import ReactionButtons from "./ReactionButtons.svelte";
   export let numberOfCards, filteredFlashcards;
-  console.log(filteredFlashcards);
   let cardIndex = 0;
   let frontSide = true;
   let flipped = false;
-  
-
 </script>
 
 <main>

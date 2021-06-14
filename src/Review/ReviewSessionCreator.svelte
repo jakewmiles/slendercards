@@ -1,11 +1,16 @@
 <script>
   export let practiceMode, numberOfCards, filteredFlashcards;
+  const checkNumOfCards = (value) => {
+    if (value > 10) value = 0;
+    return value;
+  }
+
 </script>
 
 <div id='practice-session-selector'>
   <div id='card-quantity-selector'>
     <label for='number-of-cards'>How many cards would you like to review? (1-10)</label>
-    <input type='number' id='number-of-cards' name='number-of-cards' min='1' max='10' bind:value={numberOfCards}>
+    <input type='number' id='number-of-cards' name='number-of-cards' min='1' max='10' onkeydown="return false;" bind:value={numberOfCards}>
   </div>
   <button id='review-start' on:click={() => {
     practiceMode = !practiceMode;
