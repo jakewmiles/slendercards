@@ -7,6 +7,7 @@
 	let newSearch = '';
 	let startIndex = 0;
 	let endIndex = 5;
+	let visible = true;
 
 	const fetchSentences = async () => {
 		if (!phraseQuery) return;
@@ -28,9 +29,9 @@
 </script>
 
 <main>
-	<h2 transition:fade>1. Search for a {srcEmoji} word, phrase or sentence</h2>
+	<h2 transition:fade>1. Search for a {srcEmoji} word, phrase or sentence...</h2>
 	<h2 transition:fade>2. See {targEmoji} translations!</h2>
-	<h3 transition:fade>Click the ✅ next to any sentence pair to create a flashcard!</h3>
+	<h3 transition:fade>Click ✅ to create a Text-to-Speech flashcard!</h3>
 	<input placeholder='Search...' bind:value={phraseQuery}/>
 	<button class='animated-button fetch-sentences' on:click={fetchSentences}>
 		Submit
@@ -44,14 +45,21 @@
 				startIndex += 5;
 				endIndex += 5;
 				if (endIndex > data.examples.length) {
+					visible = true;
 					startIndex = 0;
 					endIndex = 5;
 				}
 			}}>↺</button>
-			<p>Found {data.examples.length} sentences. Showing sentences {startIndex + 1} - {endIndex}</p>
-				{#each data.examples.slice(startIndex, endIndex) as example}
-					<IndividualCard {example} {srcEmoji} {srcLang} {targEmoji} {targLang}/>
+			<div id='sentences-grid'>
+				<p>Found {data.examples.length} sentences. Showing sentences {startIndex + 1} - {endIndex > data.examples.length ? data.examples.length : endIndex}</p>
+				<!-- {#key startIndex} -->
+				{#each data.examples.slice(startIndex, endIndex) as example, i}
+					<div class='individual-sentence'>
+						<IndividualCard class={i} {visible} {example} {srcEmoji} {srcLang} {targEmoji} {targLang}/>
+					</div>
 				{/each}
+				<!-- {/key} -->
+			</div>
 			{:catch error}
 				<p>An error occurred! {error}</p>
 			{/await}
@@ -75,6 +83,7 @@
 
 	input {
 		height: 40px;
+		width: 400px;
 		background-color: #000;
 		color: #FFF;
 	}
@@ -83,15 +92,10 @@
 		color: #FFF;
 	}
 
-	/* .animated-button {
-    color: white;
-    height: 40px;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-    display: inline-block;
-  } */
+	#sentences-grid {
+		display: grid;
+		grid-template-rows: repeat(min);
+	}
 
 	.fetch-sentences {
     z-index: 2;

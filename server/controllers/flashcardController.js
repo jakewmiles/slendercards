@@ -72,10 +72,8 @@ exports.deleteFlashcard = async (req, res) => {
 }
 
 exports.updateFlashcardScore = async (req, res) => {
-  console.log('IN HERE');
   const { incValue } = req.body;
   const id = req.params.id;
-  console.log(incValue, id);
     try {
       await Flashcard.findByIdAndUpdate(
         id, 

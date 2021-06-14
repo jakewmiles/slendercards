@@ -4,17 +4,18 @@
 </script>
 
 <main>
+  <h3>Start a review session</h3>
   <div id='practice-session-selector'>
     <div id='card-quantity-selector'>
       <label for='number-of-cards'>How many cards would you like to review? (1-10)</label>
       <input type='number' id='number-of-cards' name='number-of-cards' min='1' max='10' onkeydown="return false;" bind:value={numberOfCards}>
+      <button class='animated-button review-start' on:click={() => {
+        if (!filteredFlashcards.length) return;
+        practiceMode = !practiceMode;
+      }}>Begin</button> 
     </div>
-    <button id='review-start' on:click={() => {
-      if (!filteredFlashcards.length) return;
-      practiceMode = !practiceMode;
-    }}>➡️</button> 
-      <div id='session-preview'>
-        <p>Review session of {numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'} </p>
+    <div id='session-preview'>
+      <p>Review session of {numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'} </p>
       {#if numberOfCards > filteredFlashcards.length && filteredFlashcards.length > 0}
         <p style='color: red'>Note that you will only be shown {filteredFlashcards.length} {filteredFlashcards.length === 1 ? 'card' : 'cards'} </p>
       {/if}
@@ -25,33 +26,72 @@
 
 <style>
   main {
+    margin-top: 10px;
     border: 1px solid white;
-    padding: 50px;
+    padding: 0px 0px 25px 25px;
+    height: 175px;
   }
 
-  #review-start {
-    background-color: transparent;
-    border: none;
-    text-align: center;
-    font-size: 30px;
+  h3 {
+    margin-top: 10px;
+  }
+
+  input {
+    margin-top: 5px;
+		background-color: rgb(30, 30, 30);
+		color: #FFF;
+	}
+
+	input::placeholder {
+		color: #FFF;
+	}
+
+  .review-start {
+    z-index: 2;
+    height: 40px;
+    width: 120px;
+    transition: all 0.15s ease;
+    overflow: hidden;
+  }
+  .review-start:after {
+    position: absolute;
+    content: " ";
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.15s ease;
+  }
+  .review-start:hover {
+    color: #000;
+  }
+  .review-start:hover:after {
+    -webkit-transform: scale(1) rotate(180deg);
+    transform: scale(1) rotate(180deg);
+    background: #FFF;
   }
 
   #practice-session-selector {
-    display: grid;
+    display: flex;
     height: 80px;
-    grid-template-columns: 0.5fr 0.5fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   #card-quantity-selector {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 60%;
+    height: 140px;
   }
 
   #session-preview > p {
-    margin: 0;
-    text-align: left;
+    min-width: 350px;
+    margin-left: 25px;
+    text-align: center;
     font-size: 16px;
-    padding: 10px;
     display: flex;
     flex-direction: column;
   }

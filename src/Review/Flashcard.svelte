@@ -1,8 +1,7 @@
 <script>
   import TtsAudioPlayer from './TtsAudioPlayer.svelte';
+  export let cardIndex, data, flipped, frontSide;
 
-  export let cardIndex, data, flipped;
-  let frontSide = true;
   const flip = ({delay = 0, duration = 400}) => {
     return {
       delay,

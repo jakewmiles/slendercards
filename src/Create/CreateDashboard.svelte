@@ -25,12 +25,12 @@
   {/if}
 
   {#if languagesChosen && srcLang && targLang}
-    <ContextCards {srcLang}{srcEmoji} {targLang}{targEmoji}/>
-    <button class='animated-button return-button' on:click={() => {
+    <!-- <button class='animated-button return-button' on:click={() => {
       languagesChosen = !languagesChosen
       srcLang = !srcLang
       targLang = !targLang
-    }}>Go back!</button>
+    }}>Go back!</button> -->
+    <ContextCards {srcLang}{srcEmoji} {targLang}{targEmoji}/>
   {/if}
 
 </main>
@@ -39,11 +39,12 @@
   main {
     text-align: center;
     padding: 0;
-    max-width: 800px;
+    max-width: 779px;
+    min-width: 650px;
     margin: 0 auto;
   }
 
-	.return-button {
+	/* .return-button {
     z-index: 2;
     transition: all 0.15s ease;
     overflow: hidden;
@@ -65,5 +66,5 @@
     -webkit-transform: scale(1) rotate(180deg);
     transform: scale(1) rotate(180deg);
     background: #FFF;
-  }
+  } */
 </style>

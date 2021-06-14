@@ -1,7 +1,6 @@
 <script>
 	import { fade, fly } from 'svelte/transition';
-  export let example, srcEmoji, srcLang, targEmoji, targLang;
-  let visible = true;
+  export let visible, example, srcEmoji, srcLang, targEmoji, targLang;
 	let examplePosted = false;
 
 	const postSentence = async () => {
@@ -25,11 +24,11 @@
 </script>
 
 {#if visible}
-  <div class="example-card" transition:fade>
-    <div class="left" in:fly={{x: -200, duration: 1000}}>	
+  <div class="example-card" out:fade>
+    <div class="left" in:fly={{x: -200, duration: 500}}>	
       <p class="sentence">{srcEmoji} {example.from}</p>
     </div>
-    <div class="right" in:fly={{x: 200, duration: 1000}}>
+    <div class="right" in:fly={{x: 200, duration: 500}}>
       <p class="sentence">{targEmoji} {example.to}</p>
       <button class="card-selector" on:click={() => {
         visible = false;
@@ -42,9 +41,9 @@
 <style>
   .example-card {
 		width: 100%;
+		align-items: baseline;
 		display: flex;
 		justify-content: center;
-		align-items: center;
 		padding: 0;
 	}
 

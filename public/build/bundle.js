@@ -416,6 +416,62 @@ var app = (function () {
             }
         };
     }
+    function create_out_transition(node, fn, params) {
+        let config = fn(node, params);
+        let running = true;
+        let animation_name;
+        const group = outros;
+        group.r += 1;
+        function go() {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            if (css)
+                animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
+            const start_time = now() + delay;
+            const end_time = start_time + duration;
+            add_render_callback(() => dispatch(node, false, 'start'));
+            loop(now => {
+                if (running) {
+                    if (now >= end_time) {
+                        tick(0, 1);
+                        dispatch(node, false, 'end');
+                        if (!--group.r) {
+                            // this will result in `end()` being called,
+                            // so we don't need to clean up here
+                            run_all(group.c);
+                        }
+                        return false;
+                    }
+                    if (now >= start_time) {
+                        const t = easing((now - start_time) / duration);
+                        tick(1 - t, t);
+                    }
+                }
+                return running;
+            });
+        }
+        if (is_function(config)) {
+            wait().then(() => {
+                // @ts-ignore
+                config = config();
+                go();
+            });
+        }
+        else {
+            go();
+        }
+        return {
+            end(reset) {
+                if (reset && config.tick) {
+                    config.tick(1, 0);
+                }
+                if (running) {
+                    if (animation_name)
+                        delete_rule(node, animation_name);
+                    running = false;
+                }
+            }
+        };
+    }
     function create_bidirectional_transition(node, fn, params, intro) {
         let config = fn(node, params);
         let t = intro ? 0 : 1;
@@ -1181,7 +1237,7 @@ var app = (function () {
     }
 
     // (202:0) {#if componentParams}
-    function create_if_block$8(ctx) {
+    function create_if_block$9(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -1269,7 +1325,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$8.name,
+    		id: create_if_block$9.name,
     		type: "if",
     		source: "(202:0) {#if componentParams}",
     		ctx
@@ -1283,7 +1339,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$8, create_else_block$2];
+    	const if_block_creators = [create_if_block$9, create_else_block$2];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -2103,7 +2159,7 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(t1_value);
     			t2 = space();
-    			attr_dev(button, "class", "animated-button language-choice svelte-fscx8z");
+    			attr_dev(button, "class", "animated-button language-choice svelte-15y02hq");
     			add_location(button, file$b, 23, 8, 548);
     		},
     		m: function mount(target, anchor) {
@@ -2169,7 +2225,7 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = text(t1_value);
     			t2 = space();
-    			attr_dev(button, "class", "animated-button language-choice svelte-fscx8z");
+    			attr_dev(button, "class", "animated-button language-choice svelte-15y02hq");
     			add_location(button, file$b, 32, 6, 898);
     		},
     		m: function mount(target, anchor) {
@@ -2229,7 +2285,8 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			t3 = text(/*srcLang*/ ctx[1]);
-    			add_location(h3, file$b, 44, 4, 1217);
+    			attr_dev(h3, "class", "svelte-15y02hq");
+    			add_location(h3, file$b, 44, 4, 1230);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -2259,13 +2316,14 @@ var app = (function () {
     }
 
     // (42:2) {#if !srcLang}
-    function create_if_block_1$3(ctx) {
+    function create_if_block_1$4(ctx) {
     	let h3;
 
     	const block = {
     		c: function create() {
     			h3 = element("h3");
-    			h3.textContent = "No L1 selected";
+    			h3.textContent = "No source language selected";
+    			attr_dev(h3, "class", "svelte-15y02hq");
     			add_location(h3, file$b, 42, 4, 1179);
     		},
     		m: function mount(target, anchor) {
@@ -2279,7 +2337,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$3.name,
+    		id: create_if_block_1$4.name,
     		type: "if",
     		source: "(42:2) {#if !srcLang}",
     		ctx
@@ -2304,7 +2362,8 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			t3 = text(/*targLang*/ ctx[3]);
-    			add_location(h3, file$b, 49, 4, 1333);
+    			attr_dev(h3, "class", "svelte-15y02hq");
+    			add_location(h3, file$b, 49, 4, 1359);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -2334,14 +2393,15 @@ var app = (function () {
     }
 
     // (47:2) {#if !targLang}
-    function create_if_block$7(ctx) {
+    function create_if_block$8(ctx) {
     	let h3;
 
     	const block = {
     		c: function create() {
     			h3 = element("h3");
-    			h3.textContent = "No L2 selected";
-    			add_location(h3, file$b, 47, 4, 1295);
+    			h3.textContent = "No target language selected";
+    			attr_dev(h3, "class", "svelte-15y02hq");
+    			add_location(h3, file$b, 47, 4, 1308);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -2354,7 +2414,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$7.name,
+    		id: create_if_block$8.name,
     		type: "if",
     		source: "(47:2) {#if !targLang}",
     		ctx
@@ -2373,7 +2433,7 @@ var app = (function () {
     	let h31;
     	let t4;
     	let t5;
-    	let h1;
+    	let h2;
     	let t7;
     	let t8;
     	let t9;
@@ -2397,7 +2457,7 @@ var app = (function () {
     	}
 
     	function select_block_type(ctx, dirty) {
-    		if (!/*srcLang*/ ctx[1]) return create_if_block_1$3;
+    		if (!/*srcLang*/ ctx[1]) return create_if_block_1$4;
     		return create_else_block_1;
     	}
 
@@ -2405,7 +2465,7 @@ var app = (function () {
     	let if_block0 = current_block_type(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (!/*targLang*/ ctx[3]) return create_if_block$7;
+    		if (!/*targLang*/ ctx[3]) return create_if_block$8;
     		return create_else_block$1;
     	}
 
@@ -2435,8 +2495,8 @@ var app = (function () {
     			}
 
     			t5 = space();
-    			h1 = element("h1");
-    			h1.textContent = "Chosen languages:";
+    			h2 = element("h2");
+    			h2.textContent = "Chosen languages:";
     			t7 = space();
     			if_block0.c();
     			t8 = space();
@@ -2444,17 +2504,19 @@ var app = (function () {
     			t9 = space();
     			button = element("button");
     			button.textContent = "Next";
+    			attr_dev(h30, "class", "svelte-15y02hq");
     			add_location(h30, file$b, 21, 6, 462);
     			attr_dev(div0, "class", "src-lang-list");
     			add_location(div0, file$b, 20, 4, 428);
+    			attr_dev(h31, "class", "svelte-15y02hq");
     			add_location(h31, file$b, 30, 6, 814);
     			attr_dev(div1, "class", "targ-lang-list");
     			add_location(div1, file$b, 29, 4, 779);
     			attr_dev(div2, "class", "lang-container");
     			add_location(div2, file$b, 19, 2, 395);
-    			add_location(h1, file$b, 40, 2, 1131);
-    			attr_dev(button, "class", "animated-button language-choice svelte-fscx8z");
-    			add_location(button, file$b, 52, 2, 1394);
+    			add_location(h2, file$b, 40, 2, 1131);
+    			attr_dev(button, "class", "animated-button language-choice svelte-15y02hq");
+    			add_location(button, file$b, 52, 2, 1420);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2479,7 +2541,7 @@ var app = (function () {
     			}
 
     			insert_dev(target, t5, anchor);
-    			insert_dev(target, h1, anchor);
+    			insert_dev(target, h2, anchor);
     			insert_dev(target, t7, anchor);
     			if_block0.m(target, anchor);
     			insert_dev(target, t8, anchor);
@@ -2584,7 +2646,7 @@ var app = (function () {
     			destroy_each(each_blocks_1, detaching);
     			destroy_each(each_blocks, detaching);
     			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(h1);
+    			if (detaching) detach_dev(h2);
     			if (detaching) detach_dev(t7);
     			if_block0.d(detaching);
     			if (detaching) detach_dev(t8);
@@ -2776,14 +2838,14 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file$a = "src/Create/IndividualCard.svelte";
 
-    // (27:0) {#if visible}
-    function create_if_block$6(ctx) {
+    // (26:0) {#if visible}
+    function create_if_block$7(ctx) {
     	let div2;
     	let div0;
     	let p0;
     	let t0;
     	let t1;
-    	let t2_value = /*example*/ ctx[0].from + "";
+    	let t2_value = /*example*/ ctx[1].from + "";
     	let t2;
     	let div0_intro;
     	let t3;
@@ -2791,12 +2853,12 @@ var app = (function () {
     	let p1;
     	let t4;
     	let t5;
-    	let t6_value = /*example*/ ctx[0].to + "";
+    	let t6_value = /*example*/ ctx[1].to + "";
     	let t6;
     	let t7;
     	let button;
     	let div1_intro;
-    	let div2_transition;
+    	let div2_outro;
     	let current;
     	let mounted;
     	let dispose;
@@ -2806,30 +2868,30 @@ var app = (function () {
     			div2 = element("div");
     			div0 = element("div");
     			p0 = element("p");
-    			t0 = text(/*srcEmoji*/ ctx[1]);
+    			t0 = text(/*srcEmoji*/ ctx[2]);
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
     			div1 = element("div");
     			p1 = element("p");
-    			t4 = text(/*targEmoji*/ ctx[2]);
+    			t4 = text(/*targEmoji*/ ctx[3]);
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = space();
     			button = element("button");
     			button.textContent = "✅";
-    			attr_dev(p0, "class", "sentence svelte-2727go");
-    			add_location(p0, file$a, 29, 6, 717);
-    			attr_dev(div0, "class", "left svelte-2727go");
-    			add_location(div0, file$a, 28, 4, 656);
-    			attr_dev(p1, "class", "sentence svelte-2727go");
-    			add_location(p1, file$a, 32, 6, 842);
-    			attr_dev(button, "class", "card-selector svelte-2727go");
-    			add_location(button, file$a, 33, 6, 897);
-    			attr_dev(div1, "class", "right svelte-2727go");
-    			add_location(div1, file$a, 31, 4, 782);
-    			attr_dev(div2, "class", "example-card svelte-2727go");
-    			add_location(div2, file$a, 27, 2, 609);
+    			attr_dev(p0, "class", "sentence svelte-1d7czy");
+    			add_location(p0, file$a, 28, 6, 696);
+    			attr_dev(div0, "class", "left svelte-1d7czy");
+    			add_location(div0, file$a, 27, 4, 636);
+    			attr_dev(p1, "class", "sentence svelte-1d7czy");
+    			add_location(p1, file$a, 31, 6, 820);
+    			attr_dev(button, "class", "card-selector svelte-1d7czy");
+    			add_location(button, file$a, 32, 6, 875);
+    			attr_dev(div1, "class", "right svelte-1d7czy");
+    			add_location(div1, file$a, 30, 4, 761);
+    			attr_dev(div2, "class", "example-card svelte-1d7czy");
+    			add_location(div2, file$a, 26, 2, 596);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -2854,43 +2916,38 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*srcEmoji*/ 2) set_data_dev(t0, /*srcEmoji*/ ctx[1]);
-    			if ((!current || dirty & /*example*/ 1) && t2_value !== (t2_value = /*example*/ ctx[0].from + "")) set_data_dev(t2, t2_value);
-    			if (!current || dirty & /*targEmoji*/ 4) set_data_dev(t4, /*targEmoji*/ ctx[2]);
-    			if ((!current || dirty & /*example*/ 1) && t6_value !== (t6_value = /*example*/ ctx[0].to + "")) set_data_dev(t6, t6_value);
+    			if (!current || dirty & /*srcEmoji*/ 4) set_data_dev(t0, /*srcEmoji*/ ctx[2]);
+    			if ((!current || dirty & /*example*/ 2) && t2_value !== (t2_value = /*example*/ ctx[1].from + "")) set_data_dev(t2, t2_value);
+    			if (!current || dirty & /*targEmoji*/ 8) set_data_dev(t4, /*targEmoji*/ ctx[3]);
+    			if ((!current || dirty & /*example*/ 2) && t6_value !== (t6_value = /*example*/ ctx[1].to + "")) set_data_dev(t6, t6_value);
     		},
     		i: function intro(local) {
     			if (current) return;
 
     			if (!div0_intro) {
     				add_render_callback(() => {
-    					div0_intro = create_in_transition(div0, fly, { x: -200, duration: 1000 });
+    					div0_intro = create_in_transition(div0, fly, { x: -200, duration: 500 });
     					div0_intro.start();
     				});
     			}
 
     			if (!div1_intro) {
     				add_render_callback(() => {
-    					div1_intro = create_in_transition(div1, fly, { x: 200, duration: 1000 });
+    					div1_intro = create_in_transition(div1, fly, { x: 200, duration: 500 });
     					div1_intro.start();
     				});
     			}
 
-    			add_render_callback(() => {
-    				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, true);
-    				div2_transition.run(1);
-    			});
-
+    			if (div2_outro) div2_outro.end(1);
     			current = true;
     		},
     		o: function outro(local) {
-    			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
-    			div2_transition.run(0);
+    			div2_outro = create_out_transition(div2, fade, {});
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
-    			if (detaching && div2_transition) div2_transition.end();
+    			if (detaching && div2_outro) div2_outro.end();
     			mounted = false;
     			dispose();
     		}
@@ -2898,9 +2955,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$6.name,
+    		id: create_if_block$7.name,
     		type: "if",
-    		source: "(27:0) {#if visible}",
+    		source: "(26:0) {#if visible}",
     		ctx
     	});
 
@@ -2910,7 +2967,7 @@ var app = (function () {
     function create_fragment$a(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*visible*/ ctx[3] && create_if_block$6(ctx);
+    	let if_block = /*visible*/ ctx[0] && create_if_block$7(ctx);
 
     	const block = {
     		c: function create() {
@@ -2926,15 +2983,15 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (/*visible*/ ctx[3]) {
+    			if (/*visible*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty & /*visible*/ 8) {
+    					if (dirty & /*visible*/ 1) {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$6(ctx);
+    					if_block = create_if_block$7(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -2979,13 +3036,13 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("IndividualCard", slots, []);
 
-    	let { example } = $$props,
+    	let { visible } = $$props,
+    		{ example } = $$props,
     		{ srcEmoji } = $$props,
     		{ srcLang } = $$props,
     		{ targEmoji } = $$props,
     		{ targLang } = $$props;
 
-    	let visible = true;
     	let examplePosted = false;
 
     	const postSentence = async () => {
@@ -3009,45 +3066,46 @@ var app = (function () {
     		});
     	};
 
-    	const writable_props = ["example", "srcEmoji", "srcLang", "targEmoji", "targLang"];
+    	const writable_props = ["visible", "example", "srcEmoji", "srcLang", "targEmoji", "targLang"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<IndividualCard> was created with unknown prop '${key}'`);
     	});
 
     	const click_handler = () => {
-    		$$invalidate(3, visible = false);
+    		$$invalidate(0, visible = false);
     		postSentence();
     	};
 
     	$$self.$$set = $$props => {
-    		if ("example" in $$props) $$invalidate(0, example = $$props.example);
-    		if ("srcEmoji" in $$props) $$invalidate(1, srcEmoji = $$props.srcEmoji);
+    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
+    		if ("example" in $$props) $$invalidate(1, example = $$props.example);
+    		if ("srcEmoji" in $$props) $$invalidate(2, srcEmoji = $$props.srcEmoji);
     		if ("srcLang" in $$props) $$invalidate(5, srcLang = $$props.srcLang);
-    		if ("targEmoji" in $$props) $$invalidate(2, targEmoji = $$props.targEmoji);
+    		if ("targEmoji" in $$props) $$invalidate(3, targEmoji = $$props.targEmoji);
     		if ("targLang" in $$props) $$invalidate(6, targLang = $$props.targLang);
     	};
 
     	$$self.$capture_state = () => ({
     		fade,
     		fly,
+    		visible,
     		example,
     		srcEmoji,
     		srcLang,
     		targEmoji,
     		targLang,
-    		visible,
     		examplePosted,
     		postSentence
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("example" in $$props) $$invalidate(0, example = $$props.example);
-    		if ("srcEmoji" in $$props) $$invalidate(1, srcEmoji = $$props.srcEmoji);
+    		if ("visible" in $$props) $$invalidate(0, visible = $$props.visible);
+    		if ("example" in $$props) $$invalidate(1, example = $$props.example);
+    		if ("srcEmoji" in $$props) $$invalidate(2, srcEmoji = $$props.srcEmoji);
     		if ("srcLang" in $$props) $$invalidate(5, srcLang = $$props.srcLang);
-    		if ("targEmoji" in $$props) $$invalidate(2, targEmoji = $$props.targEmoji);
+    		if ("targEmoji" in $$props) $$invalidate(3, targEmoji = $$props.targEmoji);
     		if ("targLang" in $$props) $$invalidate(6, targLang = $$props.targLang);
-    		if ("visible" in $$props) $$invalidate(3, visible = $$props.visible);
     		if ("examplePosted" in $$props) examplePosted = $$props.examplePosted;
     	};
 
@@ -3056,10 +3114,10 @@ var app = (function () {
     	}
 
     	return [
+    		visible,
     		example,
     		srcEmoji,
     		targEmoji,
-    		visible,
     		postSentence,
     		srcLang,
     		targLang,
@@ -3072,10 +3130,11 @@ var app = (function () {
     		super(options);
 
     		init(this, options, instance$a, create_fragment$a, safe_not_equal, {
-    			example: 0,
-    			srcEmoji: 1,
+    			visible: 0,
+    			example: 1,
+    			srcEmoji: 2,
     			srcLang: 5,
-    			targEmoji: 2,
+    			targEmoji: 3,
     			targLang: 6
     		});
 
@@ -3089,11 +3148,15 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*example*/ ctx[0] === undefined && !("example" in props)) {
+    		if (/*visible*/ ctx[0] === undefined && !("visible" in props)) {
+    			console_1.warn("<IndividualCard> was created without expected prop 'visible'");
+    		}
+
+    		if (/*example*/ ctx[1] === undefined && !("example" in props)) {
     			console_1.warn("<IndividualCard> was created without expected prop 'example'");
     		}
 
-    		if (/*srcEmoji*/ ctx[1] === undefined && !("srcEmoji" in props)) {
+    		if (/*srcEmoji*/ ctx[2] === undefined && !("srcEmoji" in props)) {
     			console_1.warn("<IndividualCard> was created without expected prop 'srcEmoji'");
     		}
 
@@ -3101,13 +3164,21 @@ var app = (function () {
     			console_1.warn("<IndividualCard> was created without expected prop 'srcLang'");
     		}
 
-    		if (/*targEmoji*/ ctx[2] === undefined && !("targEmoji" in props)) {
+    		if (/*targEmoji*/ ctx[3] === undefined && !("targEmoji" in props)) {
     			console_1.warn("<IndividualCard> was created without expected prop 'targEmoji'");
     		}
 
     		if (/*targLang*/ ctx[6] === undefined && !("targLang" in props)) {
     			console_1.warn("<IndividualCard> was created without expected prop 'targLang'");
     		}
+    	}
+
+    	get visible() {
+    		throw new Error("<IndividualCard>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set visible(value) {
+    		throw new Error("<IndividualCard>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get example() {
@@ -3156,12 +3227,13 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
+    	child_ctx[14] = list[i];
+    	child_ctx[16] = i;
     	return child_ctx;
     }
 
-    // (39:2) {#if searched}
-    function create_if_block$5(ctx) {
+    // (40:2) {#if searched}
+    function create_if_block$6(ctx) {
     	let await_block_anchor;
     	let current;
 
@@ -3173,12 +3245,12 @@ var app = (function () {
     		pending: create_pending_block$1,
     		then: create_then_block$1,
     		catch: create_catch_block$1,
-    		value: 12,
-    		error: 16,
+    		value: 13,
+    		error: 17,
     		blocks: [,,,]
     	};
 
-    	handle_promise(/*fetchSentences*/ ctx[9](), info);
+    	handle_promise(/*fetchSentences*/ ctx[10](), info);
 
     	const block = {
     		c: function create() {
@@ -3219,20 +3291,20 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$6.name,
     		type: "if",
-    		source: "(39:2) {#if searched}",
+    		source: "(40:2) {#if searched}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (55:3) {:catch error}
+    // (63:3) {:catch error}
     function create_catch_block$1(ctx) {
     	let p;
     	let t0;
-    	let t1_value = /*error*/ ctx[16] + "";
+    	let t1_value = /*error*/ ctx[17] + "";
     	let t1;
 
     	const block = {
@@ -3240,7 +3312,7 @@ var app = (function () {
     			p = element("p");
     			t0 = text("An error occurred! ");
     			t1 = text(t1_value);
-    			add_location(p, file$9, 55, 4, 1646);
+    			add_location(p, file$9, 63, 4, 1899);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -3259,37 +3331,42 @@ var app = (function () {
     		block,
     		id: create_catch_block$1.name,
     		type: "catch",
-    		source: "(55:3) {:catch error}",
+    		source: "(63:3) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (42:3) {:then data}
+    // (43:3) {:then data}
     function create_then_block$1(ctx) {
     	let button;
     	let t1;
+    	let div;
     	let p;
     	let t2;
-    	let t3_value = /*data*/ ctx[12].examples.length + "";
+    	let t3_value = /*data*/ ctx[13].examples.length + "";
     	let t3;
     	let t4;
     	let t5_value = /*startIndex*/ ctx[7] + 1 + "";
     	let t5;
     	let t6;
+
+    	let t7_value = (/*endIndex*/ ctx[8] > /*data*/ ctx[13].examples.length
+    	? /*data*/ ctx[13].examples.length
+    	: /*endIndex*/ ctx[8]) + "";
+
     	let t7;
     	let t8;
-    	let each_1_anchor;
     	let current;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[11](/*data*/ ctx[12]);
+    		return /*click_handler*/ ctx[12](/*data*/ ctx[13]);
     	}
 
-    	let each_value = /*data*/ ctx[12].examples.slice(/*startIndex*/ ctx[7], /*endIndex*/ ctx[8]);
+    	let each_value = /*data*/ ctx[13].examples.slice(/*startIndex*/ ctx[7], /*endIndex*/ ctx[8]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -3306,41 +3383,44 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "↺";
     			t1 = space();
+    			div = element("div");
     			p = element("p");
     			t2 = text("Found ");
     			t3 = text(t3_value);
     			t4 = text(" sentences. Showing sentences ");
     			t5 = text(t5_value);
     			t6 = text(" - ");
-    			t7 = text(/*endIndex*/ ctx[8]);
+    			t7 = text(t7_value);
     			t8 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			each_1_anchor = empty();
-    			attr_dev(button, "class", "animated-button fetch-sentences svelte-1xsvuhy");
-    			add_location(button, file$9, 42, 3, 1160);
-    			add_location(p, file$9, 50, 3, 1375);
+    			attr_dev(button, "class", "animated-button fetch-sentences svelte-azw6g9");
+    			add_location(button, file$9, 43, 3, 1169);
+    			add_location(p, file$9, 53, 4, 1435);
+    			attr_dev(div, "id", "sentences-grid");
+    			attr_dev(div, "class", "svelte-azw6g9");
+    			add_location(div, file$9, 52, 3, 1405);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, p);
     			append_dev(p, t2);
     			append_dev(p, t3);
     			append_dev(p, t4);
     			append_dev(p, t5);
     			append_dev(p, t6);
     			append_dev(p, t7);
-    			insert_dev(target, t8, anchor);
+    			append_dev(div, t8);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
+    				each_blocks[i].m(div, null);
     			}
 
-    			insert_dev(target, each_1_anchor, anchor);
     			current = true;
 
     			if (!mounted) {
@@ -3351,10 +3431,13 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			if ((!current || dirty & /*startIndex*/ 128) && t5_value !== (t5_value = /*startIndex*/ ctx[7] + 1 + "")) set_data_dev(t5, t5_value);
-    			if (!current || dirty & /*endIndex*/ 256) set_data_dev(t7, /*endIndex*/ ctx[8]);
 
-    			if (dirty & /*fetchSentences, startIndex, endIndex, srcEmoji, srcLang, targEmoji, targLang*/ 911) {
-    				each_value = /*data*/ ctx[12].examples.slice(/*startIndex*/ ctx[7], /*endIndex*/ ctx[8]);
+    			if ((!current || dirty & /*endIndex*/ 256) && t7_value !== (t7_value = (/*endIndex*/ ctx[8] > /*data*/ ctx[13].examples.length
+    			? /*data*/ ctx[13].examples.length
+    			: /*endIndex*/ ctx[8]) + "")) set_data_dev(t7, t7_value);
+
+    			if (dirty & /*visible, fetchSentences, startIndex, endIndex, srcEmoji, srcLang, targEmoji, targLang*/ 1935) {
+    				each_value = /*data*/ ctx[13].examples.slice(/*startIndex*/ ctx[7], /*endIndex*/ ctx[8]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -3368,7 +3451,7 @@ var app = (function () {
     						each_blocks[i] = create_each_block$1(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    						each_blocks[i].m(div, null);
     					}
     				}
 
@@ -3402,10 +3485,8 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(button);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p);
-    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(div);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
     			mounted = false;
     			dispose();
     		}
@@ -3415,21 +3496,25 @@ var app = (function () {
     		block,
     		id: create_then_block$1.name,
     		type: "then",
-    		source: "(42:3) {:then data}",
+    		source: "(43:3) {:then data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (52:4) {#each data.examples.slice(startIndex, endIndex) as example}
+    // (56:4) {#each data.examples.slice(startIndex, endIndex) as example, i}
     function create_each_block$1(ctx) {
+    	let div;
     	let individualcard;
+    	let t;
     	let current;
 
     	individualcard = new IndividualCard({
     			props: {
-    				example: /*example*/ ctx[13],
+    				class: /*i*/ ctx[16],
+    				visible: /*visible*/ ctx[9],
+    				example: /*example*/ ctx[14],
     				srcEmoji: /*srcEmoji*/ ctx[2],
     				srcLang: /*srcLang*/ ctx[0],
     				targEmoji: /*targEmoji*/ ctx[3],
@@ -3440,15 +3525,22 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			create_component(individualcard.$$.fragment);
+    			t = space();
+    			attr_dev(div, "class", "individual-sentence");
+    			add_location(div, file$9, 56, 5, 1691);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(individualcard, target, anchor);
+    			insert_dev(target, div, anchor);
+    			mount_component(individualcard, div, null);
+    			append_dev(div, t);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			const individualcard_changes = {};
-    			if (dirty & /*startIndex, endIndex*/ 384) individualcard_changes.example = /*example*/ ctx[13];
+    			if (dirty & /*visible*/ 512) individualcard_changes.visible = /*visible*/ ctx[9];
+    			if (dirty & /*startIndex, endIndex*/ 384) individualcard_changes.example = /*example*/ ctx[14];
     			if (dirty & /*srcEmoji*/ 4) individualcard_changes.srcEmoji = /*srcEmoji*/ ctx[2];
     			if (dirty & /*srcLang*/ 1) individualcard_changes.srcLang = /*srcLang*/ ctx[0];
     			if (dirty & /*targEmoji*/ 8) individualcard_changes.targEmoji = /*targEmoji*/ ctx[3];
@@ -3465,7 +3557,8 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(individualcard, detaching);
+    			if (detaching) detach_dev(div);
+    			destroy_component(individualcard);
     		}
     	};
 
@@ -3473,14 +3566,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(52:4) {#each data.examples.slice(startIndex, endIndex) as example}",
+    		source: "(56:4) {#each data.examples.slice(startIndex, endIndex) as example, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (40:28)      <p>Getting sentence..</p>    {:then data}
+    // (41:28)      <p>Getting sentence..</p>    {:then data}
     function create_pending_block$1(ctx) {
     	let p;
 
@@ -3488,7 +3581,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Getting sentence..";
-    			add_location(p, file$9, 40, 4, 1115);
+    			add_location(p, file$9, 41, 4, 1124);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -3505,18 +3598,18 @@ var app = (function () {
     		block,
     		id: create_pending_block$1.name,
     		type: "pending",
-    		source: "(40:28)      <p>Getting sentence..</p>    {:then data}",
+    		source: "(41:28)      <p>Getting sentence..</p>    {:then data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (38:1) {#key newSearch}
-    function create_key_block$1(ctx) {
+    // (39:1) {#key newSearch}
+    function create_key_block$2(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = /*searched*/ ctx[5] && create_if_block$5(ctx);
+    	let if_block = /*searched*/ ctx[5] && create_if_block$6(ctx);
 
     	const block = {
     		c: function create() {
@@ -3537,7 +3630,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$5(ctx);
+    					if_block = create_if_block$6(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -3569,9 +3662,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_key_block$1.name,
+    		id: create_key_block$2.name,
     		type: "key",
-    		source: "(38:1) {#key newSearch}",
+    		source: "(39:1) {#key newSearch}",
     		ctx
     	});
 
@@ -3603,7 +3696,7 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
-    	let key_block = create_key_block$1(ctx);
+    	let key_block = create_key_block$2(ctx);
 
     	const block = {
     		c: function create() {
@@ -3611,7 +3704,7 @@ var app = (function () {
     			h20 = element("h2");
     			t0 = text("1. Search for a ");
     			t1 = text(/*srcEmoji*/ ctx[2]);
-    			t2 = text(" word, phrase or sentence");
+    			t2 = text(" word, phrase or sentence...");
     			t3 = space();
     			h21 = element("h2");
     			t4 = text("2. See ");
@@ -3619,7 +3712,7 @@ var app = (function () {
     			t6 = text(" translations!");
     			t7 = space();
     			h3 = element("h3");
-    			h3.textContent = "Click the ✅ next to any sentence pair to create a flashcard!";
+    			h3.textContent = "Click ✅ to create a Text-to-Speech flashcard!";
     			t9 = space();
     			input = element("input");
     			t10 = space();
@@ -3627,18 +3720,18 @@ var app = (function () {
     			button.textContent = "Submit";
     			t12 = space();
     			key_block.c();
-    			attr_dev(h20, "class", "svelte-1xsvuhy");
-    			add_location(h20, file$9, 30, 1, 668);
-    			attr_dev(h21, "class", "svelte-1xsvuhy");
-    			add_location(h21, file$9, 31, 1, 746);
-    			add_location(h3, file$9, 32, 1, 805);
+    			attr_dev(h20, "class", "svelte-azw6g9");
+    			add_location(h20, file$9, 31, 1, 689);
+    			attr_dev(h21, "class", "svelte-azw6g9");
+    			add_location(h21, file$9, 32, 1, 770);
+    			add_location(h3, file$9, 33, 1, 829);
     			attr_dev(input, "placeholder", "Search...");
-    			attr_dev(input, "class", "svelte-1xsvuhy");
-    			add_location(input, file$9, 33, 1, 892);
-    			attr_dev(button, "class", "animated-button fetch-sentences svelte-1xsvuhy");
-    			add_location(button, file$9, 34, 1, 951);
-    			attr_dev(main, "class", "svelte-1xsvuhy");
-    			add_location(main, file$9, 29, 0, 660);
+    			attr_dev(input, "class", "svelte-azw6g9");
+    			add_location(input, file$9, 34, 1, 901);
+    			attr_dev(button, "class", "animated-button fetch-sentences svelte-azw6g9");
+    			add_location(button, file$9, 35, 1, 960);
+    			attr_dev(main, "class", "svelte-azw6g9");
+    			add_location(main, file$9, 30, 0, 681);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3667,8 +3760,8 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[10]),
-    					listen_dev(button, "click", /*fetchSentences*/ ctx[9], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[11]),
+    					listen_dev(button, "click", /*fetchSentences*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
@@ -3686,7 +3779,7 @@ var app = (function () {
     				group_outros();
     				transition_out(key_block, 1, 1, noop);
     				check_outros();
-    				key_block = create_key_block$1(ctx);
+    				key_block = create_key_block$2(ctx);
     				key_block.c();
     				transition_in(key_block);
     				key_block.m(main, null);
@@ -3761,6 +3854,7 @@ var app = (function () {
     	let newSearch = "";
     	let startIndex = 0;
     	let endIndex = 5;
+    	let visible = true;
 
     	const fetchSentences = async () => {
     		if (!phraseQuery) return;
@@ -3793,6 +3887,7 @@ var app = (function () {
     		$$invalidate(8, endIndex += 5);
 
     		if (endIndex > data.examples.length) {
+    			$$invalidate(9, visible = true);
     			$$invalidate(7, startIndex = 0);
     			$$invalidate(8, endIndex = 5);
     		}
@@ -3817,6 +3912,7 @@ var app = (function () {
     		newSearch,
     		startIndex,
     		endIndex,
+    		visible,
     		fetchSentences
     	});
 
@@ -3830,6 +3926,7 @@ var app = (function () {
     		if ("newSearch" in $$props) $$invalidate(6, newSearch = $$props.newSearch);
     		if ("startIndex" in $$props) $$invalidate(7, startIndex = $$props.startIndex);
     		if ("endIndex" in $$props) $$invalidate(8, endIndex = $$props.endIndex);
+    		if ("visible" in $$props) $$invalidate(9, visible = $$props.visible);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -3846,6 +3943,7 @@ var app = (function () {
     		newSearch,
     		startIndex,
     		endIndex,
+    		visible,
     		fetchSentences,
     		input_input_handler,
     		click_handler
@@ -3927,7 +4025,7 @@ var app = (function () {
     const file$8 = "src/Create/CreateDashboard.svelte";
 
     // (23:2) {#if !languagesChosen || !srcLang || !targLang}
-    function create_if_block_1$2(ctx) {
+    function create_if_block_1$3(ctx) {
     	let languagechoices;
     	let updating_languagesChosen;
     	let updating_srcLang;
@@ -4019,7 +4117,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_1$2.name,
+    		id: create_if_block_1$3.name,
     		type: "if",
     		source: "(23:2) {#if !languagesChosen || !srcLang || !targLang}",
     		ctx
@@ -4029,13 +4127,9 @@ var app = (function () {
     }
 
     // (27:2) {#if languagesChosen && srcLang && targLang}
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
     	let contextcards;
-    	let t0;
-    	let button;
     	let current;
-    	let mounted;
-    	let dispose;
 
     	contextcards = new ContextCards({
     			props: {
@@ -4050,22 +4144,10 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			create_component(contextcards.$$.fragment);
-    			t0 = space();
-    			button = element("button");
-    			button.textContent = "Go back!";
-    			attr_dev(button, "class", "animated-button return-button svelte-12mpx0w");
-    			add_location(button, file$8, 28, 4, 773);
     		},
     		m: function mount(target, anchor) {
     			mount_component(contextcards, target, anchor);
-    			insert_dev(target, t0, anchor);
-    			insert_dev(target, button, anchor);
     			current = true;
-
-    			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[10], false, false, false);
-    				mounted = true;
-    			}
     		},
     		p: function update(ctx, dirty) {
     			const contextcards_changes = {};
@@ -4086,16 +4168,12 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			destroy_component(contextcards, detaching);
-    			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(button);
-    			mounted = false;
-    			dispose();
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$4.name,
+    		id: create_if_block$5.name,
     		type: "if",
     		source: "(27:2) {#if languagesChosen && srcLang && targLang}",
     		ctx
@@ -4108,8 +4186,8 @@ var app = (function () {
     	let main;
     	let t;
     	let current;
-    	let if_block0 = (!/*languagesChosen*/ ctx[0] || !/*srcLang*/ ctx[1] || !/*targLang*/ ctx[3]) && create_if_block_1$2(ctx);
-    	let if_block1 = /*languagesChosen*/ ctx[0] && /*srcLang*/ ctx[1] && /*targLang*/ ctx[3] && create_if_block$4(ctx);
+    	let if_block0 = (!/*languagesChosen*/ ctx[0] || !/*srcLang*/ ctx[1] || !/*targLang*/ ctx[3]) && create_if_block_1$3(ctx);
+    	let if_block1 = /*languagesChosen*/ ctx[0] && /*srcLang*/ ctx[1] && /*targLang*/ ctx[3] && create_if_block$5(ctx);
 
     	const block = {
     		c: function create() {
@@ -4117,7 +4195,7 @@ var app = (function () {
     			if (if_block0) if_block0.c();
     			t = space();
     			if (if_block1) if_block1.c();
-    			attr_dev(main, "class", "svelte-12mpx0w");
+    			attr_dev(main, "class", "svelte-127qsp6");
     			add_location(main, file$8, 21, 0, 449);
     		},
     		l: function claim(nodes) {
@@ -4139,7 +4217,7 @@ var app = (function () {
     						transition_in(if_block0, 1);
     					}
     				} else {
-    					if_block0 = create_if_block_1$2(ctx);
+    					if_block0 = create_if_block_1$3(ctx);
     					if_block0.c();
     					transition_in(if_block0, 1);
     					if_block0.m(main, t);
@@ -4162,7 +4240,7 @@ var app = (function () {
     						transition_in(if_block1, 1);
     					}
     				} else {
-    					if_block1 = create_if_block$4(ctx);
+    					if_block1 = create_if_block$5(ctx);
     					if_block1.c();
     					transition_in(if_block1, 1);
     					if_block1.m(main, null);
@@ -4247,12 +4325,6 @@ var app = (function () {
     		$$invalidate(3, targLang);
     	}
 
-    	const click_handler = () => {
-    		$$invalidate(0, languagesChosen = !languagesChosen);
-    		$$invalidate(1, srcLang = !srcLang);
-    		$$invalidate(3, targLang = !targLang);
-    	};
-
     	$$self.$capture_state = () => ({
     		LanguageChoices,
     		ContextCards,
@@ -4287,8 +4359,7 @@ var app = (function () {
     		targLangHandler,
     		languagechoices_languagesChosen_binding,
     		languagechoices_srcLang_binding,
-    		languagechoices_targLang_binding,
-    		click_handler
+    		languagechoices_targLang_binding
     	];
     }
 
@@ -4312,33 +4383,33 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[13] = list[i];
-    	child_ctx[15] = i;
+    	child_ctx[15] = list[i];
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
-    // (40:8) {#each filteredList as sentence, i}
+    // (43:8) {#each filteredList as sentence, i}
     function create_each_block(ctx) {
     	let tbody;
     	let tr;
     	let td0;
-    	let t0_value = /*sentence*/ ctx[13].srcLang + "";
+    	let t0_value = /*sentence*/ ctx[15].srcLang + "";
     	let t0;
     	let t1;
     	let td1;
-    	let t2_value = /*sentence*/ ctx[13].srcSentence + "";
+    	let t2_value = /*sentence*/ ctx[15].srcSentence + "";
     	let t2;
     	let t3;
     	let td2;
-    	let t4_value = /*sentence*/ ctx[13].targLang + "";
+    	let t4_value = /*sentence*/ ctx[15].targLang + "";
     	let t4;
     	let t5;
     	let td3;
-    	let t6_value = /*sentence*/ ctx[13].targSentence + "";
+    	let t6_value = /*sentence*/ ctx[15].targSentence + "";
     	let t6;
     	let t7;
     	let td4;
-    	let t8_value = /*sentence*/ ctx[13].overallScore + "";
+    	let t8_value = /*sentence*/ ctx[15].overallScore + "";
     	let t8;
     	let t9;
     	let td5;
@@ -4348,7 +4419,7 @@ var app = (function () {
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[12](/*i*/ ctx[15], /*sentence*/ ctx[13]);
+    		return /*click_handler*/ ctx[14](/*i*/ ctx[17], /*sentence*/ ctx[15]);
     	}
 
     	const block = {
@@ -4374,17 +4445,17 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "❌";
     			t11 = space();
-    			add_location(td0, file$7, 42, 12, 1646);
-    			add_location(td1, file$7, 43, 12, 1686);
-    			add_location(td2, file$7, 44, 12, 1730);
-    			add_location(td3, file$7, 45, 12, 1771);
-    			add_location(td4, file$7, 46, 12, 1816);
-    			attr_dev(button, "class", "delete-button svelte-a4r2s5");
-    			add_location(button, file$7, 47, 16, 1865);
-    			add_location(td5, file$7, 47, 12, 1861);
-    			attr_dev(tr, "class", "svelte-a4r2s5");
-    			add_location(tr, file$7, 41, 10, 1629);
-    			add_location(tbody, file$7, 40, 8, 1611);
+    			add_location(td0, file$7, 45, 12, 1813);
+    			add_location(td1, file$7, 46, 12, 1853);
+    			add_location(td2, file$7, 47, 12, 1897);
+    			add_location(td3, file$7, 48, 12, 1938);
+    			add_location(td4, file$7, 49, 12, 1983);
+    			attr_dev(button, "class", "delete-button svelte-h6dain");
+    			add_location(button, file$7, 50, 16, 2032);
+    			add_location(td5, file$7, 50, 12, 2028);
+    			attr_dev(tr, "class", "svelte-h6dain");
+    			add_location(tr, file$7, 44, 10, 1796);
+    			add_location(tbody, file$7, 43, 8, 1778);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tbody, anchor);
@@ -4415,11 +4486,11 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*filteredList*/ 64 && t0_value !== (t0_value = /*sentence*/ ctx[13].srcLang + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*filteredList*/ 64 && t2_value !== (t2_value = /*sentence*/ ctx[13].srcSentence + "")) set_data_dev(t2, t2_value);
-    			if (dirty & /*filteredList*/ 64 && t4_value !== (t4_value = /*sentence*/ ctx[13].targLang + "")) set_data_dev(t4, t4_value);
-    			if (dirty & /*filteredList*/ 64 && t6_value !== (t6_value = /*sentence*/ ctx[13].targSentence + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*filteredList*/ 64 && t8_value !== (t8_value = /*sentence*/ ctx[13].overallScore + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*filteredList*/ 128 && t0_value !== (t0_value = /*sentence*/ ctx[15].srcLang + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*filteredList*/ 128 && t2_value !== (t2_value = /*sentence*/ ctx[15].srcSentence + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*filteredList*/ 128 && t4_value !== (t4_value = /*sentence*/ ctx[15].targLang + "")) set_data_dev(t4, t4_value);
+    			if (dirty & /*filteredList*/ 128 && t6_value !== (t6_value = /*sentence*/ ctx[15].targSentence + "")) set_data_dev(t6, t6_value);
+    			if (dirty & /*filteredList*/ 128 && t8_value !== (t8_value = /*sentence*/ ctx[15].overallScore + "")) set_data_dev(t8, t8_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(tbody);
@@ -4432,17 +4503,17 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(40:8) {#each filteredList as sentence, i}",
+    		source: "(43:8) {#each filteredList as sentence, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (39:8) {#key flashcardData}
-    function create_key_block(ctx) {
+    // (42:8) {#key flashcardData}
+    function create_key_block$1(ctx) {
     	let each_1_anchor;
-    	let each_value = /*filteredList*/ ctx[6];
+    	let each_value = /*filteredList*/ ctx[7];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -4466,8 +4537,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*removeFlashcard, filteredList*/ 192) {
-    				each_value = /*filteredList*/ ctx[6];
+    			if (dirty & /*removeFlashcard, filteredList*/ 384) {
+    				each_value = /*filteredList*/ ctx[7];
     				validate_each_argument(each_value);
     				let i;
 
@@ -4498,9 +4569,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_key_block.name,
+    		id: create_key_block$1.name,
     		type: "key",
-    		source: "(39:8) {#key flashcardData}",
+    		source: "(42:8) {#key flashcardData}",
     		ctx
     	});
 
@@ -4509,12 +4580,12 @@ var app = (function () {
 
     function create_fragment$7(ctx) {
     	let main;
-    	let h3;
+    	let h30;
     	let t0_value = /*flashcardData*/ ctx[0].length + "";
     	let t0;
     	let t1;
     	let t2;
-    	let h4;
+    	let h31;
     	let t3;
     	let t4_value = /*filteredFlashcards*/ ctx[1].length + "";
     	let t4;
@@ -4541,20 +4612,23 @@ var app = (function () {
     	let input3;
     	let t12;
     	let th4;
-    	let t14;
+    	let input4;
+    	let t13;
+    	let th5;
+    	let t15;
     	let previous_key = /*flashcardData*/ ctx[0];
     	let mounted;
     	let dispose;
-    	let key_block = create_key_block(ctx);
+    	let key_block = create_key_block$1(ctx);
 
     	const block = {
     		c: function create() {
     			main = element("main");
-    			h3 = element("h3");
+    			h30 = element("h3");
     			t0 = text(t0_value);
     			t1 = text(" cards currently saved in the database");
     			t2 = space();
-    			h4 = element("h4");
+    			h31 = element("h3");
     			t3 = text("Filtered ");
     			t4 = text(t4_value);
     			t5 = text("/");
@@ -4579,58 +4653,73 @@ var app = (function () {
     			input3 = element("input");
     			t12 = space();
     			th4 = element("th");
-    			th4.textContent = "overallScore";
-    			t14 = space();
+    			input4 = element("input");
+    			t13 = space();
+    			th5 = element("th");
+    			th5.textContent = "Remove";
+    			t15 = space();
     			key_block.c();
-    			add_location(h3, file$7, 24, 2, 894);
-    			add_location(h4, file$7, 25, 2, 966);
-    			attr_dev(input0, "placeholder", "L1");
-    			attr_dev(input0, "class", "svelte-a4r2s5");
-    			add_location(input0, file$7, 31, 16, 1159);
-    			add_location(th0, file$7, 31, 12, 1155);
+    			attr_dev(h30, "class", "svelte-h6dain");
+    			add_location(h30, file$7, 26, 2, 977);
+    			attr_dev(h31, "class", "svelte-h6dain");
+    			add_location(h31, file$7, 27, 2, 1049);
+    			attr_dev(input0, "placeholder", "Source");
+    			attr_dev(input0, "class", "svelte-h6dain");
+    			add_location(input0, file$7, 33, 16, 1242);
+    			attr_dev(th0, "class", "svelte-h6dain");
+    			add_location(th0, file$7, 33, 12, 1238);
     			attr_dev(input1, "placeholder", "Sentence");
-    			attr_dev(input1, "class", "svelte-a4r2s5");
-    			add_location(input1, file$7, 32, 16, 1234);
-    			add_location(th1, file$7, 32, 12, 1230);
-    			attr_dev(input2, "placeholder", "L2");
-    			attr_dev(input2, "class", "svelte-a4r2s5");
-    			add_location(input2, file$7, 33, 16, 1318);
-    			add_location(th2, file$7, 33, 12, 1314);
+    			attr_dev(input1, "class", "svelte-h6dain");
+    			add_location(input1, file$7, 34, 16, 1321);
+    			attr_dev(th1, "class", "svelte-h6dain");
+    			add_location(th1, file$7, 34, 12, 1317);
+    			attr_dev(input2, "placeholder", "Target");
+    			attr_dev(input2, "class", "svelte-h6dain");
+    			add_location(input2, file$7, 35, 16, 1405);
+    			attr_dev(th2, "class", "svelte-h6dain");
+    			add_location(th2, file$7, 35, 12, 1401);
     			attr_dev(input3, "placeholder", "Sentence");
-    			attr_dev(input3, "class", "svelte-a4r2s5");
-    			add_location(input3, file$7, 34, 16, 1393);
-    			add_location(th3, file$7, 34, 12, 1389);
-    			add_location(th4, file$7, 35, 12, 1474);
-    			attr_dev(tr, "class", "svelte-a4r2s5");
-    			add_location(tr, file$7, 30, 10, 1138);
-    			attr_dev(thead, "class", "svelte-a4r2s5");
-    			add_location(thead, file$7, 29, 8, 1120);
-    			attr_dev(table, "class", "svelte-a4r2s5");
-    			add_location(table, file$7, 28, 6, 1104);
+    			attr_dev(input3, "class", "svelte-h6dain");
+    			add_location(input3, file$7, 36, 16, 1484);
+    			attr_dev(th3, "class", "svelte-h6dain");
+    			add_location(th3, file$7, 36, 12, 1480);
+    			attr_dev(input4, "placeholder", "Score");
+    			attr_dev(input4, "class", "svelte-h6dain");
+    			add_location(input4, file$7, 37, 16, 1569);
+    			attr_dev(th4, "class", "svelte-h6dain");
+    			add_location(th4, file$7, 37, 12, 1565);
+    			attr_dev(th5, "class", "svelte-h6dain");
+    			add_location(th5, file$7, 38, 12, 1647);
+    			attr_dev(tr, "class", "svelte-h6dain");
+    			add_location(tr, file$7, 32, 10, 1221);
+    			attr_dev(thead, "class", "svelte-h6dain");
+    			add_location(thead, file$7, 31, 8, 1203);
+    			attr_dev(table, "class", "svelte-h6dain");
+    			add_location(table, file$7, 30, 6, 1187);
     			attr_dev(div0, "id", "database-table");
-    			attr_dev(div0, "class", "svelte-a4r2s5");
-    			add_location(div0, file$7, 27, 4, 1072);
+    			attr_dev(div0, "class", "svelte-h6dain");
+    			add_location(div0, file$7, 29, 4, 1155);
     			attr_dev(div1, "id", "table-wrapper");
-    			attr_dev(div1, "class", "svelte-a4r2s5");
-    			add_location(div1, file$7, 26, 2, 1043);
-    			attr_dev(main, "class", "svelte-a4r2s5");
-    			add_location(main, file$7, 22, 0, 884);
+    			attr_dev(div1, "class", "svelte-h6dain");
+    			add_location(div1, file$7, 28, 2, 1126);
+    			attr_dev(main, "class", "svelte-h6dain");
+    			add_location(main, file$7, 24, 0, 967);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
-    			append_dev(main, h3);
-    			append_dev(h3, t0);
-    			append_dev(h3, t1);
+    			append_dev(main, h30);
+    			append_dev(h30, t0);
+    			append_dev(h30, t1);
     			append_dev(main, t2);
-    			append_dev(main, h4);
-    			append_dev(h4, t3);
-    			append_dev(h4, t4);
-    			append_dev(h4, t5);
-    			append_dev(h4, t6);
-    			append_dev(h4, t7);
+    			append_dev(main, h31);
+    			append_dev(h31, t3);
+    			append_dev(h31, t4);
+    			append_dev(h31, t5);
+    			append_dev(h31, t6);
+    			append_dev(h31, t7);
     			append_dev(main, t8);
     			append_dev(main, div1);
     			append_dev(div1, div0);
@@ -4654,15 +4743,20 @@ var app = (function () {
     			set_input_value(input3, /*targSentenceSearch*/ ctx[5]);
     			append_dev(tr, t12);
     			append_dev(tr, th4);
-    			append_dev(table, t14);
+    			append_dev(th4, input4);
+    			set_input_value(input4, /*overallScoreSearch*/ ctx[6]);
+    			append_dev(tr, t13);
+    			append_dev(tr, th5);
+    			append_dev(table, t15);
     			key_block.m(table, null);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[8]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[9]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[10]),
-    					listen_dev(input3, "input", /*input3_input_handler*/ ctx[11])
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[9]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[10]),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[11]),
+    					listen_dev(input3, "input", /*input3_input_handler*/ ctx[12]),
+    					listen_dev(input4, "input", /*input4_input_handler*/ ctx[13])
     				];
 
     				mounted = true;
@@ -4689,9 +4783,13 @@ var app = (function () {
     				set_input_value(input3, /*targSentenceSearch*/ ctx[5]);
     			}
 
+    			if (dirty & /*overallScoreSearch*/ 64 && input4.value !== /*overallScoreSearch*/ ctx[6]) {
+    				set_input_value(input4, /*overallScoreSearch*/ ctx[6]);
+    			}
+
     			if (dirty & /*flashcardData*/ 1 && safe_not_equal(previous_key, previous_key = /*flashcardData*/ ctx[0])) {
     				key_block.d(1);
-    				key_block = create_key_block(ctx);
+    				key_block = create_key_block$1(ctx);
     				key_block.c();
     				key_block.m(table, null);
     			} else {
@@ -4729,6 +4827,7 @@ var app = (function () {
     	let srcSentenceSearch = "";
     	let targLangSearch = "";
     	let targSentenceSearch = "";
+    	let overallScoreSearch = "";
 
     	const removeFlashcard = async (i, id) => {
     		await fetch(`http://localhost:3000/flashcards/${id}`, { method: "DELETE" });
@@ -4762,6 +4861,11 @@ var app = (function () {
     		$$invalidate(5, targSentenceSearch);
     	}
 
+    	function input4_input_handler() {
+    		overallScoreSearch = this.value;
+    		$$invalidate(6, overallScoreSearch);
+    	}
+
     	const click_handler = (i, sentence) => {
     		removeFlashcard(i, sentence._id);
     	};
@@ -4778,6 +4882,7 @@ var app = (function () {
     		srcSentenceSearch,
     		targLangSearch,
     		targSentenceSearch,
+    		overallScoreSearch,
     		removeFlashcard,
     		filteredList
     	});
@@ -4789,7 +4894,8 @@ var app = (function () {
     		if ("srcSentenceSearch" in $$props) $$invalidate(3, srcSentenceSearch = $$props.srcSentenceSearch);
     		if ("targLangSearch" in $$props) $$invalidate(4, targLangSearch = $$props.targLangSearch);
     		if ("targSentenceSearch" in $$props) $$invalidate(5, targSentenceSearch = $$props.targSentenceSearch);
-    		if ("filteredList" in $$props) $$invalidate(6, filteredList = $$props.filteredList);
+    		if ("overallScoreSearch" in $$props) $$invalidate(6, overallScoreSearch = $$props.overallScoreSearch);
+    		if ("filteredList" in $$props) $$invalidate(7, filteredList = $$props.filteredList);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -4797,9 +4903,9 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*flashcardData, srcLangSearch, srcSentenceSearch, targLangSearch, targSentenceSearch*/ 61) {
-    			$$invalidate(6, filteredList = $$invalidate(1, filteredFlashcards = flashcardData.filter(flashcard => {
-    				return flashcard.srcLang.toLowerCase().indexOf(srcLangSearch.toLowerCase()) !== -1 && flashcard.srcSentence.toLowerCase().indexOf(srcSentenceSearch.toLowerCase()) !== -1 && flashcard.targLang.toLowerCase().indexOf(targLangSearch.toLowerCase()) !== -1 && flashcard.targSentence.toLowerCase().indexOf(targSentenceSearch.toLowerCase()) !== -1;
+    		if ($$self.$$.dirty & /*flashcardData, srcLangSearch, srcSentenceSearch, targLangSearch, targSentenceSearch, overallScoreSearch*/ 125) {
+    			$$invalidate(7, filteredList = $$invalidate(1, filteredFlashcards = flashcardData.filter(flashcard => {
+    				return flashcard.srcLang.toLowerCase().indexOf(srcLangSearch.toLowerCase()) !== -1 && flashcard.srcSentence.toLowerCase().indexOf(srcSentenceSearch.toLowerCase()) !== -1 && flashcard.targLang.toLowerCase().indexOf(targLangSearch.toLowerCase()) !== -1 && flashcard.targSentence.toLowerCase().indexOf(targSentenceSearch.toLowerCase()) !== -1 && flashcard.overallScore >= overallScoreSearch;
     			})));
     		}
     	};
@@ -4811,12 +4917,14 @@ var app = (function () {
     		srcSentenceSearch,
     		targLangSearch,
     		targSentenceSearch,
+    		overallScoreSearch,
     		filteredList,
     		removeFlashcard,
     		input0_input_handler,
     		input1_input_handler,
     		input2_input_handler,
     		input3_input_handler,
+    		input4_input_handler,
     		click_handler
     	];
     }
@@ -4972,15 +5080,15 @@ var app = (function () {
     /* src/Review/Flashcard.svelte generated by Svelte v3.38.2 */
     const file$5 = "src/Review/Flashcard.svelte";
 
-    // (37:4) {:else}
+    // (36:4) {:else}
     function create_else_block(ctx) {
     	let div;
     	let h1;
-    	let t0_value = /*languages*/ ctx[5][/*data*/ ctx[2][/*cardIndex*/ ctx[1]].targLang] + "";
+    	let t0_value = /*languages*/ ctx[5][/*data*/ ctx[3][/*cardIndex*/ ctx[2]].targLang] + "";
     	let t0;
     	let t1;
     	let h2;
-    	let t2_value = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].targSentence + "";
+    	let t2_value = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].targSentence + "";
     	let t2;
     	let t3;
     	let ttsaudioplayer;
@@ -4989,7 +5097,7 @@ var app = (function () {
 
     	ttsaudioplayer = new TtsAudioPlayer({
     			props: {
-    				src: /*data*/ ctx[2][/*cardIndex*/ ctx[1]].targTTS
+    				src: /*data*/ ctx[3][/*cardIndex*/ ctx[2]].targTTS
     			},
     			$$inline: true
     		});
@@ -5005,11 +5113,11 @@ var app = (function () {
     			t3 = space();
     			create_component(ttsaudioplayer.$$.fragment);
     			attr_dev(h1, "class", "lang svelte-106v0tk");
-    			add_location(h1, file$5, 38, 6, 1131);
+    			add_location(h1, file$5, 37, 6, 1118);
     			attr_dev(h2, "class", "sentence svelte-106v0tk");
-    			add_location(h2, file$5, 39, 6, 1197);
+    			add_location(h2, file$5, 38, 6, 1184);
     			attr_dev(div, "class", "side back svelte-106v0tk");
-    			add_location(div, file$5, 37, 4, 1085);
+    			add_location(div, file$5, 36, 4, 1072);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5023,10 +5131,10 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*data, cardIndex*/ 6) && t0_value !== (t0_value = /*languages*/ ctx[5][/*data*/ ctx[2][/*cardIndex*/ ctx[1]].targLang] + "")) set_data_dev(t0, t0_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 6) && t2_value !== (t2_value = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].targSentence + "")) set_data_dev(t2, t2_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 12) && t0_value !== (t0_value = /*languages*/ ctx[5][/*data*/ ctx[3][/*cardIndex*/ ctx[2]].targLang] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 12) && t2_value !== (t2_value = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].targSentence + "")) set_data_dev(t2, t2_value);
     			const ttsaudioplayer_changes = {};
-    			if (dirty & /*data, cardIndex*/ 6) ttsaudioplayer_changes.src = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].targTTS;
+    			if (dirty & /*data, cardIndex*/ 12) ttsaudioplayer_changes.src = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].targTTS;
     			ttsaudioplayer.$set(ttsaudioplayer_changes);
     		},
     		i: function intro(local) {
@@ -5057,22 +5165,22 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(37:4) {:else}",
+    		source: "(36:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (31:4) {#if frontSide}
-    function create_if_block$3(ctx) {
+    // (30:4) {#if frontSide}
+    function create_if_block$4(ctx) {
     	let div;
     	let h1;
-    	let t0_value = /*languages*/ ctx[5][/*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcLang] + "";
+    	let t0_value = /*languages*/ ctx[5][/*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcLang] + "";
     	let t0;
     	let t1;
     	let h2;
-    	let t2_value = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcSentence + "";
+    	let t2_value = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcSentence + "";
     	let t2;
     	let t3;
     	let ttsaudioplayer;
@@ -5081,7 +5189,7 @@ var app = (function () {
 
     	ttsaudioplayer = new TtsAudioPlayer({
     			props: {
-    				src: /*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcTTS
+    				src: /*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcTTS
     			},
     			$$inline: true
     		});
@@ -5097,11 +5205,11 @@ var app = (function () {
     			t3 = space();
     			create_component(ttsaudioplayer.$$.fragment);
     			attr_dev(h1, "class", "lang svelte-106v0tk");
-    			add_location(h1, file$5, 32, 6, 884);
+    			add_location(h1, file$5, 31, 6, 871);
     			attr_dev(h2, "class", "sentence svelte-106v0tk");
-    			add_location(h2, file$5, 33, 6, 949);
+    			add_location(h2, file$5, 32, 6, 936);
     			attr_dev(div, "class", "side svelte-106v0tk");
-    			add_location(div, file$5, 31, 4, 843);
+    			add_location(div, file$5, 30, 4, 830);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5115,10 +5223,10 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if ((!current || dirty & /*data, cardIndex*/ 6) && t0_value !== (t0_value = /*languages*/ ctx[5][/*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcLang] + "")) set_data_dev(t0, t0_value);
-    			if ((!current || dirty & /*data, cardIndex*/ 6) && t2_value !== (t2_value = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcSentence + "")) set_data_dev(t2, t2_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 12) && t0_value !== (t0_value = /*languages*/ ctx[5][/*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcLang] + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*data, cardIndex*/ 12) && t2_value !== (t2_value = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcSentence + "")) set_data_dev(t2, t2_value);
     			const ttsaudioplayer_changes = {};
-    			if (dirty & /*data, cardIndex*/ 6) ttsaudioplayer_changes.src = /*data*/ ctx[2][/*cardIndex*/ ctx[1]].srcTTS;
+    			if (dirty & /*data, cardIndex*/ 12) ttsaudioplayer_changes.src = /*data*/ ctx[3][/*cardIndex*/ ctx[2]].srcTTS;
     			ttsaudioplayer.$set(ttsaudioplayer_changes);
     		},
     		i: function intro(local) {
@@ -5147,9 +5255,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$3.name,
+    		id: create_if_block$4.name,
     		type: "if",
-    		source: "(31:4) {#if frontSide}",
+    		source: "(30:4) {#if frontSide}",
     		ctx
     	});
 
@@ -5163,11 +5271,11 @@ var app = (function () {
     	let current;
     	let mounted;
     	let dispose;
-    	const if_block_creators = [create_if_block$3, create_else_block];
+    	const if_block_creators = [create_if_block$4, create_else_block];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*frontSide*/ ctx[3]) return 0;
+    		if (/*frontSide*/ ctx[1]) return 0;
     		return 1;
     	}
 
@@ -5179,7 +5287,7 @@ var app = (function () {
     			div = element("div");
     			if_block.c();
     			attr_dev(div, "class", "flashcard svelte-106v0tk");
-    			add_location(div, file$5, 26, 2, 725);
+    			add_location(div, file$5, 25, 2, 712);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5252,8 +5360,11 @@ var app = (function () {
     function instance$5($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Flashcard", slots, []);
-    	let { cardIndex } = $$props, { data } = $$props, { flipped } = $$props;
-    	let frontSide = true;
+
+    	let { cardIndex } = $$props,
+    		{ data } = $$props,
+    		{ flipped } = $$props,
+    		{ frontSide } = $$props;
 
     	const flip = ({ delay = 0, duration = 400 }) => {
     		return {
@@ -5277,21 +5388,22 @@ var app = (function () {
     		"Chinese": "🇨🇳"
     	};
 
-    	const writable_props = ["cardIndex", "data", "flipped"];
+    	const writable_props = ["cardIndex", "data", "flipped", "frontSide"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Flashcard> was created with unknown prop '${key}'`);
     	});
 
     	const click_handler = () => {
-    		$$invalidate(3, frontSide = !frontSide);
+    		$$invalidate(1, frontSide = !frontSide);
     		$$invalidate(0, flipped = true);
     	};
 
     	$$self.$$set = $$props => {
-    		if ("cardIndex" in $$props) $$invalidate(1, cardIndex = $$props.cardIndex);
-    		if ("data" in $$props) $$invalidate(2, data = $$props.data);
+    		if ("cardIndex" in $$props) $$invalidate(2, cardIndex = $$props.cardIndex);
+    		if ("data" in $$props) $$invalidate(3, data = $$props.data);
     		if ("flipped" in $$props) $$invalidate(0, flipped = $$props.flipped);
+    		if ("frontSide" in $$props) $$invalidate(1, frontSide = $$props.frontSide);
     	};
 
     	$$self.$capture_state = () => ({
@@ -5305,23 +5417,29 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("cardIndex" in $$props) $$invalidate(1, cardIndex = $$props.cardIndex);
-    		if ("data" in $$props) $$invalidate(2, data = $$props.data);
+    		if ("cardIndex" in $$props) $$invalidate(2, cardIndex = $$props.cardIndex);
+    		if ("data" in $$props) $$invalidate(3, data = $$props.data);
     		if ("flipped" in $$props) $$invalidate(0, flipped = $$props.flipped);
-    		if ("frontSide" in $$props) $$invalidate(3, frontSide = $$props.frontSide);
+    		if ("frontSide" in $$props) $$invalidate(1, frontSide = $$props.frontSide);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [flipped, cardIndex, data, frontSide, flip, languages, click_handler];
+    	return [flipped, frontSide, cardIndex, data, flip, languages, click_handler];
     }
 
     class Flashcard extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$5, create_fragment$5, safe_not_equal, { cardIndex: 1, data: 2, flipped: 0 });
+
+    		init(this, options, instance$5, create_fragment$5, safe_not_equal, {
+    			cardIndex: 2,
+    			data: 3,
+    			flipped: 0,
+    			frontSide: 1
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5333,16 +5451,20 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*cardIndex*/ ctx[1] === undefined && !("cardIndex" in props)) {
+    		if (/*cardIndex*/ ctx[2] === undefined && !("cardIndex" in props)) {
     			console.warn("<Flashcard> was created without expected prop 'cardIndex'");
     		}
 
-    		if (/*data*/ ctx[2] === undefined && !("data" in props)) {
+    		if (/*data*/ ctx[3] === undefined && !("data" in props)) {
     			console.warn("<Flashcard> was created without expected prop 'data'");
     		}
 
     		if (/*flipped*/ ctx[0] === undefined && !("flipped" in props)) {
     			console.warn("<Flashcard> was created without expected prop 'flipped'");
+    		}
+
+    		if (/*frontSide*/ ctx[1] === undefined && !("frontSide" in props)) {
+    			console.warn("<Flashcard> was created without expected prop 'frontSide'");
     		}
     	}
 
@@ -5369,65 +5491,314 @@ var app = (function () {
     	set flipped(value) {
     		throw new Error("<Flashcard>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get frontSide() {
+    		throw new Error("<Flashcard>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set frontSide(value) {
+    		throw new Error("<Flashcard>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     /* src/Review/ReactionButtons.svelte generated by Svelte v3.38.2 */
-
     const file$4 = "src/Review/ReactionButtons.svelte";
 
-    function create_fragment$4(ctx) {
-    	let div;
-    	let button0;
-    	let t1;
-    	let button1;
-    	let t3;
-    	let button2;
-    	let mounted;
-    	let dispose;
+    // (28:4) {#if sadVisible}
+    function create_if_block_2$2(ctx) {
+    	let p;
+    	let p_outro;
+    	let current;
 
     	const block = {
     		c: function create() {
-    			div = element("div");
+    			p = element("p");
+    			p.textContent = "0";
+    			add_location(p, file$4, 28, 6, 757);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			if (p_outro) p_outro.end(1);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			p_outro = create_out_transition(p, fly, { y: -100, duration: 500 });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching && p_outro) p_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$2.name,
+    		type: "if",
+    		source: "(28:4) {#if sadVisible}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (42:4) {#if medVisible}
+    function create_if_block_1$2(ctx) {
+    	let p;
+    	let p_outro;
+    	let current;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			p.textContent = "+1";
+    			add_location(p, file$4, 42, 6, 1109);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			if (p_outro) p_outro.end(1);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			p_outro = create_out_transition(p, fly, { y: -100, duration: 500 });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching && p_outro) p_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$2.name,
+    		type: "if",
+    		source: "(42:4) {#if medVisible}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (56:4) {#if happyVisible}
+    function create_if_block$3(ctx) {
+    	let p;
+    	let p_outro;
+    	let current;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			p.textContent = "+3";
+    			add_location(p, file$4, 56, 6, 1465);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			if (p_outro) p_outro.end(1);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			p_outro = create_out_transition(p, fly, { y: -100, duration: 500 });
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching && p_outro) p_outro.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$3.name,
+    		type: "if",
+    		source: "(56:4) {#if happyVisible}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$4(ctx) {
+    	let div3;
+    	let div0;
+    	let button0;
+    	let t1;
+    	let t2;
+    	let div1;
+    	let button1;
+    	let t4;
+    	let t5;
+    	let div2;
+    	let button2;
+    	let t7;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	let if_block0 = /*sadVisible*/ ctx[4] && create_if_block_2$2(ctx);
+    	let if_block1 = /*medVisible*/ ctx[5] && create_if_block_1$2(ctx);
+    	let if_block2 = /*happyVisible*/ ctx[6] && create_if_block$3(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div3 = element("div");
+    			div0 = element("div");
     			button0 = element("button");
     			button0.textContent = "😭";
     			t1 = space();
+    			if (if_block0) if_block0.c();
+    			t2 = space();
+    			div1 = element("div");
     			button1 = element("button");
     			button1.textContent = "😐";
-    			t3 = space();
+    			t4 = space();
+    			if (if_block1) if_block1.c();
+    			t5 = space();
+    			div2 = element("div");
     			button2 = element("button");
     			button2.textContent = "😄";
-    			add_location(button0, file$4, 15, 2, 377);
-    			add_location(button1, file$4, 21, 2, 531);
-    			add_location(button2, file$4, 27, 2, 685);
-    			attr_dev(div, "class", "flashcard-reaction-buttons svelte-8k09h4");
-    			add_location(div, file$4, 14, 0, 334);
+    			t7 = space();
+    			if (if_block2) if_block2.c();
+    			attr_dev(button0, "class", "svelte-12nfzrq");
+    			add_location(button0, file$4, 18, 4, 498);
+    			attr_dev(div0, "class", "reaction svelte-12nfzrq");
+    			add_location(div0, file$4, 17, 2, 471);
+    			attr_dev(button1, "class", "svelte-12nfzrq");
+    			add_location(button1, file$4, 32, 4, 849);
+    			attr_dev(div1, "class", "reaction svelte-12nfzrq");
+    			add_location(div1, file$4, 31, 2, 822);
+    			attr_dev(button2, "class", "svelte-12nfzrq");
+    			add_location(button2, file$4, 46, 4, 1202);
+    			attr_dev(div2, "class", "reaction svelte-12nfzrq");
+    			add_location(div2, file$4, 45, 2, 1175);
+    			attr_dev(div3, "id", "flashcard-reaction-buttons");
+    			attr_dev(div3, "class", "svelte-12nfzrq");
+    			add_location(div3, file$4, 16, 0, 431);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, button0);
-    			append_dev(div, t1);
-    			append_dev(div, button1);
-    			append_dev(div, t3);
-    			append_dev(div, button2);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div0);
+    			append_dev(div0, button0);
+    			append_dev(div0, t1);
+    			if (if_block0) if_block0.m(div0, null);
+    			append_dev(div3, t2);
+    			append_dev(div3, div1);
+    			append_dev(div1, button1);
+    			append_dev(div1, t4);
+    			if (if_block1) if_block1.m(div1, null);
+    			append_dev(div3, t5);
+    			append_dev(div3, div2);
+    			append_dev(div2, button2);
+    			append_dev(div2, t7);
+    			if (if_block2) if_block2.m(div2, null);
+    			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[5], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[6], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[7], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[8], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[9], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
-    		p: noop,
-    		i: noop,
-    		o: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (/*sadVisible*/ ctx[4]) {
+    				if (if_block0) {
+    					if (dirty & /*sadVisible*/ 16) {
+    						transition_in(if_block0, 1);
+    					}
+    				} else {
+    					if_block0 = create_if_block_2$2(ctx);
+    					if_block0.c();
+    					transition_in(if_block0, 1);
+    					if_block0.m(div0, null);
+    				}
+    			} else if (if_block0) {
+    				group_outros();
+
+    				transition_out(if_block0, 1, 1, () => {
+    					if_block0 = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			if (/*medVisible*/ ctx[5]) {
+    				if (if_block1) {
+    					if (dirty & /*medVisible*/ 32) {
+    						transition_in(if_block1, 1);
+    					}
+    				} else {
+    					if_block1 = create_if_block_1$2(ctx);
+    					if_block1.c();
+    					transition_in(if_block1, 1);
+    					if_block1.m(div1, null);
+    				}
+    			} else if (if_block1) {
+    				group_outros();
+
+    				transition_out(if_block1, 1, 1, () => {
+    					if_block1 = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			if (/*happyVisible*/ ctx[6]) {
+    				if (if_block2) {
+    					if (dirty & /*happyVisible*/ 64) {
+    						transition_in(if_block2, 1);
+    					}
+    				} else {
+    					if_block2 = create_if_block$3(ctx);
+    					if_block2.c();
+    					transition_in(if_block2, 1);
+    					if_block2.m(div2, null);
+    				}
+    			} else if (if_block2) {
+    				group_outros();
+
+    				transition_out(if_block2, 1, 1, () => {
+    					if_block2 = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block0);
+    			transition_in(if_block1);
+    			transition_in(if_block2);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block0);
+    			transition_out(if_block1);
+    			transition_out(if_block2);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(div3);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			if (if_block2) if_block2.d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -5453,6 +5824,8 @@ var app = (function () {
     		{ frontSide } = $$props,
     		{ flipped } = $$props;
 
+    	let sadVisible, medVisible, happyVisible = false;
+
     	const updateFlashcardScore = async (id, value) => {
     		await fetch(`http://localhost:3000/flashcards/${id}`, {
     			method: "PUT",
@@ -5469,23 +5842,44 @@ var app = (function () {
 
     	const click_handler = () => {
     		updateFlashcardScore(data[cardIndex]._id, 0);
-    		$$invalidate(0, cardIndex++, cardIndex);
-    		$$invalidate(1, frontSide = true);
-    		$$invalidate(2, flipped = false);
+    		$$invalidate(4, sadVisible = true);
+
+    		setTimeout(
+    			() => {
+    				$$invalidate(0, cardIndex++, cardIndex);
+    				$$invalidate(1, frontSide = true);
+    				$$invalidate(2, flipped = false);
+    			},
+    			500
+    		);
     	};
 
     	const click_handler_1 = () => {
     		updateFlashcardScore(data[cardIndex]._id, 1);
-    		$$invalidate(0, cardIndex++, cardIndex);
-    		$$invalidate(1, frontSide = true);
-    		$$invalidate(2, flipped = false);
+    		$$invalidate(5, medVisible = true);
+
+    		setTimeout(
+    			() => {
+    				$$invalidate(0, cardIndex++, cardIndex);
+    				$$invalidate(1, frontSide = true);
+    				$$invalidate(2, flipped = false);
+    			},
+    			500
+    		);
     	};
 
     	const click_handler_2 = () => {
     		updateFlashcardScore(data[cardIndex]._id, 3);
-    		$$invalidate(0, cardIndex++, cardIndex);
-    		$$invalidate(1, frontSide = true);
-    		$$invalidate(2, flipped = false);
+    		$$invalidate(6, happyVisible = true);
+
+    		setTimeout(
+    			() => {
+    				$$invalidate(0, cardIndex++, cardIndex);
+    				$$invalidate(1, frontSide = true);
+    				$$invalidate(2, flipped = false);
+    			},
+    			500
+    		);
     	};
 
     	$$self.$$set = $$props => {
@@ -5496,10 +5890,14 @@ var app = (function () {
     	};
 
     	$$self.$capture_state = () => ({
+    		fly,
     		data,
     		cardIndex,
     		frontSide,
     		flipped,
+    		sadVisible,
+    		medVisible,
+    		happyVisible,
     		updateFlashcardScore
     	});
 
@@ -5508,6 +5906,9 @@ var app = (function () {
     		if ("cardIndex" in $$props) $$invalidate(0, cardIndex = $$props.cardIndex);
     		if ("frontSide" in $$props) $$invalidate(1, frontSide = $$props.frontSide);
     		if ("flipped" in $$props) $$invalidate(2, flipped = $$props.flipped);
+    		if ("sadVisible" in $$props) $$invalidate(4, sadVisible = $$props.sadVisible);
+    		if ("medVisible" in $$props) $$invalidate(5, medVisible = $$props.medVisible);
+    		if ("happyVisible" in $$props) $$invalidate(6, happyVisible = $$props.happyVisible);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -5519,6 +5920,9 @@ var app = (function () {
     		frontSide,
     		flipped,
     		data,
+    		sadVisible,
+    		medVisible,
+    		happyVisible,
     		updateFlashcardScore,
     		click_handler,
     		click_handler_1,
@@ -5631,61 +6035,46 @@ var app = (function () {
 
     // (14:4) {#if filteredFlashcards.length}
     function create_if_block_1$1(ctx) {
-    	let if_block_anchor;
+    	let previous_key = /*cardIndex*/ ctx[2];
+    	let key_block_anchor;
     	let current;
-
-    	let if_block = /*cardIndex*/ ctx[2] < (/*numberOfCards*/ ctx[0] < /*filteredFlashcards*/ ctx[1].length
-    	? /*numberOfCards*/ ctx[0]
-    	: /*filteredFlashcards*/ ctx[1].length) && create_if_block_2$1(ctx);
+    	let key_block = create_key_block(ctx);
 
     	const block = {
     		c: function create() {
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
+    			key_block.c();
+    			key_block_anchor = empty();
     		},
     		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
+    			key_block.m(target, anchor);
+    			insert_dev(target, key_block_anchor, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (/*cardIndex*/ ctx[2] < (/*numberOfCards*/ ctx[0] < /*filteredFlashcards*/ ctx[1].length
-    			? /*numberOfCards*/ ctx[0]
-    			: /*filteredFlashcards*/ ctx[1].length)) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-
-    					if (dirty & /*cardIndex, numberOfCards, filteredFlashcards*/ 7) {
-    						transition_in(if_block, 1);
-    					}
-    				} else {
-    					if_block = create_if_block_2$1(ctx);
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
+    			if (dirty & /*cardIndex*/ 4 && safe_not_equal(previous_key, previous_key = /*cardIndex*/ ctx[2])) {
     				group_outros();
-
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
-    				});
-
+    				transition_out(key_block, 1, 1, noop);
     				check_outros();
+    				key_block = create_key_block(ctx);
+    				key_block.c();
+    				transition_in(key_block);
+    				key_block.m(key_block_anchor.parentNode, key_block_anchor);
+    			} else {
+    				key_block.p(ctx, dirty);
     			}
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(if_block);
+    			transition_in(key_block);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(if_block);
+    			transition_out(key_block);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
+    			if (detaching) detach_dev(key_block_anchor);
+    			key_block.d(detaching);
     		}
     	};
 
@@ -5700,8 +6089,9 @@ var app = (function () {
     	return block;
     }
 
-    // (15:6) {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
+    // (16:8) {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
     function create_if_block_2$1(ctx) {
+    	let div;
     	let h2;
     	let t0;
     	let t1_value = /*cardIndex*/ ctx[2] + 1 + "";
@@ -5717,7 +6107,6 @@ var app = (function () {
     	let flashcard;
     	let updating_flipped;
     	let t5;
-    	let if_block_anchor;
     	let current;
 
     	function flashcard_flipped_binding(value) {
@@ -5726,7 +6115,8 @@ var app = (function () {
 
     	let flashcard_props = {
     		data: /*filteredFlashcards*/ ctx[1],
-    		cardIndex: /*cardIndex*/ ctx[2]
+    		cardIndex: /*cardIndex*/ ctx[2],
+    		frontSide: /*frontSide*/ ctx[3]
     	};
 
     	if (/*flipped*/ ctx[4] !== void 0) {
@@ -5739,6 +6129,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			h2 = element("h2");
     			t0 = text("Card ");
     			t1 = text(t1_value);
@@ -5748,20 +6139,22 @@ var app = (function () {
     			create_component(flashcard.$$.fragment);
     			t5 = space();
     			if (if_block) if_block.c();
-    			if_block_anchor = empty();
-    			add_location(h2, file$3, 15, 8, 506);
+    			attr_dev(h2, "class", "svelte-zlwkcn");
+    			add_location(h2, file$3, 17, 12, 574);
+    			attr_dev(div, "class", "card-on-screen svelte-zlwkcn");
+    			add_location(div, file$3, 16, 10, 533);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h2, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, h2);
     			append_dev(h2, t0);
     			append_dev(h2, t1);
     			append_dev(h2, t2);
     			append_dev(h2, t3);
-    			insert_dev(target, t4, anchor);
-    			mount_component(flashcard, target, anchor);
-    			insert_dev(target, t5, anchor);
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
+    			append_dev(div, t4);
+    			mount_component(flashcard, div, null);
+    			append_dev(div, t5);
+    			if (if_block) if_block.m(div, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -5774,6 +6167,7 @@ var app = (function () {
     			const flashcard_changes = {};
     			if (dirty & /*filteredFlashcards*/ 2) flashcard_changes.data = /*filteredFlashcards*/ ctx[1];
     			if (dirty & /*cardIndex*/ 4) flashcard_changes.cardIndex = /*cardIndex*/ ctx[2];
+    			if (dirty & /*frontSide*/ 8) flashcard_changes.frontSide = /*frontSide*/ ctx[3];
 
     			if (!updating_flipped && dirty & /*flipped*/ 16) {
     				updating_flipped = true;
@@ -5794,7 +6188,7 @@ var app = (function () {
     					if_block = create_if_block_3$1(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    					if_block.m(div, null);
     				}
     			} else if (if_block) {
     				group_outros();
@@ -5818,12 +6212,9 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h2);
-    			if (detaching) detach_dev(t4);
-    			destroy_component(flashcard, detaching);
-    			if (detaching) detach_dev(t5);
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
+    			if (detaching) detach_dev(div);
+    			destroy_component(flashcard);
+    			if (if_block) if_block.d();
     		}
     	};
 
@@ -5831,14 +6222,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(15:6) {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}",
+    		source: "(16:8) {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (18:8) {#if flipped}
+    // (20:12) {#if flipped}
     function create_if_block_3$1(ctx) {
     	let reactionbuttons;
     	let updating_cardIndex;
@@ -5931,14 +6322,85 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(18:8) {#if flipped}",
+    		source: "(20:12) {#if flipped}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (23:2) {#if cardIndex === (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
+    // (15:6) {#key cardIndex}
+    function create_key_block(ctx) {
+    	let if_block_anchor;
+    	let current;
+
+    	let if_block = /*cardIndex*/ ctx[2] < (/*numberOfCards*/ ctx[0] < /*filteredFlashcards*/ ctx[1].length
+    	? /*numberOfCards*/ ctx[0]
+    	: /*filteredFlashcards*/ ctx[1].length) && create_if_block_2$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*cardIndex*/ ctx[2] < (/*numberOfCards*/ ctx[0] < /*filteredFlashcards*/ ctx[1].length
+    			? /*numberOfCards*/ ctx[0]
+    			: /*filteredFlashcards*/ ctx[1].length)) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*cardIndex, numberOfCards, filteredFlashcards*/ 7) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block_2$1(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_key_block.name,
+    		type: "key",
+    		source: "(15:6) {#key cardIndex}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (27:2) {#if cardIndex === (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
     function create_if_block$2(ctx) {
     	let h1;
 
@@ -5947,8 +6409,8 @@ var app = (function () {
     			h1 = element("h1");
     			h1.textContent = "Review finished!";
     			attr_dev(h1, "id", "finished");
-    			attr_dev(h1, "class", "svelte-1o529lf");
-    			add_location(h1, file$3, 23, 4, 1008);
+    			attr_dev(h1, "class", "svelte-zlwkcn");
+    			add_location(h1, file$3, 27, 4, 1134);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
@@ -5962,7 +6424,7 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(23:2) {#if cardIndex === (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}",
+    		source: "(27:2) {#if cardIndex === (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}",
     		ctx
     	});
 
@@ -5989,7 +6451,7 @@ var app = (function () {
     			if (if_block1) if_block1.c();
     			t1 = space();
     			if (if_block2) if_block2.c();
-    			attr_dev(main, "class", "svelte-1o529lf");
+    			attr_dev(main, "class", "svelte-zlwkcn");
     			add_location(main, file$3, 9, 0, 240);
     		},
     		l: function claim(nodes) {
@@ -6198,7 +6660,7 @@ var app = (function () {
 
     const file$2 = "src/Review/ReviewSessionCreator.svelte";
 
-    // (18:6) {#if numberOfCards > filteredFlashcards.length && filteredFlashcards.length > 0}
+    // (19:6) {#if numberOfCards > filteredFlashcards.length && filteredFlashcards.length > 0}
     function create_if_block$1(ctx) {
     	let p;
     	let t0;
@@ -6220,8 +6682,8 @@ var app = (function () {
     			t2 = space();
     			t3 = text(t3_value);
     			set_style(p, "color", "red");
-    			attr_dev(p, "class", "svelte-1g9h4uo");
-    			add_location(p, file$2, 18, 8, 780);
+    			attr_dev(p, "class", "svelte-4f4mv3");
+    			add_location(p, file$2, 19, 8, 840);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6246,7 +6708,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(18:6) {#if numberOfCards > filteredFlashcards.length && filteredFlashcards.length > 0}",
+    		source: "(19:6) {#if numberOfCards > filteredFlashcards.length && filteredFlashcards.length > 0}",
     		ctx
     	});
 
@@ -6255,22 +6717,24 @@ var app = (function () {
 
     function create_fragment$2(ctx) {
     	let main;
+    	let h3;
+    	let t1;
     	let div2;
     	let div0;
     	let label;
-    	let t1;
+    	let t3;
     	let input;
-    	let t2;
-    	let button;
     	let t4;
+    	let button;
+    	let t6;
     	let div1;
     	let p;
-    	let t5;
-    	let t6;
     	let t7;
-    	let t8_value = (/*numberOfCards*/ ctx[1] === 1 ? "card" : "cards") + "";
     	let t8;
     	let t9;
+    	let t10_value = (/*numberOfCards*/ ctx[1] === 1 ? "card" : "cards") + "";
+    	let t10;
+    	let t11;
     	let mounted;
     	let dispose;
     	let if_block = /*numberOfCards*/ ctx[1] > /*filteredFlashcards*/ ctx[2].length && /*filteredFlashcards*/ ctx[2].length > 0 && create_if_block$1(ctx);
@@ -6278,48 +6742,53 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			main = element("main");
+    			h3 = element("h3");
+    			h3.textContent = "Start a review session";
+    			t1 = space();
     			div2 = element("div");
     			div0 = element("div");
     			label = element("label");
     			label.textContent = "How many cards would you like to review? (1-10)";
-    			t1 = space();
+    			t3 = space();
     			input = element("input");
-    			t2 = space();
-    			button = element("button");
-    			button.textContent = "➡️";
     			t4 = space();
+    			button = element("button");
+    			button.textContent = "Begin";
+    			t6 = space();
     			div1 = element("div");
     			p = element("p");
-    			t5 = text("Review session of ");
-    			t6 = text(/*numberOfCards*/ ctx[1]);
-    			t7 = space();
-    			t8 = text(t8_value);
+    			t7 = text("Review session of ");
+    			t8 = text(/*numberOfCards*/ ctx[1]);
     			t9 = space();
+    			t10 = text(t10_value);
+    			t11 = space();
     			if (if_block) if_block.c();
+    			attr_dev(h3, "class", "svelte-4f4mv3");
+    			add_location(h3, file$2, 6, 2, 92);
     			attr_dev(label, "for", "number-of-cards");
-    			add_location(label, file$2, 8, 6, 173);
+    			add_location(label, file$2, 9, 6, 207);
     			attr_dev(input, "type", "number");
     			attr_dev(input, "id", "number-of-cards");
     			attr_dev(input, "name", "number-of-cards");
     			attr_dev(input, "min", "1");
     			attr_dev(input, "max", "10");
     			attr_dev(input, "onkeydown", "return false;");
-    			add_location(input, file$2, 9, 6, 264);
+    			attr_dev(input, "class", "svelte-4f4mv3");
+    			add_location(input, file$2, 10, 6, 298);
+    			attr_dev(button, "class", "animated-button review-start svelte-4f4mv3");
+    			add_location(button, file$2, 11, 6, 440);
     			attr_dev(div0, "id", "card-quantity-selector");
-    			attr_dev(div0, "class", "svelte-1g9h4uo");
-    			add_location(div0, file$2, 7, 4, 133);
-    			attr_dev(button, "id", "review-start");
-    			attr_dev(button, "class", "svelte-1g9h4uo");
-    			add_location(button, file$2, 11, 4, 415);
-    			attr_dev(p, "class", "svelte-1g9h4uo");
-    			add_location(p, file$2, 16, 8, 602);
+    			attr_dev(div0, "class", "svelte-4f4mv3");
+    			add_location(div0, file$2, 8, 4, 167);
+    			attr_dev(p, "class", "svelte-4f4mv3");
+    			add_location(p, file$2, 17, 6, 662);
     			attr_dev(div1, "id", "session-preview");
-    			attr_dev(div1, "class", "svelte-1g9h4uo");
-    			add_location(div1, file$2, 15, 6, 567);
+    			attr_dev(div1, "class", "svelte-4f4mv3");
+    			add_location(div1, file$2, 16, 4, 629);
     			attr_dev(div2, "id", "practice-session-selector");
-    			attr_dev(div2, "class", "svelte-1g9h4uo");
-    			add_location(div2, file$2, 6, 2, 92);
-    			attr_dev(main, "class", "svelte-1g9h4uo");
+    			attr_dev(div2, "class", "svelte-4f4mv3");
+    			add_location(div2, file$2, 7, 2, 126);
+    			attr_dev(main, "class", "svelte-4f4mv3");
     			add_location(main, file$2, 5, 0, 83);
     		},
     		l: function claim(nodes) {
@@ -6327,22 +6796,24 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
+    			append_dev(main, h3);
+    			append_dev(main, t1);
     			append_dev(main, div2);
     			append_dev(div2, div0);
     			append_dev(div0, label);
-    			append_dev(div0, t1);
+    			append_dev(div0, t3);
     			append_dev(div0, input);
     			set_input_value(input, /*numberOfCards*/ ctx[1]);
-    			append_dev(div2, t2);
-    			append_dev(div2, button);
-    			append_dev(div2, t4);
+    			append_dev(div0, t4);
+    			append_dev(div0, button);
+    			append_dev(div2, t6);
     			append_dev(div2, div1);
     			append_dev(div1, p);
-    			append_dev(p, t5);
-    			append_dev(p, t6);
     			append_dev(p, t7);
     			append_dev(p, t8);
-    			append_dev(div1, t9);
+    			append_dev(p, t9);
+    			append_dev(p, t10);
+    			append_dev(div1, t11);
     			if (if_block) if_block.m(div1, null);
 
     			if (!mounted) {
@@ -6359,8 +6830,8 @@ var app = (function () {
     				set_input_value(input, /*numberOfCards*/ ctx[1]);
     			}
 
-    			if (dirty & /*numberOfCards*/ 2) set_data_dev(t6, /*numberOfCards*/ ctx[1]);
-    			if (dirty & /*numberOfCards*/ 2 && t8_value !== (t8_value = (/*numberOfCards*/ ctx[1] === 1 ? "card" : "cards") + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*numberOfCards*/ 2) set_data_dev(t8, /*numberOfCards*/ ctx[1]);
+    			if (dirty & /*numberOfCards*/ 2 && t10_value !== (t10_value = (/*numberOfCards*/ ctx[1] === 1 ? "card" : "cards") + "")) set_data_dev(t10, t10_value);
 
     			if (/*numberOfCards*/ ctx[1] > /*filteredFlashcards*/ ctx[2].length && /*filteredFlashcards*/ ctx[2].length > 0) {
     				if (if_block) {
@@ -6702,21 +7173,38 @@ var app = (function () {
 
     // (30:6) {#if data.length}
     function create_if_block_2(ctx) {
-    	let reviewsessioncreator;
-    	let updating_practiceMode;
-    	let updating_numberOfCards;
-    	let t;
     	let div;
     	let flashcardtable;
     	let updating_filteredFlashcards;
+    	let t;
+    	let reviewsessioncreator;
+    	let updating_practiceMode;
+    	let updating_numberOfCards;
     	let current;
 
+    	function flashcardtable_filteredFlashcards_binding(value) {
+    		/*flashcardtable_filteredFlashcards_binding*/ ctx[5](value);
+    	}
+
+    	let flashcardtable_props = { flashcardData: /*data*/ ctx[9] };
+
+    	if (/*filteredFlashcards*/ ctx[2] !== void 0) {
+    		flashcardtable_props.filteredFlashcards = /*filteredFlashcards*/ ctx[2];
+    	}
+
+    	flashcardtable = new FlashcardTable({
+    			props: flashcardtable_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(flashcardtable, "filteredFlashcards", flashcardtable_filteredFlashcards_binding));
+
     	function reviewsessioncreator_practiceMode_binding(value) {
-    		/*reviewsessioncreator_practiceMode_binding*/ ctx[5](value);
+    		/*reviewsessioncreator_practiceMode_binding*/ ctx[6](value);
     	}
 
     	function reviewsessioncreator_numberOfCards_binding(value) {
-    		/*reviewsessioncreator_numberOfCards_binding*/ ctx[6](value);
+    		/*reviewsessioncreator_numberOfCards_binding*/ ctx[7](value);
     	}
 
     	let reviewsessioncreator_props = {
@@ -6739,41 +7227,32 @@ var app = (function () {
     	binding_callbacks.push(() => bind(reviewsessioncreator, "practiceMode", reviewsessioncreator_practiceMode_binding));
     	binding_callbacks.push(() => bind(reviewsessioncreator, "numberOfCards", reviewsessioncreator_numberOfCards_binding));
 
-    	function flashcardtable_filteredFlashcards_binding(value) {
-    		/*flashcardtable_filteredFlashcards_binding*/ ctx[7](value);
-    	}
-
-    	let flashcardtable_props = { flashcardData: /*data*/ ctx[9] };
-
-    	if (/*filteredFlashcards*/ ctx[2] !== void 0) {
-    		flashcardtable_props.filteredFlashcards = /*filteredFlashcards*/ ctx[2];
-    	}
-
-    	flashcardtable = new FlashcardTable({
-    			props: flashcardtable_props,
-    			$$inline: true
-    		});
-
-    	binding_callbacks.push(() => bind(flashcardtable, "filteredFlashcards", flashcardtable_filteredFlashcards_binding));
-
     	const block = {
     		c: function create() {
-    			create_component(reviewsessioncreator.$$.fragment);
-    			t = space();
     			div = element("div");
     			create_component(flashcardtable.$$.fragment);
+    			t = space();
+    			create_component(reviewsessioncreator.$$.fragment);
     			attr_dev(div, "id", "flashcard-table");
-    			attr_dev(div, "class", "svelte-1y76aak");
-    			add_location(div, file$1, 31, 8, 922);
+    			add_location(div, file$1, 30, 8, 801);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(reviewsessioncreator, target, anchor);
-    			insert_dev(target, t, anchor);
     			insert_dev(target, div, anchor);
     			mount_component(flashcardtable, div, null);
+    			insert_dev(target, t, anchor);
+    			mount_component(reviewsessioncreator, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
+    			const flashcardtable_changes = {};
+
+    			if (!updating_filteredFlashcards && dirty & /*filteredFlashcards*/ 4) {
+    				updating_filteredFlashcards = true;
+    				flashcardtable_changes.filteredFlashcards = /*filteredFlashcards*/ ctx[2];
+    				add_flush_callback(() => updating_filteredFlashcards = false);
+    			}
+
+    			flashcardtable.$set(flashcardtable_changes);
     			const reviewsessioncreator_changes = {};
     			if (dirty & /*filteredFlashcards*/ 4) reviewsessioncreator_changes.filteredFlashcards = /*filteredFlashcards*/ ctx[2];
 
@@ -6790,32 +7269,23 @@ var app = (function () {
     			}
 
     			reviewsessioncreator.$set(reviewsessioncreator_changes);
-    			const flashcardtable_changes = {};
-
-    			if (!updating_filteredFlashcards && dirty & /*filteredFlashcards*/ 4) {
-    				updating_filteredFlashcards = true;
-    				flashcardtable_changes.filteredFlashcards = /*filteredFlashcards*/ ctx[2];
-    				add_flush_callback(() => updating_filteredFlashcards = false);
-    			}
-
-    			flashcardtable.$set(flashcardtable_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(reviewsessioncreator.$$.fragment, local);
     			transition_in(flashcardtable.$$.fragment, local);
+    			transition_in(reviewsessioncreator.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(reviewsessioncreator.$$.fragment, local);
     			transition_out(flashcardtable.$$.fragment, local);
+    			transition_out(reviewsessioncreator.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(reviewsessioncreator, detaching);
-    			if (detaching) detach_dev(t);
     			if (detaching) detach_dev(div);
     			destroy_component(flashcardtable);
+    			if (detaching) detach_dev(t);
+    			destroy_component(reviewsessioncreator, detaching);
     		}
     	};
 
@@ -6885,6 +7355,7 @@ var app = (function () {
     			t0 = space();
     			button = element("button");
     			button.textContent = "Go back!";
+    			attr_dev(button, "class", "animated-button return-button svelte-gmt56r");
     			add_location(button, file$1, 42, 4, 1245);
     		},
     		m: function mount(target, anchor) {
@@ -6946,7 +7417,7 @@ var app = (function () {
     			if (if_block0) if_block0.c();
     			t = space();
     			if (if_block1) if_block1.c();
-    			attr_dev(main, "class", "svelte-1y76aak");
+    			attr_dev(main, "class", "svelte-gmt56r");
     			add_location(main, file$1, 21, 0, 542);
     		},
     		l: function claim(nodes) {
@@ -7058,6 +7529,11 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<ReviewDashboard> was created with unknown prop '${key}'`);
     	});
 
+    	function flashcardtable_filteredFlashcards_binding(value) {
+    		filteredFlashcards = value;
+    		$$invalidate(2, filteredFlashcards);
+    	}
+
     	function reviewsessioncreator_practiceMode_binding(value) {
     		practiceMode = value;
     		$$invalidate(0, practiceMode);
@@ -7066,11 +7542,6 @@ var app = (function () {
     	function reviewsessioncreator_numberOfCards_binding(value) {
     		numberOfCards = value;
     		$$invalidate(1, numberOfCards);
-    	}
-
-    	function flashcardtable_filteredFlashcards_binding(value) {
-    		filteredFlashcards = value;
-    		$$invalidate(2, filteredFlashcards);
     	}
 
     	const click_handler = () => {
@@ -7105,9 +7576,9 @@ var app = (function () {
     		filteredFlashcards,
     		fetchAllFlashcards,
     		reloadDb,
+    		flashcardtable_filteredFlashcards_binding,
     		reviewsessioncreator_practiceMode_binding,
     		reviewsessioncreator_numberOfCards_binding,
-    		flashcardtable_filteredFlashcards_binding,
     		click_handler
     	];
     }
@@ -7162,21 +7633,21 @@ var app = (function () {
     			button0.textContent = "🏠";
     			t1 = space();
     			button1 = element("button");
-    			button1.textContent = "CREATE";
+    			button1.textContent = "✍️";
     			t3 = space();
     			button2 = element("button");
-    			button2.textContent = "REVIEW";
+    			button2.textContent = "📚";
     			t5 = space();
     			create_component(router.$$.fragment);
-    			attr_dev(button0, "class", "animated-button nav-button svelte-90yfx5");
+    			attr_dev(button0, "class", "animated-button nav-button svelte-c6jbgz");
     			add_location(button0, file, 14, 3, 397);
-    			attr_dev(button1, "class", "animated-button nav-button svelte-90yfx5");
+    			attr_dev(button1, "class", "animated-button nav-button svelte-c6jbgz");
     			add_location(button1, file, 15, 3, 487);
-    			attr_dev(button2, "class", "animated-button nav-button svelte-90yfx5");
-    			add_location(button2, file, 16, 3, 597);
-    			attr_dev(nav, "class", "svelte-90yfx5");
+    			attr_dev(button2, "class", "animated-button nav-button svelte-c6jbgz");
+    			add_location(button2, file, 16, 3, 593);
+    			attr_dev(nav, "class", "svelte-c6jbgz");
     			add_location(nav, file, 13, 1, 388);
-    			attr_dev(body, "class", "svelte-90yfx5");
+    			attr_dev(body, "class", "svelte-c6jbgz");
     			add_location(body, file, 12, 0, 380);
     		},
     		l: function claim(nodes) {

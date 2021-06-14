@@ -13,8 +13,8 @@
 <body>
 	<nav>
 			<button class='animated-button nav-button' on:click={() => loadPage('#/')}>🏠</button>
-			<button class='animated-button nav-button' on:click={() => loadPage('#/create-dashboard')}>CREATE</button>
-			<button class='animated-button nav-button' on:click={() => loadPage('#/review-dashboard')}>REVIEW</button>
+			<button class='animated-button nav-button' on:click={() => loadPage('#/create-dashboard')}>✍️</button>
+			<button class='animated-button nav-button' on:click={() => loadPage('#/review-dashboard')}>📚</button>
 	</nav>
 
 	<Router routes = {{
@@ -54,7 +54,6 @@
     position: relative;
     display: inline-block;
   }
-
 	.nav-button {
     z-index: 2;
     transition: all 0.15s ease;
