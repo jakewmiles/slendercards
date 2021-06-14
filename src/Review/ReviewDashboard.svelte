@@ -29,7 +29,9 @@
       {/if}
       {#if data.length}
         <ReviewSessionCreator bind:practiceMode={practiceMode} bind:numberOfCards={numberOfCards} {filteredFlashcards}/>
-        <FlashcardTable flashcardData={data} bind:filteredFlashcards={filteredFlashcards}/>
+        <div id='flashcard-table'>
+          <FlashcardTable flashcardData={data} bind:filteredFlashcards={filteredFlashcards}/>
+        </div>
       {/if}
     {:catch error}
       <p>An error occurred! {error}</p>
@@ -51,6 +53,10 @@
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
+    overflow-y: scroll;
+  }
+
+  #flashcard-table {
     overflow-y: scroll;
   }
 </style>

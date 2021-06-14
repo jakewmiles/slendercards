@@ -20,21 +20,24 @@
   }
 </script>
 
-<h3>{flashcardData.length} cards currently saved in the database</h3>
-<h4>Filtered {filteredFlashcards.length}/{flashcardData.length} cards</h4>
-<div class='database-table'>
-  <table>
-    <thead>
-      <tr>
-        <th><input bind:value={srcLangSearch} placeholder="L1" /></th>
-        <th><input bind:value={srcSentenceSearch} placeholder="Sentence"/></th>
-        <th><input bind:value={targLangSearch} placeholder="L2"/></th>
-        <th><input bind:value={targSentenceSearch} placeholder="Sentence"/></th>
-        <th>overallScore</th>
-      </tr>
-    </thead>
-    {#key flashcardData}
-      {#each filteredList as sentence, i} 
+<main>
+
+  <h3>{flashcardData.length} cards currently saved in the database</h3>
+  <h4>Filtered {filteredFlashcards.length}/{flashcardData.length} cards</h4>
+  <div id='table-wrapper'>
+    <div id='database-table'>
+      <table>
+        <thead>
+          <tr>
+            <th><input bind:value={srcLangSearch} placeholder="L1" /></th>
+            <th><input bind:value={srcSentenceSearch} placeholder="Sentence"/></th>
+            <th><input bind:value={targLangSearch} placeholder="L2"/></th>
+            <th><input bind:value={targSentenceSearch} placeholder="Sentence"/></th>
+            <th>overallScore</th>
+          </tr>
+        </thead>
+        {#key flashcardData}
+        {#each filteredList as sentence, i} 
         <tbody>
           <tr>
             <td>{sentence.srcLang}</td>
@@ -47,26 +50,50 @@
             }}>❌</button></td>
           </tr>
         </tbody>
-      {/each}
-    {/key}
-  </table>
-</div>
-
+        {/each}
+        {/key}
+      </table>
+    </div>
+  </div>
+</main>
+    
 <style>
-  .database-table {
-    overflow-y: auto;
+  main {
+    height: 50%;
+    overflow-y: scroll;
+  }
+
+  #table-wrapper {
+    position:relative;
+  }
+
+  #table-wrapper table {
+    width:100%;
+  }
+
+  #table-wrapper table thead {
+    top:-20px;
+    z-index:2;
+    height:20px;
+  }
+
+  #database-table {
+    height:300px;
+    overflow:auto;  
+    margin-top:40px;
   }
 
   table, tr {
     width: 100%;
     border: 1px solid white;
+    overflow-y: scroll;
   }
 
   .delete-button {
     background-color: transparent;
     border: none;
     text-align: center;
-    font-size: 30px;
+    font-size: 24px;
   }
 
   input {

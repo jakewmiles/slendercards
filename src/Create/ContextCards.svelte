@@ -9,6 +9,7 @@
 	let endIndex = 5;
 
 	const fetchSentences = async () => {
+		if (!phraseQuery) return;
 		searched = true;
 		newSearch = phraseQuery;
 		const response = await fetch('http://localhost:3000/scrape', {
@@ -30,8 +31,8 @@
 	<h2 transition:fade>1. Search for a {srcEmoji} word, phrase or sentence</h2>
 	<h2 transition:fade>2. See {targEmoji} translations!</h2>
 	<h3 transition:fade>Click the ✅ next to any sentence pair to create a flashcard!</h3>
-	<input bind:value={phraseQuery}/>
-	<button on:click={fetchSentences}>
+	<input placeholder='Search...' bind:value={phraseQuery}/>
+	<button class='animated-button fetch-sentences' on:click={fetchSentences}>
 		Submit
 	</button>
 	{#key newSearch}
@@ -39,7 +40,7 @@
 			{#await fetchSentences()}
 				<p>Getting sentence..</p>
 			{:then data}
-			<button on:click={() => {
+			<button class='animated-button fetch-sentences' on:click={() => {
 				startIndex += 5;
 				endIndex += 5;
 				if (endIndex > data.examples.length) {
@@ -71,4 +72,48 @@
 		text-align: left;
 		padding-left: 100px;
 	}
+
+	input {
+		height: 40px;
+		background-color: #000;
+		color: #FFF;
+	}
+
+	input::placeholder {
+		color: #FFF;
+	}
+
+	/* .animated-button {
+    color: white;
+    height: 40px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    display: inline-block;
+  } */
+
+	.fetch-sentences {
+    z-index: 2;
+    transition: all 0.15s ease;
+    overflow: hidden;
+  }
+  .fetch-sentences:after {
+    position: absolute;
+    content: " ";
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.15s ease;
+  }
+  .fetch-sentences:hover {
+    color: #000;
+  }
+  .fetch-sentences:hover:after {
+    -webkit-transform: scale(1) rotate(-180deg);
+    transform: scale(1) rotate(-180deg);
+    background: #FFF;
+  }
 </style>

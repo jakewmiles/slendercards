@@ -50,29 +50,20 @@
     <h3>Target: {languages[targLang]} {targLang}</h3>
   {/if}
 
-  <button on:click={() => {
+  <button class='animated-button language-choice' on:click={() => {
     if (srcLang && targLang) languagesChosen = true
     if (srcLang === targLang) languagesChosen = false
-  }}>NEXT
+  }}>Next
   </button>
 
 <style>
   button {
     margin: 5px;
   }
-  .animated-button {
-    color: white;
-    width: 130px;
-    height: 40px;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-  }
+
   .language-choice {
     z-index: 2;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     overflow: hidden;
   }
   .language-choice:after {
@@ -83,7 +74,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
   }
   .language-choice:hover {
     color: #000;
