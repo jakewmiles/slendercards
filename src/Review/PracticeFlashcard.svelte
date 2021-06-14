@@ -1,7 +1,8 @@
 <script>
   import Flashcard from "./Flashcard.svelte";
   import ReactionButtons from "./ReactionButtons.svelte";
-  export let promisedData, numberOfCards;
+  export let numberOfCards, filteredFlashcards;
+  console.log(filteredFlashcards);
   let cardIndex = 0;
   let frontSide = true;
   let flipped = false;
@@ -10,29 +11,23 @@
 </script>
 
 <main>
-  {#await promisedData}
-  <p>awaiting data...</p>
-  {:then data}
-    {#if !data.length}
+  {#if !filteredFlashcards.length}
       <p>No cards to display! Create some cards fast!</p>
     {/if}
-    {#if data.length}
-      {#if cardIndex < (numberOfCards < data.length ? numberOfCards : data.length)}
+    {#if filteredFlashcards.length}
+      {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
         {#key cardIndex}
-          <h2>Card {cardIndex+1}/{numberOfCards < data.length ? numberOfCards : data.length}</h2>
-          <Flashcard {data} {cardIndex} bind:flipped={flipped}/>
+          <h2>Card {cardIndex+1}/{numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length}</h2>
+          <Flashcard data={filteredFlashcards} {cardIndex} bind:flipped={flipped}/>
         {/key}
         {#if flipped}
-          <ReactionButtons {data} bind:cardIndex={cardIndex} bind:frontSide={frontSide} bind:flipped={flipped}/>
+          <ReactionButtons data={filteredFlashcards} bind:cardIndex={cardIndex} bind:frontSide={frontSide} bind:flipped={flipped}/>
         {/if}
       {/if}
     {/if}
-  {#if cardIndex === (numberOfCards < data.length ? numberOfCards : data.length)}
+  {#if cardIndex === (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
     <h1 id='finished'>Review finished!</h1>
   {/if}
-  {:catch error}
-  <p>Error!</p>
-  {/await}
 </main>
 
 <style>

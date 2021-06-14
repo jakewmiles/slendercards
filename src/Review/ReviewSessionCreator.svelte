@@ -1,5 +1,5 @@
 <script>
-  export let flashcardData, practiceMode, numberOfCards;
+  export let practiceMode, numberOfCards, filteredFlashcards;
 </script>
 
 <div id='practice-session-selector'>
@@ -12,8 +12,8 @@
   }}>➡️</button> 
       <div id='session-preview'>
         <p>Review session of {numberOfCards} {numberOfCards === 1 ? 'card' : 'cards'} </p>
-        {#if numberOfCards > flashcardData.length}
-        <p style='color: red'>Note that you will only be shown {flashcardData.length} cards</p>
+        {#if numberOfCards > filteredFlashcards.length}
+        <p style='color: red'>Note that you will only be shown {filteredFlashcards.length} {filteredFlashcards.length === 1 ? 'card' : 'cards'} </p>
         {/if}
       </div>
     </div>

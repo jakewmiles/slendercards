@@ -1,10 +1,15 @@
 <script>
   export let flashcardData;
+  export let filteredFlashcards;
   let srcLangSearch = '';
   let srcSentenceSearch = '';
   let targLangSearch = '';
   let targSentenceSearch = '';
-  $: filteredList = flashcardData.filter(flashcard => flashcard.srcLang.toLowerCase().indexOf(srcLangSearch.toLowerCase()) !== -1 && flashcard.srcSentence.toLowerCase().indexOf(srcSentenceSearch.toLowerCase()) !== -1 && flashcard.targLang.toLowerCase().indexOf(targLangSearch.toLowerCase()) !== -1 && flashcard.targSentence.toLowerCase().indexOf(targSentenceSearch.toLowerCase()) !== -1);
+  $: filteredList = filteredFlashcards = flashcardData.filter(flashcard => {
+    return flashcard.srcLang.toLowerCase().indexOf(srcLangSearch.toLowerCase()) !== -1 && 
+    flashcard.srcSentence.toLowerCase().indexOf(srcSentenceSearch.toLowerCase()) !== -1 && 
+    flashcard.targLang.toLowerCase().indexOf(targLangSearch.toLowerCase()) !== -1 && 
+    flashcard.targSentence.toLowerCase().indexOf(targSentenceSearch.toLowerCase()) !== -1});
   
   const removeFlashcard = async (i, id) => {
     await fetch(`http://localhost:3000/flashcards/${id}`, {
@@ -15,7 +20,7 @@
   }
 </script>
 
-<h3>{flashcardData.length} cards currently saved</h3>
+<h3>{flashcardData.length} cards currently saved in the database</h3>
 <div class='database-table'>
   <table>
     <thead>

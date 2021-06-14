@@ -3,11 +3,11 @@
   import PracticeFlashcard from './PracticeFlashcard.svelte';
   import ReviewSessionCreator from './ReviewSessionCreator.svelte';
 
-  const fetchAllFlashcards = (async () => {
+  const fetchAllFlashcards = async () => {
     const response = await fetch('http://localhost:3000/flashcards')
     const data = await response.json();
     return data;
-  })();
+  };
 
   const reloadDb = () => {
     location.reload();
@@ -15,19 +15,21 @@
 
   let practiceMode = false;
   let numberOfCards = 1;
+  let filteredFlashcards = fetchAllFlashcards();
+  
 </script>
 
 <main>  
   {#if !practiceMode}
-    {#await fetchAllFlashcards}
+    {#await fetchAllFlashcards()}
       <p>Fetching all flashcards...</p>
     {:then data}
       {#if !data.length}
         <p>No flashcards saved! Create some flashcards first...</p>
       {/if}
       {#if data.length}
-        <ReviewSessionCreator flashcardData={data} bind:practiceMode={practiceMode} bind:numberOfCards={numberOfCards}/>
-        <FlashcardTable flashcardData={data}/>
+        <ReviewSessionCreator bind:practiceMode={practiceMode} bind:numberOfCards={numberOfCards} {filteredFlashcards}/>
+        <FlashcardTable flashcardData={data} bind:filteredFlashcards={filteredFlashcards}/>
       {/if}
     {:catch error}
       <p>An error occurred! {error}</p>
@@ -35,7 +37,7 @@
   {/if}
       
   {#if practiceMode}
-    <PracticeFlashcard promisedData={fetchAllFlashcards} {numberOfCards}/>
+    <PracticeFlashcard {filteredFlashcards} {numberOfCards} />
     <button on:click={() => {
       practiceMode = !practiceMode;
       reloadDb();

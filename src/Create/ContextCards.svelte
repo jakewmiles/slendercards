@@ -1,13 +1,12 @@
 <script>
 	import IndividualCard from './IndividualCard.svelte';
   import { fade } from 'svelte/transition';
-	export let srcLang;
-	export let targLang;
-	export let srcEmoji;
-	export let targEmoji;
+	export let srcLang, targLang, srcEmoji, targEmoji;
 	let phraseQuery = '';
 	let searched = false;
 	let newSearch = '';
+	let startIndex = 0;
+	let endIndex = 5;
 
 	const fetchSentences = async () => {
 		searched = true;
@@ -32,7 +31,7 @@
 	<h2 transition:fade>2. See {targEmoji} translations!</h2>
 	<h3 transition:fade>Click the ✅ next to any sentence pair to create a flashcard!</h3>
 	<input bind:value={phraseQuery}/>
-	<button type="button" on:click={fetchSentences}>
+	<button on:click={fetchSentences}>
 		Submit
 	</button>
 	{#key newSearch}
@@ -40,8 +39,17 @@
 			{#await fetchSentences()}
 				<p>Getting sentence..</p>
 			{:then data}
-				{#each data.examples.slice(0, 5) as example, i (i)}
-					<IndividualCard index={i} {example} {srcEmoji} {srcLang} {targEmoji} {targLang}/>
+			<button on:click={() => {
+				startIndex += 5;
+				endIndex += 5;
+				if (endIndex > data.examples.length) {
+					startIndex = 0;
+					endIndex = 5;
+				}
+			}}>↺</button>
+			<p>Found {data.examples.length} sentences. Showing sentences {startIndex + 1} - {endIndex}</p>
+				{#each data.examples.slice(startIndex, endIndex) as example}
+					<IndividualCard {example} {srcEmoji} {srcLang} {targEmoji} {targLang}/>
 				{/each}
 			{:catch error}
 				<p>An error occurred! {error}</p>

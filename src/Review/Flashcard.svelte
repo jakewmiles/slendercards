@@ -19,7 +19,8 @@
                      'Polish':'🇵🇱',
                      'Russian':'🇷🇺',
                      'Portuguese':'🇵🇹',
-                     'Japanese':'🇯🇵'}
+                     'Japanese':'🇯🇵',
+                     'Chinese':'🇨🇳'}
   
 </script>
 

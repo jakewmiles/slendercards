@@ -1,9 +1,15 @@
 <script>
 	import { fade, fly } from 'svelte/transition';
-  export let index, example, srcEmoji, srcLang, targEmoji, targLang;
+  export let example, srcEmoji, srcLang, targEmoji, targLang;
   let visible = true;
+	let examplePosted = false;
 
 	const postSentence = async () => {
+		if (examplePosted) {
+			console.log('Sentence already posted to database!!');
+			return;
+		};
+		examplePosted = true;
 		return await fetch('http://localhost:3000/flashcards', {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
@@ -21,7 +27,6 @@
 {#if visible}
   <div class="example-card" transition:fade>
     <div class="left" in:fly={{x: -200, duration: 1000}}>	
-      <h1 class="example-number">{index+1}</h1>
       <p class="sentence">{srcEmoji} {example.from}</p>
     </div>
     <div class="right" in:fly={{x: 200, duration: 1000}}>

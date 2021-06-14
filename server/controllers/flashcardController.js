@@ -4,15 +4,23 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const languageCodes = {"English":"en-GB", "Spanish":"es-ES", "Italian":"it-IT", "French":"fr-FR", "German":"de-DE", "Polish":"pl-PL", "Russian":"ru-RU", "Portuguese":"pt-PT", "Japanese":"ja" };
+const languageCodes = {"English":"en-GB",
+                       "Spanish":"es-ES",
+                       "Italian":"it-IT",
+                       "French":"fr-FR",
+                       "German":"de-DE",
+                       "Polish":"pl-PL",
+                       "Russian":"ru-RU",
+                       "Portuguese":"pt-PT",
+                       "Japanese":"ja",
+                       "Chinese":"zh-CN"};
 
-const getSrcTextToSpeech = async (phrase, targLang) => {
+const getTextToSpeech = async (phrase, targLang) => {
   try {
     const url = await googleTTS.getAudioUrl(phrase, {
       lang: languageCodes[targLang],
       host: 'https://translate.google.com'
     });
-    console.log(url);
     return url;
   } catch (err) {
     console.error(err);
@@ -22,8 +30,8 @@ const getSrcTextToSpeech = async (phrase, targLang) => {
 exports.postNewFlashcard = async (req, res) => {
   try {
     const { srcLang, targLang, srcSentence, targSentence } = req.body
-    const srcTTSURL = await getSrcTextToSpeech(srcSentence, srcLang);
-    const targTTSURL = await getSrcTextToSpeech(targSentence, targLang);
+    const srcTTSURL = await getTextToSpeech(srcSentence, srcLang);
+    const targTTSURL = await getTextToSpeech(targSentence, targLang);
     const currDate = Date.now();
     const newFlashcard = new Flashcard({
       srcLang,
