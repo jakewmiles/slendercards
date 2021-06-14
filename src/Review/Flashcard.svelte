@@ -3,7 +3,7 @@
 
   export let cardIndex, data, flipped;
   let frontSide = true;
-  const flip = ({delay = 0, duration = 500}) => {
+  const flip = ({delay = 0, duration = 400}) => {
     return {
       delay,
       duration,

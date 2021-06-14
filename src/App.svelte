@@ -3,14 +3,20 @@
 	import Home from './Home.svelte';
 	import CreateDashboard from './Create/CreateDashboard.svelte';
 	import ReviewDashboard from './Review/ReviewDashboard.svelte';
-	let reviewMode;
+
+	const loadPage = (destination) => {
+		if (location.hash === destination) location.reload();
+    location.assign(`${location.origin}/${destination}`);
+  }
 
 </script>
 <body>
 	<nav>
 			<a class='nav-button' href='/#/'>🏠</a>
-			<a class='nav-button' href='/#/create-dashboard'>CREATE</a>
-			<a class='nav-button' href='/#/review-dashboard'>REVIEW</a>
+			<!-- <a class='nav-button' href='/#/create-dashboard'>CREATE</a> -->
+			<button on:click={() => loadPage('#/create-dashboard')}>CREATE</button>
+			<!-- <a class='nav-button' href='/#/review-dashboard'>REVIEW</a> -->
+			<button on:click={() => loadPage('#/review-dashboard')}>REVIEW</button>
 	</nav>
 
 	<Router routes = {{

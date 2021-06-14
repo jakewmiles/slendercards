@@ -21,6 +21,7 @@
 </script>
 
 <h3>{flashcardData.length} cards currently saved in the database</h3>
+<h4>Filtered {filteredFlashcards.length}/{flashcardData.length} cards</h4>
 <div class='database-table'>
   <table>
     <thead>

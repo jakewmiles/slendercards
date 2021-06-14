@@ -13,10 +13,8 @@
     {/if}
     {#if filteredFlashcards.length}
       {#if cardIndex < (numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length)}
-        {#key cardIndex}
-          <h2>Card {cardIndex+1}/{numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length}</h2>
-          <Flashcard data={filteredFlashcards} {cardIndex} bind:flipped={flipped}/>
-        {/key}
+        <h2>Card {cardIndex+1}/{numberOfCards < filteredFlashcards.length ? numberOfCards : filteredFlashcards.length}</h2>
+        <Flashcard data={filteredFlashcards} {cardIndex} bind:flipped={flipped}/>
         {#if flipped}
           <ReactionButtons data={filteredFlashcards} bind:cardIndex={cardIndex} bind:frontSide={frontSide} bind:flipped={flipped}/>
         {/if}

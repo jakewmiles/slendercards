@@ -14,7 +14,7 @@
   }
 
   let practiceMode = false;
-  let numberOfCards = 1;
+  let numberOfCards = 5;
   let filteredFlashcards = fetchAllFlashcards();
   
 </script>
