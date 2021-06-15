@@ -4,7 +4,6 @@
 </script>
 
 <main>
-  <h3>Start a review session</h3>
   <div id='practice-session-selector'>
     <div id='card-quantity-selector'>
       <label for='number-of-cards'>How many cards would you like to review? (1-10)</label>
@@ -22,23 +21,20 @@
     </div>
   </div>
 </main>
+
     
 
 <style>
   main {
     margin-top: 10px;
     border: 1px solid white;
-    padding: 0px 0px 25px 25px;
-    height: 175px;
-  }
-
-  h3 {
-    margin-top: 10px;
+    padding: 25px;
+    height: 130px;
   }
 
   input {
     margin-top: 5px;
-		background-color: rgb(30, 30, 30);
+		background-color: rgb(50, 50, 50);
 		color: #FFF;
 	}
 
@@ -48,6 +44,7 @@
 
   .review-start {
     z-index: 2;
+    border-radius: 20px;
     height: 40px;
     width: 120px;
     transition: all 0.15s ease;
@@ -82,6 +79,7 @@
   #card-quantity-selector {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     width: 60%;
     height: 140px;
@@ -94,5 +92,9 @@
     font-size: 16px;
     display: flex;
     flex-direction: column;
+  }
+
+  label {
+    width: 325px;
   }
 </style>

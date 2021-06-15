@@ -20,33 +20,44 @@
     flashcardData = [...flashcardData.slice(0, i), ...flashcardData.slice(i + 1)];
     location.reload();
   }
+
+  const languages = {
+    'English':'🇬🇧',
+    'German':'🇩🇪',
+    'Spanish':'🇪🇸',
+    'French':'🇫🇷',
+    'Italian':'🇮🇹',
+    'Polish':'🇵🇱',
+    'Russian':'🇷🇺',
+    'Portuguese':'🇵🇹',
+    'Japanese':'🇯🇵',
+    'Chinese':'🇨🇳'
+  }
 </script>
 
 <main>
-
-  <h3>{flashcardData.length} cards currently saved in the database</h3>
-  <h3>Filtered {filteredFlashcards.length}/{flashcardData.length} cards</h3>
+  <h3>(Optional) filter cards before starting a review session</h3>
   <div id='table-wrapper'>
     <div id='database-table'>
       <table>
         <thead>
           <tr>
-            <th><input bind:value={srcLangSearch} placeholder="Source" /></th>
-            <th><input bind:value={srcSentenceSearch} placeholder="Sentence"/></th>
-            <th><input bind:value={targLangSearch} placeholder="Target"/></th>
-            <th><input bind:value={targSentenceSearch} placeholder="Sentence"/></th>
-            <th><input bind:value={overallScoreSearch} placeholder="Score"/></th>
-            <th>Remove</th>
+            <th id='src-lang-input'><input bind:value={srcLangSearch} placeholder="Source" /></th>
+            <th id='src-sentence-input'><input bind:value={srcSentenceSearch} placeholder="Sentence"/></th>
+            <th id='targ-lang-input'><input bind:value={targLangSearch} placeholder="Target"/></th>
+            <th id='targ-sentence-input'><input bind:value={targSentenceSearch} placeholder="Sentence"/></th>
+            <th id='score-input'><input bind:value={overallScoreSearch} placeholder="Min. score"/></th>
+            <th>    </th>
           </tr>
         </thead>
         {#key flashcardData}
         {#each filteredList as sentence, i} 
         <tbody>
           <tr>
-            <td>{sentence.srcLang}</td>
-            <td>{sentence.srcSentence}</td>
-            <td>{sentence.targLang}</td>
-            <td>{sentence.targSentence}</td>
+            <td>{languages[sentence.srcLang]}</td>
+            <td class='src-sentence'>{sentence.srcSentence}</td>
+            <td>{languages[sentence.targLang]}</td>
+            <td class='targ-sentence'>{sentence.targSentence}</td>
             <td>{sentence.overallScore}</td>
             <td><button class='delete-button' on:click={() => {
               removeFlashcard(i, sentence._id);
@@ -58,6 +69,7 @@
       </table>
     </div>
   </div>
+  <p>Showing {filteredFlashcards.length}/{flashcardData.length} cards</p>
 </main>
     
 <style>
@@ -66,17 +78,32 @@
     overflow-y: scroll;
     border: 1px solid white;
   }
-
   h3 {
-    margin: 10px;
-  }
-
-  input {
     margin-top: 5px;
-		background-color: rgb(30, 30, 30);
+    margin-bottom: 0px;
+  }
+  #src-lang-input {
+    width: 70px;
+  }
+  #targ-lang-input {
+    width: 70px;
+  }
+  #src-sentence-input {
+    width: 235px;
+  }
+  #targ-sentence-input {
+    width: 235px;
+  }
+  #score-input {
+    width: 90px;
+  }
+  input {
+		background-color: rgb(50, 50, 50);
 		color: #FFF;
 	}
-
+  .src-sentence {
+    font-size: 16px;
+  }
 	input::placeholder {
 		color: #FFF;
 	}
@@ -103,15 +130,12 @@
   #database-table {
     height:300px;
     overflow:auto;  
-    margin-top:40px;
-    /* border-top: 1px solid white; */
-    /* border-bottom: 1px solid white; */
+    margin-top:20px;
   }
 
   table, tr {
     margin-top: 0;
     width: 100%;
-    /* border: 1px solid white; */
     overflow-y: scroll;
   }
 
@@ -120,6 +144,7 @@
     border: none;
     text-align: center;
     font-size: 24px;
+    cursor: pointer;
   }
 
   input {

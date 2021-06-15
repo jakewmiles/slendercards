@@ -2,7 +2,8 @@
   import TtsAudioPlayer from './TtsAudioPlayer.svelte';
   export let cardIndex, data, flipped, frontSide;
 
-  const flip = ({delay = 0, duration = 400}) => {
+
+  const flip = ({delay = 0, duration = 350}) => {
     return {
       delay,
       duration,
@@ -23,11 +24,13 @@
   
 </script>
 
-  <div class='flashcard' on:click={() => {
-    frontSide = !frontSide
-    flipped = true;
+
+
+<div class='flashcard' on:click={() => {
+  frontSide = !frontSide
+  flipped = true;
   }}>
-    {#if frontSide}
+  {#if frontSide}
     <div transition:flip class='side'>
       <h1 class='lang'>{languages[data[cardIndex].srcLang]}</h1>
       <h2 class='sentence'>{data[cardIndex].srcSentence}</h2>

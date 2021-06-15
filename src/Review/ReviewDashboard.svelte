@@ -20,6 +20,7 @@
 </script>
 
 <main>  
+  <!-- <h3>Start a review session</h3> -->
   {#if !practiceMode}
     {#await fetchAllFlashcards()}
       <p>Fetching all flashcards...</p>
@@ -28,10 +29,8 @@
         <p>No flashcards saved! Create some flashcards first...</p>
       {/if}
       {#if data.length}
-        <div id='flashcard-table'>
-          <FlashcardTable flashcardData={data} bind:filteredFlashcards={filteredFlashcards}/>
-        </div>
-        <ReviewSessionCreator bind:practiceMode={practiceMode} bind:numberOfCards={numberOfCards} {filteredFlashcards}/>
+      <FlashcardTable flashcardData={data} bind:filteredFlashcards={filteredFlashcards}/>
+      <ReviewSessionCreator bind:practiceMode={practiceMode} bind:numberOfCards={numberOfCards} {filteredFlashcards}/>
       {/if}
     {:catch error}
       <p>An error occurred! {error}</p>
@@ -57,6 +56,7 @@
 
   .return-button {
     z-index: 2;
+    border-radius: 20px;
     width: 120px;
     transition: all 0.15s ease;
     overflow: hidden;

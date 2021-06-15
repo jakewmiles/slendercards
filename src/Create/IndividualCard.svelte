@@ -23,38 +23,24 @@
 
 </script>
 
-{#if visible}
-  <div class="example-card" out:fade>
-    <div class="left" in:fly={{x: -200, duration: 500}}>	
-      <p class="sentence">{srcEmoji} {example.from}</p>
-    </div>
-    <div class="right" in:fly={{x: 200, duration: 500}}>
-      <p class="sentence">{targEmoji} {example.to}</p>
-      <button class="card-selector" on:click={() => {
-        visible = false;
-				postSentence();
-      }}>✅</button>
-    </div>
+	{#if visible}
+		<div class="example-card" transition:fade>
+			<p class="sentence">{srcEmoji} {example.from}</p>
+			<p class="sentence">{targEmoji} {example.to}</p>
+			<button class="card-selector" on:click={() => {
+			visible = false;
+			postSentence();
+			}}>✅</button>
   </div>
-{/if}
-
+	{/if}
+	
 <style>
   .example-card {
 		width: 100%;
-		align-items: baseline;
+		align-items: center;
 		display: flex;
 		justify-content: center;
 		padding: 0;
-	}
-
-	.left {
-		width: 50%;
-		display: flex;
-	}
-
-	.right {
-		width: 50%;
-		display: flex;
 	}
 
 	.sentence {
@@ -80,5 +66,6 @@
     border: none;
     text-align: center;
     font-size: 30px;
+		cursor: pointer;
   }
 </style>

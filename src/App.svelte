@@ -11,10 +11,21 @@
 
 </script>
 <body>
-	<nav>
-			<button class='animated-button nav-button' on:click={() => loadPage('#/')}>🏠</button>
-			<button class='animated-button nav-button' on:click={() => loadPage('#/create-dashboard')}>✍️</button>
-			<button class='animated-button nav-button' on:click={() => loadPage('#/review-dashboard')}>📚</button>
+	<nav id='top-navbar'>
+		<button class='animated-button nav-button' on:click={() => loadPage('#/')}>
+			<span class='emoji'>🏠</span>
+			<span class='reveal'>Home</span>
+		</button>
+	</nav>
+	<nav id='bottom-navbar'>
+		<button class='animated-button nav-button' on:click={() => loadPage('#/create-dashboard')}>
+			<span class='emoji'>✍️</span>
+			<span class='reveal'>Create</span>
+		</button>
+		<button class='animated-button nav-button' on:click={() => loadPage('#/review-dashboard')}>
+			<span class='emoji'>📚</span>
+			<span class='reveal'>Review</span>
+		</button>
 	</nav>
 
 	<Router routes = {{
@@ -30,25 +41,45 @@
 		color: white;
 		padding: 0;
 		overflow-y: scroll;
-		min-width: 600px;
+		min-width: 768px;
 	}
-
 	nav {
+		height: 48px;
+		background-color: rgb(30, 30, 30);
+	}
+	button .reveal {
+		display: none;
+	}
+	button:hover .emoji {
+		display: none;
+	}
+	button:hover .reveal {
+		display: inline;
+	}
+	#top-navbar {
 		margin-left: 1%;
 		display: flex;
 		text-align: center;
-		overflow-x: scroll;
+		justify-content: center;
 	}
-
+	#bottom-navbar {
+		display: flex;
+		justify-content: center;
+  	overflow: hidden;
+  	position: absolute;
+  	bottom: 0;
+  	width: 100%;
+	}
 	.nav-button {
-		width: 33%;
+		width: 100%;
 		font-size: 150%;
+		margin: 0;
 	}
-
 	.animated-button {
-    color: white;
-    height: 60px;
-    background: transparent;
+		background-color: rgb(30, 30, 30);
+		border-radius: 20px;
+		color: white;
+    height: 48px;
     cursor: pointer;
     transition: all 0.15s ease;
     position: relative;
@@ -77,6 +108,5 @@
     transform: scale(1) rotate(180deg);
     background: #FFF;
   }
-
 </style>
 
