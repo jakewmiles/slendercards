@@ -1,4 +1,4 @@
-# Matchmaker
+# slendercards
 
 ## Table of contents
 - [Introduction](#Introduction)
