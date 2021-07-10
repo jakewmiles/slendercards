@@ -1,105 +1,76 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# Matchmaker
 
----
+## Table of contents
+- [Introduction](#Introduction)
+- [Getting Started](#Getting-Started)
+- [Features](#Features)
+- [Future Features](#Future-Features)
+- [Technologies](#Technologies)
 
-# svelte app
+## Introduction
+slendercards is a web app built to help people learn foreign languages. Users can choose from multiple language pairs and automatically generate context-based flashcards based on personal search terms.
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+slendercards was built using Svelte on the front-end and expressJS and Mongoose on the back-end. Slendercards makes use of web scraping through an unofficial Reverso API (built on Cheerio and Axios) to create and store the digital flashcards.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+See slendercards in action [here](https://www.youtube.com/watch?v=B_asB_UGEgM)
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
+<code>
+<img width="300" alt="slendercards home" src="https://user-images.githubusercontent.com/52141045/125161290-6400d280-e179-11eb-9d1e-a057acdaed82.png">
+<img width="300" alt="slendercards create" src="https://user-images.githubusercontent.com/52141045/125161303-7418b200-e179-11eb-81ed-21248b29c245.png">
+<img width="300" alt="Screenshot 2021-07-10 at 12 13 43" src="https://user-images.githubusercontent.com/52141045/125161315-84c92800-e179-11eb-9732-22c39b84f65f.png">
+</code>
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+## Getting Started
 
+1. Clone this repo and enter!
 
-## Get started
+   ```bash
+   git clone https://github.com/jakewmiles/slendercards.git
+   cd slendercards
+   ```
 
-Install the dependencies...
+2. Run ````npm install```` to install all the required dependencies into your local repo. 
 
-```bash
-cd svelte-app
-npm install
-```
+3. Navigate to the back-end and get the server up and running!
 
-...then start [Rollup](https://rollupjs.org):
+   ```bash
+   cd server
+   node index.js
+   ```
 
-```bash
-npm run dev
-```
+4. In a new terminal, navigate back to the root folder and start running the front end.
+    ```bash
+    cd ..
+    npm run dev
+    ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+5. In the terminal you should see a message similar to:
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+   ```bash
+   Your application is ready~! 🚀
+   Local: http://localhost:5000
+   ```
+   
+9. Navigate to the local address in your browser. The app should be running! 🎉
 
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
+## Features
 
-## Building and running in production mode
+- Create new cards across a number of different language pairs
+- Review the cards that you've created
+- Customisable review sessions based on length and familiarity.
 
-To create an optimised version of the app:
+## Future Features
 
-```bash
-npm run build
-```
+- Enable user authentication
+- Deploy the app as a Chrome Extension
 
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
+## Technologies
 
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+- Javascript
+- Svelte
+- Node.js
+- Axios
+- Cheerio
+- express.js
+- MongoDB
+- Mongoose
