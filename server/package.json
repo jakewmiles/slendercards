@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "google-translate-tts": "*",
-    "reverso-api": "^2.16.2"
-  }
-}

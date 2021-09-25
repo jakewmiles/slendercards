@@ -4855,7 +4855,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (54:8) {#each filteredList as sentence, i}
+    // (85:10) {#each filteredList as sentence, i}
     function create_each_block(ctx) {
     	let tbody;
     	let tr;
@@ -4912,19 +4912,19 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "❌";
     			t11 = space();
-    			add_location(td0, file$7, 56, 12, 2088);
-    			attr_dev(td1, "class", "src-sentence svelte-896fzl");
-    			add_location(td1, file$7, 57, 12, 2139);
-    			add_location(td2, file$7, 58, 12, 2204);
+    			add_location(td0, file$7, 87, 16, 2466);
+    			attr_dev(td1, "class", "src-sentence svelte-1mupl8s");
+    			add_location(td1, file$7, 88, 16, 2521);
+    			add_location(td2, file$7, 89, 16, 2590);
     			attr_dev(td3, "class", "targ-sentence");
-    			add_location(td3, file$7, 59, 12, 2256);
-    			add_location(td4, file$7, 60, 12, 2323);
-    			attr_dev(button, "class", "delete-button svelte-896fzl");
-    			add_location(button, file$7, 61, 16, 2372);
-    			add_location(td5, file$7, 61, 12, 2368);
-    			attr_dev(tr, "class", "svelte-896fzl");
-    			add_location(tr, file$7, 55, 10, 2071);
-    			add_location(tbody, file$7, 54, 8, 2053);
+    			add_location(td3, file$7, 90, 16, 2646);
+    			add_location(td4, file$7, 91, 16, 2717);
+    			attr_dev(button, "class", "delete-button svelte-1mupl8s");
+    			add_location(button, file$7, 93, 19, 2789);
+    			add_location(td5, file$7, 92, 16, 2766);
+    			attr_dev(tr, "class", "svelte-1mupl8s");
+    			add_location(tr, file$7, 86, 14, 2445);
+    			add_location(tbody, file$7, 85, 12, 2423);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, tbody, anchor);
@@ -4972,14 +4972,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(54:8) {#each filteredList as sentence, i}",
+    		source: "(85:10) {#each filteredList as sentence, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (53:8) {#key flashcardData}
+    // (84:8) {#key flashcardData}
     function create_key_block$1(ctx) {
     	let each_1_anchor;
     	let each_value = /*filteredList*/ ctx[7];
@@ -5040,7 +5040,7 @@ var app = (function () {
     		block,
     		id: create_key_block$1.name,
     		type: "key",
-    		source: "(53:8) {#key flashcardData}",
+    		source: "(84:8) {#key flashcardData}",
     		ctx
     	});
 
@@ -5123,55 +5123,55 @@ var app = (function () {
     			t11 = text("/");
     			t12 = text(t12_value);
     			t13 = text(" cards");
-    			attr_dev(h3, "class", "svelte-896fzl");
-    			add_location(h3, file$7, 38, 2, 1223);
+    			attr_dev(h3, "class", "svelte-1mupl8s");
+    			add_location(h3, file$7, 50, 2, 1313);
     			attr_dev(input0, "placeholder", "Source");
-    			attr_dev(input0, "class", "svelte-896fzl");
-    			add_location(input0, file$7, 44, 36, 1427);
+    			attr_dev(input0, "class", "svelte-1mupl8s");
+    			add_location(input0, file$7, 57, 15, 1532);
     			attr_dev(th0, "id", "src-lang-input");
-    			attr_dev(th0, "class", "svelte-896fzl");
-    			add_location(th0, file$7, 44, 12, 1403);
+    			attr_dev(th0, "class", "svelte-1mupl8s");
+    			add_location(th0, file$7, 56, 12, 1493);
     			attr_dev(input1, "placeholder", "Sentence");
-    			attr_dev(input1, "class", "svelte-896fzl");
-    			add_location(input1, file$7, 45, 40, 1530);
+    			attr_dev(input1, "class", "svelte-1mupl8s");
+    			add_location(input1, file$7, 60, 15, 1663);
     			attr_dev(th1, "id", "src-sentence-input");
-    			attr_dev(th1, "class", "svelte-896fzl");
-    			add_location(th1, file$7, 45, 12, 1502);
+    			attr_dev(th1, "class", "svelte-1mupl8s");
+    			add_location(th1, file$7, 59, 12, 1620);
     			attr_dev(input2, "placeholder", "Target");
-    			attr_dev(input2, "class", "svelte-896fzl");
-    			add_location(input2, file$7, 46, 37, 1635);
+    			attr_dev(input2, "class", "svelte-1mupl8s");
+    			add_location(input2, file$7, 66, 15, 1843);
     			attr_dev(th2, "id", "targ-lang-input");
-    			attr_dev(th2, "class", "svelte-896fzl");
-    			add_location(th2, file$7, 46, 12, 1610);
+    			attr_dev(th2, "class", "svelte-1mupl8s");
+    			add_location(th2, file$7, 65, 12, 1803);
     			attr_dev(input3, "placeholder", "Sentence");
-    			attr_dev(input3, "class", "svelte-896fzl");
-    			add_location(input3, file$7, 47, 41, 1739);
+    			attr_dev(input3, "class", "svelte-1mupl8s");
+    			add_location(input3, file$7, 69, 15, 1976);
     			attr_dev(th3, "id", "targ-sentence-input");
-    			attr_dev(th3, "class", "svelte-896fzl");
-    			add_location(th3, file$7, 47, 12, 1710);
+    			attr_dev(th3, "class", "svelte-1mupl8s");
+    			add_location(th3, file$7, 68, 12, 1932);
     			attr_dev(input4, "placeholder", "Min. score");
-    			attr_dev(input4, "class", "svelte-896fzl");
-    			add_location(input4, file$7, 48, 33, 1841);
+    			attr_dev(input4, "class", "svelte-1mupl8s");
+    			add_location(input4, file$7, 75, 15, 2153);
     			attr_dev(th4, "id", "score-input");
-    			attr_dev(th4, "class", "svelte-896fzl");
-    			add_location(th4, file$7, 48, 12, 1820);
-    			attr_dev(th5, "class", "svelte-896fzl");
-    			add_location(th5, file$7, 49, 12, 1924);
-    			attr_dev(tr, "class", "svelte-896fzl");
-    			add_location(tr, file$7, 43, 10, 1386);
-    			attr_dev(thead, "class", "svelte-896fzl");
-    			add_location(thead, file$7, 42, 8, 1368);
-    			attr_dev(table, "class", "svelte-896fzl");
-    			add_location(table, file$7, 41, 6, 1352);
+    			attr_dev(th4, "class", "svelte-1mupl8s");
+    			add_location(th4, file$7, 74, 12, 2117);
+    			attr_dev(th5, "class", "svelte-1mupl8s");
+    			add_location(th5, file$7, 80, 12, 2296);
+    			attr_dev(tr, "class", "svelte-1mupl8s");
+    			add_location(tr, file$7, 55, 10, 1476);
+    			attr_dev(thead, "class", "svelte-1mupl8s");
+    			add_location(thead, file$7, 54, 8, 1458);
+    			attr_dev(table, "class", "svelte-1mupl8s");
+    			add_location(table, file$7, 53, 6, 1442);
     			attr_dev(div0, "id", "database-table");
-    			attr_dev(div0, "class", "svelte-896fzl");
-    			add_location(div0, file$7, 40, 4, 1320);
+    			attr_dev(div0, "class", "svelte-1mupl8s");
+    			add_location(div0, file$7, 52, 4, 1410);
     			attr_dev(div1, "id", "table-wrapper");
-    			attr_dev(div1, "class", "svelte-896fzl");
-    			add_location(div1, file$7, 39, 2, 1291);
-    			add_location(p, file$7, 71, 2, 2600);
-    			attr_dev(main, "class", "svelte-896fzl");
-    			add_location(main, file$7, 37, 0, 1214);
+    			attr_dev(div1, "class", "svelte-1mupl8s");
+    			add_location(div1, file$7, 51, 2, 1381);
+    			add_location(p, file$7, 107, 2, 3119);
+    			attr_dev(main, "class", "svelte-1mupl8s");
+    			add_location(main, file$7, 49, 0, 1304);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5297,20 +5297,19 @@ var app = (function () {
     	const removeFlashcard = async (i, id) => {
     		await fetch(`http://localhost:3000/flashcards/${id}`, { method: "DELETE" });
     		$$invalidate(0, flashcardData = [...flashcardData.slice(0, i), ...flashcardData.slice(i + 1)]);
-    		location.reload();
-    	};
+    	}; // location.reload();
 
     	const languages = {
-    		"English": "🇬🇧",
-    		"German": "🇩🇪",
-    		"Spanish": "🇪🇸",
-    		"French": "🇫🇷",
-    		"Italian": "🇮🇹",
-    		"Polish": "🇵🇱",
-    		"Russian": "🇷🇺",
-    		"Portuguese": "🇵🇹",
-    		"Japanese": "🇯🇵",
-    		"Chinese": "🇨🇳"
+    		English: "🇬🇧",
+    		German: "🇩🇪",
+    		Spanish: "🇪🇸",
+    		French: "🇫🇷",
+    		Italian: "🇮🇹",
+    		Polish: "🇵🇱",
+    		Russian: "🇷🇺",
+    		Portuguese: "🇵🇹",
+    		Japanese: "🇯🇵",
+    		Chinese: "🇨🇳"
     	};
 
     	const writable_props = ["flashcardData", "filteredFlashcards"];
