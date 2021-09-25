@@ -1,22 +1,14 @@
 <script>
-  import { fade, fly } from 'svelte/transition';
-  export let languagesChosen, srcLang, srcLangHandler, targLang, targLangHandler;
+  import { fade, fly } from "svelte/transition";
+  export let languagesChosen,
+    srcLang,
+    srcLangHandler,
+    targLang,
+    targLangHandler;
   let readyToRenderSrc = true;
   let readyToRenderTarg = true;
 
-  const languages = {
-    'English':'🇬🇧',
-    'German':'🇩🇪',
-    'Spanish':'🇪🇸',
-    'French':'🇫🇷',
-    'Italian':'🇮🇹',
-    'Polish':'🇵🇱',
-    'Russian':'🇷🇺',
-    'Portuguese':'🇵🇹',
-    'Japanese':'🇯🇵',
-    'Chinese':'🇨🇳'
-  }
-
+  import { languages } from "../languages";
 </script>
 
 <main>
@@ -24,44 +16,65 @@
     <div class="src-lang-list">
       <h3>Source:</h3>
       {#each Object.entries(languages) as [language, emoji]}
-        <button class='animated-button language-choice' in:fly={{x: -100, duration: 1000}} 
-                  on:click={() => srcLangHandler(language, emoji)}>
-                  {emoji}{language}
-          </button>
-        {/each}
-      </div>
-      <div class="targ-lang-list">
-        <h3>Target:</h3>
-        {#each Object.entries(languages) as [language, emoji]}
-        <button class='animated-button language-choice' in:fly={{x: 100, duration: 1000}} 
-                on:click={() => targLangHandler(language, emoji)}>
-                {emoji}{language}
+        <button
+          class="animated-button language-choice"
+          in:fly={{ x: -100, duration: 1000 }}
+          on:click={() => srcLangHandler(language, emoji)}
+        >
+          {emoji}{language}
         </button>
-        {/each}
-      </div>
+      {/each}
     </div>
+    <div class="targ-lang-list">
+      <h3>Target:</h3>
+      {#each Object.entries(languages) as [language, emoji]}
+        <button
+          class="animated-button language-choice"
+          in:fly={{ x: 100, duration: 1000 }}
+          on:click={() => targLangHandler(language, emoji)}
+        >
+          {emoji}{language}
+        </button>
+      {/each}
+    </div>
+  </div>
 
-    <div id='chosen-languages-container'>
-      <h2>Chosen languages:</h2>
-      <div id='selected-languages'>
-        {#if !srcLang}
-        <h3 transition:fade on:outrostart={() => readyToRenderSrc = false} on:outroend={() => readyToRenderSrc = true}>No source language selected</h3>
-        {:else if readyToRenderSrc}
+  <div id="chosen-languages-container">
+    <h2>Chosen languages:</h2>
+    <div id="selected-languages">
+      {#if !srcLang}
+        <h3
+          transition:fade
+          on:outrostart={() => (readyToRenderSrc = false)}
+          on:outroend={() => (readyToRenderSrc = true)}
+        >
+          No source language selected
+        </h3>
+      {:else if readyToRenderSrc}
         <h3>{languages[srcLang]} {srcLang}</h3>
-        {/if}
-        <h4>↓</h4>
-        {#if !targLang}
-        <h3 transition:fade on:outrostart={() => readyToRenderTarg = false} on:outroend={() => readyToRenderTarg = true}>No target language selected</h3>
-        {:else if readyToRenderTarg} 
+      {/if}
+      <h4>↓</h4>
+      {#if !targLang}
+        <h3
+          transition:fade
+          on:outrostart={() => (readyToRenderTarg = false)}
+          on:outroend={() => (readyToRenderTarg = true)}
+        >
+          No target language selected
+        </h3>
+      {:else if readyToRenderTarg}
         <h3>{languages[targLang]} {targLang}</h3>
-        {/if}
-      </div>
+      {/if}
     </div>
-        <button class='animated-button language-choice' on:click={() => {
-          if (srcLang && targLang) languagesChosen = true
-          if (srcLang === targLang) languagesChosen = false
-        }}>Next
-        </button>
+  </div>
+  <button
+    class="animated-button language-choice"
+    on:click={() => {
+      if (srcLang && targLang) languagesChosen = true;
+      if (srcLang === targLang) languagesChosen = false;
+    }}
+    >Next
+  </button>
 </main>
 
 <style>
@@ -119,6 +132,6 @@
   .language-choice:hover:after {
     -webkit-transform: scale(1) rotate(180deg);
     transform: scale(1) rotate(180deg);
-    background: #FFF;
+    background: #fff;
   }
 </style>

@@ -25,6 +25,10 @@ const languageCodes = {
   Portuguese: 'pt-PT',
   Japanese: 'ja',
   Chinese: 'zh-CN',
+  Arabic: 'ar-XA',
+  Dutch: 'nl-NL',
+  Romanian: 'ro-RO',
+  Turkish: 'tr-TR',
 };
 
 export const getSentences = (phrase, srcLang, targLang) => {
@@ -35,5 +39,6 @@ export const getSentences = (phrase, srcLang, targLang) => {
     })
     .catch((err) => {
       console.log(err);
+      return err;
     });
 };

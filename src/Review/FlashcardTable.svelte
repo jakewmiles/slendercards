@@ -33,18 +33,7 @@
     // location.reload();
   };
 
-  const languages = {
-    English: "🇬🇧",
-    German: "🇩🇪",
-    Spanish: "🇪🇸",
-    French: "🇫🇷",
-    Italian: "🇮🇹",
-    Polish: "🇵🇱",
-    Russian: "🇷🇺",
-    Portuguese: "🇵🇹",
-    Japanese: "🇯🇵",
-    Chinese: "🇨🇳",
-  };
+  import { languages } from "../languages";
 </script>
 
 <main>

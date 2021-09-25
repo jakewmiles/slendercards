@@ -1,0 +1,16 @@
+export const languages = {
+  English: "🇬🇧",
+  German: "🇩🇪",
+  Spanish: "🇪🇸",
+  French: "🇫🇷",
+  Italian: "🇮🇹",
+  Polish: "🇵🇱",
+  Russian: "🇷🇺",
+  Portuguese: "🇵🇹",
+  Japanese: "🇯🇵",
+  Chinese: "🇨🇳",
+  Turkish: "🇹🇷",
+  Dutch: "🇳🇱",
+  Romanian: "🇷🇴",
+  Arabic: "🇸🇦",
+};

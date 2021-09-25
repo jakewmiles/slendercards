@@ -1,50 +1,39 @@
 <script>
-  import TtsAudioPlayer from './TtsAudioPlayer.svelte';
+  import TtsAudioPlayer from "./TtsAudioPlayer.svelte";
   export let cardIndex, data, flipped, frontSide;
 
-
-  const flip = ({delay = 0, duration = 350}) => {
+  const flip = ({ delay = 0, duration = 350 }) => {
     return {
       delay,
       duration,
-      css: (u) => `transform: rotateY(${1 - (u * 180)}deg);
-      opacity: ${1 - u};`
+      css: (u) => `transform: rotateY(${1 - u * 180}deg);
+      opacity: ${1 - u};`,
     };
-  }
-  const languages = {'English':'🇬🇧',
-                     'German':'🇩🇪',
-                     'Spanish':'🇪🇸',
-                     'French':'🇫🇷',
-                     'Italian':'🇮🇹',
-                     'Polish':'🇵🇱',
-                     'Russian':'🇷🇺',
-                     'Portuguese':'🇵🇹',
-                     'Japanese':'🇯🇵',
-                     'Chinese':'🇨🇳'}
-  
+  };
+  import { languages } from "../languages";
 </script>
 
-
-
-<div class='flashcard' on:click={() => {
-  frontSide = !frontSide
-  flipped = true;
-  }}>
+<div
+  class="flashcard"
+  on:click={() => {
+    frontSide = !frontSide;
+    flipped = true;
+  }}
+>
   {#if frontSide}
-    <div transition:flip class='side'>
-      <h1 class='lang'>{languages[data[cardIndex].srcLang]}</h1>
-      <h2 class='sentence'>{data[cardIndex].srcSentence}</h2>
-      <TtsAudioPlayer src={data[cardIndex].srcTTS}/>
+    <div transition:flip class="side">
+      <h1 class="lang">{languages[data[cardIndex].srcLang]}</h1>
+      <h2 class="sentence">{data[cardIndex].srcSentence}</h2>
+      <TtsAudioPlayer src={data[cardIndex].srcTTS} />
     </div>
-    {:else}
-    <div transition:flip class='side back'>
-      <h1 class='lang'>{languages[data[cardIndex].targLang]}</h1>
-      <h2 class='sentence'>{data[cardIndex].targSentence}</h2>
-      <TtsAudioPlayer src={data[cardIndex].targTTS}/>
+  {:else}
+    <div transition:flip class="side back">
+      <h1 class="lang">{languages[data[cardIndex].targLang]}</h1>
+      <h2 class="sentence">{data[cardIndex].targSentence}</h2>
+      <TtsAudioPlayer src={data[cardIndex].targTTS} />
     </div>
-    {/if}
-  </div>
-
+  {/if}
+</div>
 
 <style>
   h1 {
